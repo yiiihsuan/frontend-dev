@@ -76,4 +76,27 @@ export const loginUser = async (username, password) => {
     const data = await response.json();
     return data;
   };
+
+  export const uploadFile = async (file, projectId, type) => {
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('project_id', projectId);
+    formData.append('type', type);
+  
+    const response = await fetch(`${API_URL}/upload/`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: formData,
+    });
+  
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+  
+    const data = await response.json();
+    return data;
+  };
   
