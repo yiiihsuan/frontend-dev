@@ -1,0 +1,35 @@
+name: Deploy frontend to GCP
+
+on:
+  push:
+    branches: [develop]
+  # pull_request:
+  #   branches:
+  #     - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy application to GCP
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            cd /mnt/extradisk/hsuan/frontend-dev
+            git checkout develop
+            git pull origin develop
+   
+            if screen -list | grep -q "frontend2"; then
+              screen -S frontend2 -X quit
+            fi
+            cd frontend
+            npm install
+            screen -dmS frontend2 npm start
+  
+
+
