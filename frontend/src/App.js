@@ -3,6 +3,7 @@ import './App.css';
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
 
 
 function App() {
@@ -16,7 +17,8 @@ function App() {
     <Router>
       <div>
         <Routes>
-        <Route path="/" element={<LoginPage />} />
+          <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <LoginPage onLogin={handleLogin} />} />
+          <Route path="/home" element={isLoggedIn ? <HomePage /> : <Navigate to="/" />} />
         </Routes>
       </div>
     </Router>
@@ -24,13 +26,5 @@ function App() {
 }
 
 
-{/* <Route path="/nestory" element={<NewStory />} />
-<Route path="/book" element={<ShowPage />} />
-<Route path="/" element={<Start />} />
-  <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-  <Route
-    path="/home"
-    element={isLoggedIn ? <NewNewHomePage /> : <Navigate to="/login" />}
-  /> */}
 
 export default App;
