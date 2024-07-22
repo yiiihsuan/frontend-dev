@@ -27,9 +27,9 @@ export const loginUser = async (username, password) => {
     const response = await fetch(`${API_URL}/auth/token`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded', 
+        'Content-Type': 'application/x-www-form-urlencoded', // 更改Content-Type为表单数据
       },
-      body: new URLSearchParams({ username, password }), 
+      body: new URLSearchParams({ username, password }), // 使用URLSearchParams来处理form-data
     });
   
     if (!response.ok) {

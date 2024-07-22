@@ -98,7 +98,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
 import { loginUser } from '../api';  
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -141,31 +143,27 @@ const Button = styled.button`
 const LoginPage = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    setIsLoading(true);
-    setIsError(false);
-    setError(null);
+  const mutation = useMutation(
+    ({ username, password }) => loginUser(username, password),
+    {
+      onSuccess: (data) => {
+        console.log('Login successful', data);
 
-    try {
-      const data = await loginUser(username, password);
-      console.log('Login successful', data);
+        localStorage.setItem('token', data.access_token);
 
-      // 将access_token存储到localStorage
-      localStorage.setItem('token', data.access_token);
-
-      onLogin();  // 调用传入的 onLogin 回调函数
-      navigate('/home');  // 登录成功后重定向到主页
-    } catch (err) {
-      setIsError(true);
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
+        onLogin();  
+        navigate('/home');  
+      },
+      onError: (error) => {
+        console.error('Login failed', error);
+      },
     }
+  );
+
+  const handleLogin = () => {
+    mutation.mutate({ username, password });
   };
 
   return (
@@ -183,10 +181,10 @@ const LoginPage = ({ onLogin }) => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Button onClick={handleLogin} disabled={isLoading}>
-        {isLoading ? 'Logging in...' : 'Login'}
+      <Button onClick={handleLogin} disabled={mutation.isLoading}>
+        {mutation.isLoading ? 'Logging in...' : 'Login'}
       </Button>
-      {isError && <div>Error: {error}</div>}
+      {mutation.isError && <div>Error: {mutation.error.message}</div>}
     </Container>
   );
 };
