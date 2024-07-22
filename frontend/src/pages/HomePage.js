@@ -164,7 +164,7 @@ const HomePage = () => {
       <ProjectList>
         {data.map((project) => (
           <ProjectItem key={project.id}>
-            <ProjectName>{project.name}</ProjectName> ({project.id})
+            <ProjectName>{project.project_name}</ProjectName> ({project.id})
             <EditButton>Edit</EditButton>
           </ProjectItem>
         ))}
