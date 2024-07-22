@@ -77,14 +77,20 @@ export const loginUser = async (username, password) => {
     return data;
   };
 
-  export const uploadFile = async (file, projectId, type) => {
+
+
+  
+
+  export const uploadFile = async (file, projectId, type, useGCP = false) => {
     const token = localStorage.getItem('token');
     const formData = new FormData();
     formData.append('file', file);
     formData.append('project_id', projectId);
     formData.append('type', type);
   
-    const response = await fetch(`${API_URL}/upload/`, {
+    const url = useGCP ? `${API_URL}/upload/gcp` : `${API_URL}/upload/`;
+  
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
