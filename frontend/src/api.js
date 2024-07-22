@@ -27,9 +27,9 @@ export const loginUser = async (username, password) => {
     const response = await fetch(`${API_URL}/auth/token`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded', // 更改Content-Type为表单数据
+        'Content-Type': 'application/x-www-form-urlencoded', // 更改Content-Type為表單數據
       },
-      body: new URLSearchParams({ username, password }), // 使用URLSearchParams来处理form-data
+      body: new URLSearchParams({ username, password }), // 使用URLSearchParams來處理form-data
     });
   
     if (!response.ok) {
@@ -57,3 +57,23 @@ export const loginUser = async (username, password) => {
     const data = await response.json();
     return data;
   };
+
+  export const createProject = async (projectName) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/projects/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ project_name: projectName }),
+    });
+  
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+  
+    const data = await response.json();
+    return data;
+  };
+  
