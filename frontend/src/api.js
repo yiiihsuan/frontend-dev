@@ -79,7 +79,6 @@ export const loginUser = async (username, password) => {
 
 
 
-  
 
   export const uploadFile = async (file, projectId, type, useGCP = false) => {
     const token = localStorage.getItem('token');
@@ -88,9 +87,7 @@ export const loginUser = async (username, password) => {
     formData.append('project_id', projectId);
     formData.append('type', type);
   
-    const url = useGCP ? `${API_URL}/upload/gcp` : `${API_URL}/upload/`;
-  
-    const response = await fetch(url, {
+    const response = await fetch(`${API_URL}/upload/store_and_backup`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
