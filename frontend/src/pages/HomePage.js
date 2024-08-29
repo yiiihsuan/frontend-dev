@@ -1445,9 +1445,15 @@ const HomePage = () => {
     },
   });
 
+  // const handleCreateProject = () => {
+  //   if (newProjectName.trim()) {
+  //     mutation.mutate(newProjectName);
+  //   }
+  // };
+
   const handleCreateProject = () => {
     if (newProjectName.trim()) {
-      mutation.mutate(newProjectName);
+      mutation.mutate({ project_name: newProjectName });
     }
   };
 
