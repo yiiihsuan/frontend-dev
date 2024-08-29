@@ -1215,6 +1215,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import { FaPlus, FaHome, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import { getUserInfo, fetchProjects } from '../api'; 
@@ -1410,151 +1411,58 @@ const UserAvatar = styled.div`
   color: #333; /* Set icon color */
 `;
 
+
+
 const HomePage = () => {
-
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const handleProjectClick = (projectId) => {
-    navigate(`/project/${projectId}`);
-  };
-
-
-  const [isOpen, setIsOpen] = useState(false);
-  // const [projects, setProjects] = useState([
-  //   {
-  //     id: 1,
-  //     name: 'Project 1',
-  //     tasks: ['deseq2 statics...', 'deseq2 GSEA', '..........']
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Project 2',
-  //     tasks: ['modeling', '........', '..........']
-  //   },
-  // ]);
-
-  const [projects, setProjects] = useState([]);
+  const { data: projects, error, isLoading, isError } = useQuery('projects', fetchProjects);
+  const { data: userInfo } = useQuery('userInfo', getUserInfo);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
-  const [username, setUsername] = useState('Admin'); // Default username is 'Admin'
-  
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     try {
-  //       const data = await getUserInfo();
-  //       setUsername(data.username); 
-  //     } catch (error) {
-  //       console.error('Error fetching user info:', error);
-  //     }
-  //   };
 
-  //   fetchUserInfo();
-  // }, []);
-
-  useEffect(() => {
-    const fetchUserInfoAndProjects = async () => {
-      try {
-        const userInfo = await getUserInfo();
-        setUsername(userInfo.username); 
-
-        const projectsData = await fetchProjects();
-        setProjects(projectsData || []); 
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchUserInfoAndProjects();
-  }, []);
-
-  const handleAddProject = () => {
-    setIsModalOpen(true);
-  };
-
-  // const handleCreateProject = async () => {
-  //   try {
-  //     const newProject = await createProject(newProjectName);
-  //     setProjects([...projects, {
-  //       id: newProject.id, // Assuming the response contains the new project's ID
-  //       name: newProject.project_name, // Assuming the response contains the project name
-  //      // tasks: [], // Initialize with no tasks
-  //     }]);
-  //   } catch (error) {
-  //     console.error('Error creating project:', error);
-  
-  //     // Fallback project if API call fails
-  //     const fallbackProject = {
-  //       id: projects.length + 1, // Generate a new ID based on the existing projects
-  //       name: newProjectName || 'Untitled Project', // Use the entered name or a default one
-  //       tasks: [], // Initialize with no tasks
-  //     };
-  
-  //     setProjects([...projects, fallbackProject]);
-  //   } finally {
-  //     setIsModalOpen(false);
-  //     setNewProjectName('');
-  //   }
-  // };
-
-  const handleCreateProject = async () => {
-    try {
-      const newProjectData = {
-        project_name: newProjectName, 
-      };
-      
-      const response = await createProject(newProjectData); 
-      const newProject = response.project; 
-  
-      setProjects([...projects, newProject]);
-    } catch (error) {
-      console.error('Error creating project:', error);
-  
-      if (error.response && error.response.data) {
-        console.error('Server response:', error.response.data);
-      }
-    } finally {
+  const mutation = useMutation(createProject, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('projects');
       setIsModalOpen(false);
       setNewProjectName('');
+    },
+  });
+
+  const handleCreateProject = () => {
+    if (newProjectName.trim()) {
+      mutation.mutate({ project_name: newProjectName });
     }
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  const handleCloseModal = (e) => {
-    if (e.target.id === 'modalBackground') {
-      setIsModalOpen(false);
-    }
-  };
+  if (isError) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <Layout>
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Sidebar isOpen={false} setIsOpen={() => {}} />
       <MainContent>
         <Title>Projects</Title>
         <ProjectGrid>
-          <AddProjectCard onClick={handleAddProject}>
+          <AddProjectCard onClick={() => setIsModalOpen(true)}>
             <FaPlus />
           </AddProjectCard>
           {projects.map((project) => (
-            // <ProjectCard key={project.id} onClick={() => handleProjectClick(project.id)}>
-            //   <ProjectName>{project.name}</ProjectName>
-            //   {/* <TaskList>
-            //     {project.tasks.map((task, index) => (
-            //       <TaskItem key={index}>
-            //         <TaskCheckbox />
-            //         {task}
-            //       </TaskItem>
-            //     ))}
-            //   </TaskList> */}
-            // </ProjectCard>
-            <ProjectCard key={project.id} onClick={() => handleProjectClick(project.id)}>
-            <ProjectName>{project.project_name}</ProjectName>
-            <p>Project ID: {project.id}</p>
-          </ProjectCard>
+            <ProjectCard key={project.id} onClick={() => navigate(`/project/${project.id}`)}>
+              <ProjectName>{project.project_name}</ProjectName>
+              <p>Project ID: {project.id}</p>
+            </ProjectCard>
           ))}
         </ProjectGrid>
         {isModalOpen && (
-          <Modal id="modalBackground" onClick={handleCloseModal}>
+          <Modal>
             <ModalContent>
               <ModalTitle>Create New Project</ModalTitle>
               <ModalInput
@@ -1572,13 +1480,175 @@ const HomePage = () => {
         )}
       </MainContent>
       <UserProfile>
-  <UserAvatar>
-    <FaUser />
-  </UserAvatar>
-  <span>{username}</span>
-</UserProfile>
+        <UserAvatar>
+          <FaUser />
+        </UserAvatar>
+        <span>{userInfo?.username}</span>
+      </UserProfile>
     </Layout>
   );
 };
 
 export default HomePage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const HomePage = () => {
+
+//   const navigate = useNavigate();
+
+//   const handleProjectClick = (projectId) => {
+//     navigate(`/project/${projectId}`);
+//   };
+
+
+//   const [isOpen, setIsOpen] = useState(false);
+
+//   const [projects, setProjects] = useState([]);
+
+//   const [isModalOpen, setIsModalOpen] = useState(false);
+//   const [newProjectName, setNewProjectName] = useState('');
+//   const [username, setUsername] = useState('Admin'); // Default username is 'Admin'
+  
+
+//   useEffect(() => {
+//     const fetchUserInfoAndProjects = async () => {
+//       try {
+//         const userInfo = await getUserInfo();
+//         setUsername(userInfo.username); 
+
+//         const projectsData = await fetchProjects();
+//         setProjects(projectsData || []); 
+//       } catch (error) {
+//         console.error('Error fetching data:', error);
+//       }
+//     };
+
+//     fetchUserInfoAndProjects();
+//   }, []);
+
+//   const handleAddProject = () => {
+//     setIsModalOpen(true);
+//   };
+
+//   // const handleCreateProject = async () => {
+//   //   try {
+//   //     const newProject = await createProject(newProjectName);
+//   //     setProjects([...projects, {
+//   //       id: newProject.id, // Assuming the response contains the new project's ID
+//   //       name: newProject.project_name, // Assuming the response contains the project name
+//   //      // tasks: [], // Initialize with no tasks
+//   //     }]);
+//   //   } catch (error) {
+//   //     console.error('Error creating project:', error);
+  
+//   //     // Fallback project if API call fails
+//   //     const fallbackProject = {
+//   //       id: projects.length + 1, // Generate a new ID based on the existing projects
+//   //       name: newProjectName || 'Untitled Project', // Use the entered name or a default one
+//   //       tasks: [], // Initialize with no tasks
+//   //     };
+  
+//   //     setProjects([...projects, fallbackProject]);
+//   //   } finally {
+//   //     setIsModalOpen(false);
+//   //     setNewProjectName('');
+//   //   }
+//   // };
+
+//   const handleCreateProject = async () => {
+//     try {
+//       const newProjectData = {
+//         project_name: newProjectName, 
+//       };
+      
+//       const response = await createProject(newProjectData); 
+//       const newProject = response.project; 
+  
+//       setProjects([...projects, newProject]);
+//     } catch (error) {
+//       console.error('Error creating project:', error);
+  
+//       if (error.response && error.response.data) {
+//         console.error('Server response:', error.response.data);
+//       }
+//     } finally {
+//       setIsModalOpen(false);
+//       setNewProjectName('');
+//     }
+//   };
+
+
+//   const handleCloseModal = (e) => {
+//     if (e.target.id === 'modalBackground') {
+//       setIsModalOpen(false);
+//     }
+//   };
+
+//   return (
+//     <Layout>
+//       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+//       <MainContent>
+//         <Title>Projects</Title>
+//         <ProjectGrid>
+//           <AddProjectCard onClick={handleAddProject}>
+//             <FaPlus />
+//           </AddProjectCard>
+//           {projects.map((project) => (
+//             // <ProjectCard key={project.id} onClick={() => handleProjectClick(project.id)}>
+//             //   <ProjectName>{project.name}</ProjectName>
+//             //   {/* <TaskList>
+//             //     {project.tasks.map((task, index) => (
+//             //       <TaskItem key={index}>
+//             //         <TaskCheckbox />
+//             //         {task}
+//             //       </TaskItem>
+//             //     ))}
+//             //   </TaskList> */}
+//             // </ProjectCard>
+//             <ProjectCard key={project.id} onClick={() => handleProjectClick(project.id)}>
+//             <ProjectName>{project.project_name}</ProjectName>
+//             <p>Project ID: {project.id}</p>
+//           </ProjectCard>
+//           ))}
+//         </ProjectGrid>
+//         {isModalOpen && (
+//           <Modal id="modalBackground" onClick={handleCloseModal}>
+//             <ModalContent>
+//               <ModalTitle>Create New Project</ModalTitle>
+//               <ModalInput
+//                 type="text"
+//                 placeholder="Project Name"
+//                 value={newProjectName}
+//                 onChange={(e) => setNewProjectName(e.target.value)}
+//               />
+//               <ButtonGroup>
+//                 <ModalButton onClick={handleCreateProject}>Create</ModalButton>
+//                 <ModalButton onClick={() => setIsModalOpen(false)}>Cancel</ModalButton>
+//               </ButtonGroup>
+//             </ModalContent>
+//           </Modal>
+//         )}
+//       </MainContent>
+//       <UserProfile>
+//   <UserAvatar>
+//     <FaUser />
+//   </UserAvatar>
+//   <span>{username}</span>
+// </UserProfile>
+//     </Layout>
+//   );
+// };
+
+// export default HomePage;
