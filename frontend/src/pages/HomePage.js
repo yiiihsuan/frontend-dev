@@ -1459,7 +1459,7 @@ const HomePage = () => {
         setUsername(userInfo.username); 
 
         const projectsData = await getProjects();
-        setProjects(projectsData);
+        setProjects(projectsData || []); 
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -1472,30 +1472,47 @@ const HomePage = () => {
     setIsModalOpen(true);
   };
 
+  // const handleCreateProject = async () => {
+  //   try {
+  //     const newProject = await createProject(newProjectName);
+  //     setProjects([...projects, {
+  //       id: newProject.id, // Assuming the response contains the new project's ID
+  //       name: newProject.project_name, // Assuming the response contains the project name
+  //      // tasks: [], // Initialize with no tasks
+  //     }]);
+  //   } catch (error) {
+  //     console.error('Error creating project:', error);
+  
+  //     // Fallback project if API call fails
+  //     const fallbackProject = {
+  //       id: projects.length + 1, // Generate a new ID based on the existing projects
+  //       name: newProjectName || 'Untitled Project', // Use the entered name or a default one
+  //       tasks: [], // Initialize with no tasks
+  //     };
+  
+  //     setProjects([...projects, fallbackProject]);
+  //   } finally {
+  //     setIsModalOpen(false);
+  //     setNewProjectName('');
+  //   }
+  // };
+
   const handleCreateProject = async () => {
     try {
-      const newProject = await createProject(newProjectName);
-      setProjects([...projects, {
-        id: newProject.id, // Assuming the response contains the new project's ID
-        name: newProject.project_name, // Assuming the response contains the project name
-        tasks: [], // Initialize with no tasks
-      }]);
+      const newProjectData = {
+        project_name: newProjectName,
+      };
+      const response = await createProject(newProjectData); 
+      const newProject = response.project;
+      setProjects([...projects, newProject]);
     } catch (error) {
       console.error('Error creating project:', error);
-  
-      // Fallback project if API call fails
-      const fallbackProject = {
-        id: projects.length + 1, // Generate a new ID based on the existing projects
-        name: newProjectName || 'Untitled Project', // Use the entered name or a default one
-        tasks: [], // Initialize with no tasks
-      };
-  
-      setProjects([...projects, fallbackProject]);
     } finally {
       setIsModalOpen(false);
       setNewProjectName('');
     }
   };
+
 
   const handleCloseModal = (e) => {
     if (e.target.id === 'modalBackground') {
@@ -1513,17 +1530,21 @@ const HomePage = () => {
             <FaPlus />
           </AddProjectCard>
           {projects.map((project) => (
+            // <ProjectCard key={project.id} onClick={() => handleProjectClick(project.id)}>
+            //   <ProjectName>{project.name}</ProjectName>
+            //   {/* <TaskList>
+            //     {project.tasks.map((task, index) => (
+            //       <TaskItem key={index}>
+            //         <TaskCheckbox />
+            //         {task}
+            //       </TaskItem>
+            //     ))}
+            //   </TaskList> */}
+            // </ProjectCard>
             <ProjectCard key={project.id} onClick={() => handleProjectClick(project.id)}>
-              <ProjectName>{project.name}</ProjectName>
-              <TaskList>
-                {project.tasks.map((task, index) => (
-                  <TaskItem key={index}>
-                    <TaskCheckbox />
-                    {task}
-                  </TaskItem>
-                ))}
-              </TaskList>
-            </ProjectCard>
+            <ProjectName>{project.project_name}</ProjectName>
+            <p>Project ID: {project.id}</p>
+          </ProjectCard>
           ))}
         </ProjectGrid>
         {isModalOpen && (
