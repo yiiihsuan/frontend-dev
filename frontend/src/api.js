@@ -139,7 +139,6 @@ export const loginUser = async (username, password) => {
   // DESeq2 API 
   export const submitDeseq2 = async (projectId, params) => {
     const token = localStorage.getItem('token');
-    //const projectId = localStorage.getItem('projectId');
     
     try {
       const response = await fetch(`${API_URL}/deseq/${projectId}`, {
@@ -185,8 +184,8 @@ export const loginUser = async (username, password) => {
 //   });
 // };
 
-// DESeq2GSEA API 
-export const submitDeseqGSEA = async (params) => {
+// DESeq2 API 
+export const submitDeseqGSEA = async (projectId, params) => {
   const token = localStorage.getItem('token');
 
   try {
@@ -211,7 +210,6 @@ export const submitDeseqGSEA = async (params) => {
     return mockResponse; 
   }
 };
-
 
 const mockResponse = {
   "kegg_dotplot.png": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/gsea/deseq/kegg_dotplot.png",
