@@ -139,6 +139,7 @@ export const loginUser = async (username, password) => {
   // DESeq2 API 
   export const submitDeseq2 = async (projectId, params) => {
     const token = localStorage.getItem('token');
+    const projectId = localStorage.getItem('projectId');
     
     try {
       const response = await fetch(`${API_URL}/deseq/${projectId}`, {
@@ -174,14 +175,42 @@ export const loginUser = async (username, password) => {
   // };
 
 //submitDeseqGSEA
-export const submitDeseqGSEA= async (projectId, params) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      console.log("Submitting DESeq2 analysis with params:", params);
-      // 返回假的响应数据
-      resolve(mockResponse);
-    }, 2000); 
-  });
+// export const submitDeseqGSEA= async (projectId, params) => {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       console.log("Submitting DESeq2 analysis with params:", params);
+//       // 返回假的响应数据
+//       resolve(mockResponse);
+//     }, 2000); 
+//   });
+// };
+
+// DESeq2GSEA API 
+export const submitDeseqGSEA = async (params) => {
+  const token = localStorage.getItem('token');
+  const projectId = localStorage.getItem('projectId');
+
+  try {
+    const response = await fetch(`${API_URL}/deseq/${projectId}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',  
+      },
+      body: JSON.stringify(params),
+    });
+
+    if (!response.ok) {
+      console.error('API request not successful, returning mock response');
+      return mockResponse; 
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error.message);
+    return mockResponse; 
+  }
 };
 
 
