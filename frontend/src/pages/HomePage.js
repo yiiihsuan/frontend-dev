@@ -1217,7 +1217,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaPlus, FaHome, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
-import { getUserInfo, getProjects } from '../api'; 
+import { getUserInfo, fetchProjects } from '../api'; 
 import { createProject } from '../api';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/SideBar'; 
@@ -1458,7 +1458,7 @@ const HomePage = () => {
         const userInfo = await getUserInfo();
         setUsername(userInfo.username); 
 
-        const projectsData = await getProjects();
+        const projectsData = await fetchProjects();
         setProjects(projectsData || []); 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -1500,13 +1500,19 @@ const HomePage = () => {
   const handleCreateProject = async () => {
     try {
       const newProjectData = {
-        project_name: newProjectName,
+        project_name: newProjectName, 
       };
+      
       const response = await createProject(newProjectData); 
-      const newProject = response.project;
+      const newProject = response.project; 
+  
       setProjects([...projects, newProject]);
     } catch (error) {
       console.error('Error creating project:', error);
+  
+      if (error.response && error.response.data) {
+        console.error('Server response:', error.response.data);
+      }
     } finally {
       setIsModalOpen(false);
       setNewProjectName('');
