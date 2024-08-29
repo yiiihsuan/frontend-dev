@@ -21,6 +21,11 @@ function App() {
             <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <LoginPage onLogin={handleLogin} />} />
             <Route path="/home" element={isLoggedIn ? <HomePage /> : <Navigate to="/" />} />
             <Route path="/project/:projectId" element={isLoggedIn ? <ProjectPage /> : <Navigate to="/" />} />
+            
+            
+            {/* <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/project/:projectId" element={<ProjectPage />} /> */}
         </Routes>
       </div>
     </Router>
