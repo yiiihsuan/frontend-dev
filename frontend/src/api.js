@@ -124,6 +124,16 @@ export const loginUser = async (username, password) => {
     return data;
   };
 
+  export const getProjects = async () => {
+    const token = localStorage.getItem('token'); 
+    const response = await fetch('/projects/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  };
+
 
   // DESeq2 API 
   export const submitDeseq2 = async (projectId, params) => {

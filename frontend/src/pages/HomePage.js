@@ -1217,7 +1217,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaPlus, FaHome, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
-import { getUserInfo } from '../api'; 
+import { getUserInfo, getProjects } from '../api'; 
 import { createProject } from '../api';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/SideBar'; 
@@ -1420,34 +1420,52 @@ const HomePage = () => {
 
 
   const [isOpen, setIsOpen] = useState(false);
-  const [projects, setProjects] = useState([
-    {
-      id: 1,
-      name: 'Project 1',
-      tasks: ['deseq2 statics...', 'deseq2 GSEA', '..........']
-    },
-    {
-      id: 2,
-      name: 'Project 2',
-      tasks: ['modeling', '........', '..........']
-    },
-  ]);
+  // const [projects, setProjects] = useState([
+  //   {
+  //     id: 1,
+  //     name: 'Project 1',
+  //     tasks: ['deseq2 statics...', 'deseq2 GSEA', '..........']
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Project 2',
+  //     tasks: ['modeling', '........', '..........']
+  //   },
+  // ]);
+
+  const [projects, setProjects] = useState([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
   const [username, setUsername] = useState('Admin'); // Default username is 'Admin'
+  
+  // useEffect(() => {
+  //   const fetchUserInfo = async () => {
+  //     try {
+  //       const data = await getUserInfo();
+  //       setUsername(data.username); 
+  //     } catch (error) {
+  //       console.error('Error fetching user info:', error);
+  //     }
+  //   };
+
+  //   fetchUserInfo();
+  // }, []);
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
+    const fetchUserInfoAndProjects = async () => {
       try {
-        const data = await getUserInfo();
-        setUsername(data.username); 
+        const userInfo = await getUserInfo();
+        setUsername(userInfo.username); 
+
+        const projectsData = await getProjects();
+        setProjects(projectsData);
       } catch (error) {
-        console.error('Error fetching user info:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchUserInfo();
+    fetchUserInfoAndProjects();
   }, []);
 
   const handleAddProject = () => {
@@ -1488,28 +1506,6 @@ const HomePage = () => {
   return (
     <Layout>
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-      {/* <Sidebar
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
-        isOpen={isOpen}
-      >
-        <SidebarItem to="/" isOpen={isOpen}>
-          <FaHome />
-          <span>Home</span>
-        </SidebarItem>
-        <SidebarItem to="/profile" isOpen={isOpen}>
-          <FaUser />
-          <span>Profile</span>
-        </SidebarItem>
-        <SidebarItem to="/settings" isOpen={isOpen}>
-          <FaCog />
-          <span>Settings</span>
-        </SidebarItem>
-        <SidebarItem to="/logout" isOpen={isOpen}>
-          <FaSignOutAlt />
-          <span>Logout</span>
-        </SidebarItem>
-      </Sidebar> */}
       <MainContent>
         <Title>Projects</Title>
         <ProjectGrid>
