@@ -184,9 +184,13 @@ export const loginUser = async (username, password) => {
 //   });
 // };
 
-// DESeq2 API 
+// DESeq2GSEA API 
 export const submitDeseqGSEA = async (projectId, params) => {
   const token = localStorage.getItem('token');
+
+  const requestBody = JSON.stringify(params);
+  console.log('Sending request with body:', requestBody);
+
 
   try {
     const response = await fetch(`${API_URL}/gsea/${projectId}/deseq`, {
@@ -195,7 +199,8 @@ export const submitDeseqGSEA = async (projectId, params) => {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',  
       },
-      body: JSON.stringify(params),
+      //body: JSON.stringify(params),
+      body: requestBody,
     });
 
     if (!response.ok) {
