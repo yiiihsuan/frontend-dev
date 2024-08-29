@@ -139,7 +139,7 @@ export const loginUser = async (username, password) => {
   // DESeq2 API 
   export const submitDeseq2 = async (projectId, params) => {
     const token = localStorage.getItem('token');
-    const projectId = localStorage.getItem('projectId');
+    //const projectId = localStorage.getItem('projectId');
     
     try {
       const response = await fetch(`${API_URL}/deseq/${projectId}`, {
@@ -188,7 +188,6 @@ export const loginUser = async (username, password) => {
 // DESeq2GSEA API 
 export const submitDeseqGSEA = async (params) => {
   const token = localStorage.getItem('token');
-  const projectId = localStorage.getItem('projectId');
 
   try {
     const response = await fetch(`${API_URL}/deseq/${projectId}`, {
