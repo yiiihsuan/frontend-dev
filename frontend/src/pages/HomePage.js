@@ -1423,7 +1423,21 @@ const HomePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
 
-  const mutation = useMutation(createProject, {
+  // const mutation = useMutation(createProject, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries('projects');
+  //     setIsModalOpen(false);
+  //     setNewProjectName('');
+  //   },
+  // });
+
+  // const handleCreateProject = () => {
+  //   if (newProjectName.trim()) {
+  //     mutation.mutate({ project_name: newProjectName });
+  //   }
+  // };
+
+  const mutation = useMutation((projectName) => createProject({ project_name: projectName }), {
     onSuccess: () => {
       queryClient.invalidateQueries('projects');
       setIsModalOpen(false);
@@ -1433,7 +1447,7 @@ const HomePage = () => {
 
   const handleCreateProject = () => {
     if (newProjectName.trim()) {
-      mutation.mutate({ project_name: newProjectName });
+      mutation.mutate(newProjectName);
     }
   };
 
