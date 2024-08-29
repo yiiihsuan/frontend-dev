@@ -189,7 +189,7 @@ export const submitDeseqGSEA = async (projectId, params) => {
   const token = localStorage.getItem('token');
 
   try {
-    const response = await fetch(`${API_URL}/deseq/${projectId}`, {
+    const response = await fetch(`${API_URL}/gsea/${projectId}/deseq`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
