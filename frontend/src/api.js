@@ -70,7 +70,8 @@ export const loginUser = async (username, password) => {
     });
   
     if (!response.ok) {
-      throw new Error('Network response was not ok'+ errorResponse);
+      const errorResponse = await response.text();
+      throw new Error('Network response was not ok. Details: ' + errorResponse);
     }
   
     const data = await response.json();
