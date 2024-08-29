@@ -95,13 +95,30 @@ const GenericAnalysis = ({ title, config = {}, apiFunction, onResult }) => {
     }
   });
 
-  const handleSubmit = () => {
+//   const handleSubmit = () => {
+//     const params = items.reduce((acc, item, index) => {
+//       acc[item] = inputValues[index];
+//       return acc;
+//     }, {});
+//     submitAnalysis(params);
+//   };
+
+const handleSubmit = () => {
     const params = items.reduce((acc, item, index) => {
-      acc[item] = inputValues[index];
+      // 檢查是否當前字段是 gene_sets_db
+      if (item === "gene_sets_db") {
+        // 使用逗號分割字符串成為數組
+        acc[item] = inputValues[index].split(",").map(s => s.trim());  // 去除多餘空格
+      } else {
+        acc[item] = inputValues[index];
+      }
       return acc;
     }, {});
+  
+    console.log("Submitting with parameters:", params); 
     submitAnalysis(params);
   };
+  
 
   const toggleDropdown = () => {
     if (!submitted) {
