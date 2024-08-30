@@ -64,6 +64,99 @@
 // export default GenericAnalysis;
 
 
+
+// 目前的是送出api之後他會在原地等待 然後等response完成後才說submittted跟折疊
+// import React, { useState } from 'react';
+// import Dropdown from './ParameterSection';
+// import { useMutation } from 'react-query';
+// import { FaCheckCircle } from 'react-icons/fa';
+
+// const GenericAnalysis = ({ title, config = {}, apiFunction, onResult }) => {
+//   const { items = [], defaultValues = {} } = config;
+//   const [openDropdown, setOpenDropdown] = useState(false);
+//   const [checked, setChecked] = useState(false);
+//   const [submitResult, setSubmitResult] = useState(null);
+//   const [submitted, setSubmitted] = useState(false);
+  
+
+//   const [inputValues, setInputValues] = useState(
+//     items.map(item => defaultValues[item] || '')
+//   );
+
+//   const { mutate: submitAnalysis } = useMutation(apiFunction, {
+//     onSuccess: (data) => {
+//       console.log(`${title} analysis completed:`, data);
+//       setSubmitResult("Success! Analysis has been submitted.");
+//       setSubmitted(true);
+//       setOpenDropdown(false);
+//       onResult && onResult(data);
+//     },
+//     onError: (error) => {
+//       console.error('Error:', error);
+//       setSubmitResult("Failed to submit analysis.");
+//     }
+//   });
+
+// //   const handleSubmit = () => {
+// //     const params = items.reduce((acc, item, index) => {
+// //       acc[item] = inputValues[index];
+// //       return acc;
+// //     }, {});
+// //     submitAnalysis(params);
+// //   };
+
+// const handleSubmit = () => {
+//     const params = items.reduce((acc, item, index) => {
+//       // 檢查是否當前字段是 gene_sets_db
+//       if (item === "gene_sets_db") {
+//         // 使用逗號分割字符串成為數組
+//         acc[item] = inputValues[index].split(",").map(s => s.trim());  // 去除多餘空格
+//       } else {
+//         acc[item] = inputValues[index];
+//       }
+//       return acc;
+//     }, {});
+  
+//     console.log("Submitting with parameters:", params); 
+//     submitAnalysis(params);
+//   };
+  
+
+//   const toggleDropdown = () => {
+//     if (!submitted) {
+//       setOpenDropdown(!openDropdown);
+//     }
+//   };
+
+//   const handleInputChange = (index, value) => {
+//     const updatedInputValues = [...inputValues];
+//     updatedInputValues[index] = value;
+//     setInputValues(updatedInputValues);
+//   };
+
+//   return (
+//     <div>
+//       <Dropdown
+//         title={submitted ? <><FaCheckCircle style={{ color: 'green', marginRight: '5px' }} /> {title} - Submitted</> : title}
+//         items={items}
+//         inputValues={inputValues}
+//         isOpen={openDropdown}
+//         onToggle={toggleDropdown}
+//         checked={checked}
+//         onCheckChange={() => setChecked(!checked)}
+//         onInputChange={handleInputChange}
+//         onSubmit={handleSubmit}
+//       />
+//       {submitResult && <div>{submitResult}</div>}
+//     </div>
+//   );
+// };
+
+// export default GenericAnalysis;
+
+
+
+//這個是先submit之後 等response ok 在顯示完成分析
 import React, { useState } from 'react';
 import Dropdown from './ParameterSection';
 import { useMutation } from 'react-query';
@@ -75,7 +168,6 @@ const GenericAnalysis = ({ title, config = {}, apiFunction, onResult }) => {
   const [checked, setChecked] = useState(false);
   const [submitResult, setSubmitResult] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-  
 
   const [inputValues, setInputValues] = useState(
     items.map(item => defaultValues[item] || '')
@@ -84,41 +176,32 @@ const GenericAnalysis = ({ title, config = {}, apiFunction, onResult }) => {
   const { mutate: submitAnalysis } = useMutation(apiFunction, {
     onSuccess: (data) => {
       console.log(`${title} analysis completed:`, data);
-      setSubmitResult("Success! Analysis has been submitted.");
+      setSubmitResult("Analysis completed successfully.");
       setSubmitted(true);
-      setOpenDropdown(false);
+      setOpenDropdown(false); // Collapse dropdown after submission
       onResult && onResult(data);
     },
     onError: (error) => {
       console.error('Error:', error);
       setSubmitResult("Failed to submit analysis.");
+      setSubmitted(true); // Mark as submitted even if it fails
     }
   });
 
-//   const handleSubmit = () => {
-//     const params = items.reduce((acc, item, index) => {
-//       acc[item] = inputValues[index];
-//       return acc;
-//     }, {});
-//     submitAnalysis(params);
-//   };
-
-const handleSubmit = () => {
+  const handleSubmit = () => {
     const params = items.reduce((acc, item, index) => {
-      // 檢查是否當前字段是 gene_sets_db
       if (item === "gene_sets_db") {
-        // 使用逗號分割字符串成為數組
-        acc[item] = inputValues[index].split(",").map(s => s.trim());  // 去除多餘空格
+        acc[item] = inputValues[index].split(",").map(s => s.trim());
       } else {
         acc[item] = inputValues[index];
       }
       return acc;
     }, {});
-  
-    console.log("Submitting with parameters:", params); 
+
+    console.log("Submitting with parameters:", params);
+    setSubmitted(true); // Mark as submitted before API call
     submitAnalysis(params);
   };
-  
 
   const toggleDropdown = () => {
     if (!submitted) {
@@ -135,7 +218,9 @@ const handleSubmit = () => {
   return (
     <div>
       <Dropdown
-        title={submitted ? <><FaCheckCircle style={{ color: 'green', marginRight: '5px' }} /> {title} - Submitted</> : title}
+        title={submitted 
+          ? <><FaCheckCircle style={{ color: 'green', marginRight: '5px' }} /> {title} - Submitted</> 
+          : title}
         items={items}
         inputValues={inputValues}
         isOpen={openDropdown}
@@ -151,3 +236,4 @@ const handleSubmit = () => {
 };
 
 export default GenericAnalysis;
+
