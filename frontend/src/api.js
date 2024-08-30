@@ -94,6 +94,7 @@ export const loginUser = async (username, password) => {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
+         'Content-Type': 'multipart/form-data'
       },
       body: formData,
     });
