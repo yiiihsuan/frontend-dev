@@ -1437,6 +1437,11 @@ const HomePage = () => {
     mutation.mutate(newProjectName);
   };
 
+  const handleProjectClick = (projectId) => {
+    localStorage.setItem('projectId', projectId); 
+    navigate(`/project/${projectId}`); 
+  };
+
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -1456,7 +1461,8 @@ const HomePage = () => {
             <FaPlus />
           </AddProjectCard>
           {projects.map((project) => (
-            <ProjectCard key={project.id} onClick={() => navigate(`/project/${project.id}`)}>
+            // <ProjectCard key={project.id} onClick={() => navigate(`/project/${project.id}`)}>
+            <ProjectCard key={project.id} onClick={() => handleProjectClick(project.id)}>
               <ProjectName>{project.project_name}</ProjectName>
               <p>Project ID: {project.id}</p>
             </ProjectCard>
