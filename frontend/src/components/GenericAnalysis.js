@@ -249,6 +249,8 @@ const GenericAnalysis = ({ title, config = {}, apiFunction, onResult }) => {
   const [checked, setChecked] = useState(false);
   const [submitResult, setSubmitResult] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false); // New state for showing analyzing text
+
 
   const [inputValues, setInputValues] = useState(
     items.map(item => defaultValues[item] || '')
@@ -260,18 +262,22 @@ const GenericAnalysis = ({ title, config = {}, apiFunction, onResult }) => {
       setSubmitResult("Analysis completed successfully.");
       setSubmitted(true);
       // No need to fold the dropdown here, it's already done
+      setIsAnalyzing(false); // End analyzing state
       onResult && onResult(data);
     },
     onError: (error) => {
       console.error('Error:', error);
       setSubmitResult("Failed to submit analysis.");
       setSubmitted(true);
+      setIsAnalyzing(false);
     }
   });
 
   const handleSubmit = () => {
     // Immediately fold the dropdown
     setOpenDropdown(false);
+      // Show analyzing text
+      setIsAnalyzing(true);
     
     // Prepare parameters
     const params = items.reduce((acc, item, index) => {
@@ -314,7 +320,8 @@ const GenericAnalysis = ({ title, config = {}, apiFunction, onResult }) => {
         onInputChange={handleInputChange}
         onSubmit={handleSubmit}
       />
-      {submitResult && <div>{submitResult}</div>}
+          {isAnalyzing && <div>Analyzing...</div>} {/* Display analyzing message */}
+          {submitResult && <div>{submitResult}</div>}
     </div>
   );
 };
