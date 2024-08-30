@@ -603,6 +603,8 @@ const ProjectPage = () => {
         <UploadButton  onClick={() => handleUpload(heartFile, 'heart')}>Upload</UploadButton >
         {/* <button onClick={() => handleUpload(heartFile, 'heart', true)}>Upload to GCP</button> */}
       </UploadSection>
+
+      
       {/* <SectionTitle>Deseq2</SectionTitle>
       <GridContainer>
           {dropdownData.map((dropdown, index) => (

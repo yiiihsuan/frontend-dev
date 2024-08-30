@@ -87,6 +87,8 @@ export const loginUser = async (username, password) => {
     formData.append('file', file);
     //formData.append('project_id', projectId);
     formData.append('ftype', type);
+
+    console.log('Uploading', { file: file.name, projectId, type });
   
     const response = await fetch(`${API_URL}/upload/store_and_backup?project_id=${projectId}`, {
       method: 'POST',
