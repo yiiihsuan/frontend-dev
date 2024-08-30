@@ -81,14 +81,14 @@ export const loginUser = async (username, password) => {
 
 
 
-  export const uploadFile = async (file, projectId, type, useGCP = false) => {
+  export const uploadFile = async (file, projectId, type) => {
     const token = localStorage.getItem('token');
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('project_id', projectId);
-    formData.append('type', type);
+    //formData.append('project_id', projectId);
+    formData.append('ftype', type);
   
-    const response = await fetch(`${API_URL}/upload/store_and_backup`, {
+    const response = await fetch(`${API_URL}/upload/store_and_backup?project_id=${projectId}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,

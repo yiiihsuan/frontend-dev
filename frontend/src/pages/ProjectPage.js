@@ -524,8 +524,17 @@ const ProjectPage = () => {
     setter(event.target.files[0]);
   };
 
-  const handleUpload = (file, type, useGCP = false) => {
-    mutation.mutate({ file, projectId, type, useGCP });
+  // const handleUpload = (file, type) => {
+  //   mutation.mutate({ file, projectId, type });
+  // };
+
+  const handleUpload = (file, type) => {
+    const projectId = localStorage.getItem('projectId'); 
+    mutation.mutate({
+      file: file,
+      projectId: projectId,
+      type: type
+    });
   };
 
   const handleDragOver = (e) => {
