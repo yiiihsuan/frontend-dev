@@ -520,13 +520,41 @@ const ProjectPage = () => {
     },
   });
 
+  // const handleFileChange = (setter) => (event) => {
+  //   setter(event.target.files[0]);
+  // };
+
   const handleFileChange = (setter) => (event) => {
-    setter(event.target.files[0]);
+    const file = event.target.files[0];
+    console.log("File selected:", file); // 確認文件是否正確選擇
+    setter(file);
   };
 
   const handleUpload = (file, type) => {
-    mutation.mutate({ file, projectId, type });
+    const projectId = localStorage.getItem('projectId'); 
+    console.log("Project ID:", projectId); // 用於確認 projectId 是否取出正確
+  
+    if (!projectId) {
+      console.error("Project ID is not set");
+      alert("Project ID is not set. Please check your configuration.");
+      return;
+    }
+    if (!file) {
+      console.error("No file selected");
+      alert("No file selected. Please select a file before uploading.");
+      return;
+    }
+    mutation.mutate({
+      file: file,
+      projectId: projectId,
+      type: type
+    });
   };
+  
+
+  // const handleUpload = (file, type) => {
+  //   mutation.mutate({ file, projectId, type });
+  // };
 
   // const handleUpload = (file, type) => {
   //   const projectId = localStorage.getItem('projectId'); 
