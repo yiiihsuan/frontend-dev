@@ -532,9 +532,7 @@ const ProjectPage = () => {
 
   const handleUpload = (file, type) => {
     const projectId = localStorage.getItem('projectId'); 
-    console.log("Project ID:", projectId); // 用於確認 projectId 是否取出正確
-    console.log("File:", file);
-    console.log("Type:", type); 
+    console.log('Handle upload parameters:', { file, type, projectId });
 
     if (!projectId) {
       console.error("Project ID is not set");

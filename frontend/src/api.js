@@ -81,7 +81,7 @@ export const loginUser = async (username, password) => {
 
 
 
-  export const uploadFile = async (file, projectId, type) => {
+  export const uploadFile = async ({ file, projectId, type }) => {
     const token = localStorage.getItem('token');
     const formData = new FormData();
     formData.append('file', file);
