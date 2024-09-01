@@ -262,9 +262,10 @@ import PreprocessResult from '../components/PreprocessResult';
 import ResultModal from '../components/ResultModal';
 
 import GenericAnalysis from '../components/GenericAnalysis';
-import { submitDeseq2, submitDeseqGSEA } from '../api';  // 引入 API 函数
+import { submitDeseq2, submitDeseqGSEA ,submitDeseqStats} from '../api';  // 引入 API 函数
 import { analysisConfigs } from '../config/analysisConfigs';
 import DeseqGSEA from '../components/Deseq2/DeseqGSEA.js';
+import DeseqStats from '../components/Deseq2/DeseqStats.js';
 
 
 const Layout = styled.div`
@@ -491,6 +492,9 @@ const ProjectPage = () => {
   const [deseq2GSEAResult, setDeseq2GSEAResult] = useState(null);
   const [reactomeResult, setReactomeResult] = useState(null);
   const [showResults, setShowResults] = useState(false);
+  const [deseq2Statistics, setDeseq2Statistics] = useState(null);
+
+  
 
 
   
@@ -731,14 +735,24 @@ const ProjectPage = () => {
           />
          </Deseq2Item>
 
-          <Deseq2StaticsItem>
+          {/* <Deseq2StaticsItem>
           <GenericAnalysis
             title="Deseq2 Statistics"
             //config={analysisConfigs.deseq2Statistics}
             //apiFunction={(params) => submitDeseqStatistics(projectId, params)}
             //onResult={setDeseq2Statistics}
           />
-          </Deseq2StaticsItem>
+          </Deseq2StaticsItem> */}
+
+
+<Deseq2StaticsItem>
+  <GenericAnalysis
+    title="Deseq2 Statistics"
+    //apiFunction={submitDeseqStats} // 直接传递函数，不需要参数
+    apiFunction={() => submitDeseqStats(projectId)}
+    onResult={setDeseq2Statistics} 
+  />
+</Deseq2StaticsItem>
 
           <Deseq2GSEAItem>
           <GenericAnalysis
@@ -771,6 +785,12 @@ const ProjectPage = () => {
           {showResults && deseq2GSEAResult && (
             <DeseqGSEA resultData={deseq2GSEAResult} />
           )}
+
+{showResults && deseq2Statistics && (
+          <DeseqStats resultData={deseq2Statistics} /> 
+        )}
+
+
         </div>
 
 

@@ -224,7 +224,73 @@ const mockResponse = {
   "kegg_2021_human_dotplot.png": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/gsea/deseq/kegg_2021_human_dotplot.png",
   "kegg_2021_human_barplot.png": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/gsea/deseq/kegg_2021_human_barplot.png"
 };
+
+
+
+// DESeq2Stats API
+export const submitDeseqStats = async (projectId) => {
+  const token = localStorage.getItem('token');
   
+  try {
+    // Send POST request to start the stats calculation
+    const postResponse = await fetch(`${API_URL}/deseq/${projectId}/stats/`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      credentials: 'include'
+    });
+
+    if (!postResponse.ok) {
+      console.error('API request not successful during POST, returning mock response');
+      return mockResponse; 
+    }
+
+    const jsonResponse = await postResponse.json();
+    const fileUrl = jsonResponse.result._url;
+    
+    // Fetch the CSV data using the URL provided in the response
+    const getResponse = await fetch(fileUrl, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      },
+      credentials: 'include'
+    });
+
+    if (!getResponse.ok) {
+      throw new Error(`HTTP error during GET! Status: ${getResponse.status}`);
+    }
+
+    const csvData = await getResponse.text();
+    
+    // Return the raw CSV data or parsed data as needed
+    return csvData;
+    
+  } catch (error) {
+    console.error('Error:', error.message);
+    return mockgResponse; 
+  }
+};
+
+
+
+const mockstatsResponse = {
+  "result": {
+    "_url": "http://35.206.195.197:8000/deseq/669dbe9907b7c62caa476c92/stats/file/"
+  }
+}
+  
+
+// Mock response for demonstration purposes
+const mockgResponse = [
+  { "gene": "Gene1", "value": 10 },
+  { "gene": "Gene2", "value": 20 }
+];
+
   
 
 // export const runDeseq = (projectId, params) => {
@@ -240,5 +306,40 @@ export const fetchPlotData = async (projectId, plotType, params) => {
     },
   });
   return response.data;
+};
+
+
+// Reactome API
+export const submitReactome = async (projectId, params) => {
+  const token = localStorage.getItem('token');
+  const requestBody = JSON.stringify(params);
+  console.log('Sending request with body:', requestBody);
+
+  try {
+    const response = await fetch(`${API_URL}/deseq/${projectId}/reactome/`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: requestBody,
+    });
+
+    if (!response.ok) {
+      console.error('API request not successful, returning mock response');
+      return mockReactomeResponse; 
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error.message);
+    return mockReactomeResponse; 
+  }
+};
+
+// Mock response for demonstration purposes
+const mockReactomeResponse = {
+  task_id: "1d93152c-8a13-4c41-85db-303d9709c5f2", 
 };
   
