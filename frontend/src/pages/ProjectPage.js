@@ -262,11 +262,14 @@ import PreprocessResult from '../components/PreprocessResult';
 import ResultModal from '../components/ResultModal';
 
 import GenericAnalysis from '../components/GenericAnalysis';
-import { submitDeseq2, submitDeseqGSEA ,submitDeseqStats} from '../api';  // 引入 API 函数
+import { submitDeseq2, submitDeseqGSEA ,submitDeseqStats, submitGeneralGSEA} from '../api';  // 引入 API 函数
 import { analysisConfigs } from '../config/analysisConfigs';
 import DeseqGSEA from '../components/Deseq2/DeseqGSEA.js';
 import DeseqStats from '../components/Deseq2/DeseqStats.js';
 import Papa from 'papaparse';
+import GSEANoDeseq from '../components/FeatureGeneration/GeneralGSEA.js';
+
+
 
 
 const Layout = styled.div`
@@ -494,6 +497,10 @@ const ProjectPage = () => {
   const [reactomeResult, setReactomeResult] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [deseq2Statistics, setDeseq2Statistics] = useState(null);
+  const [generalGSEAResult,  setGeneralGSEAResult] = useState(null);
+
+
+ 
 
   
 
@@ -700,36 +707,7 @@ const ProjectPage = () => {
 {openDropdowns['result_preprocess'] && <PreprocessResult />}
 
          
-         {/* Deseq2 Section */}
-         {/* <SectionTitle>Deseq2</SectionTitle>
-         <GridContainer>
-          {[
-            {
-              title: 'Deseq2',
-              items: [
-                'sample_col',
-                'control_col',
-                'control_val',
-                'vehicle_control_val',
-                'gene_col',
-                'time_col',
-              ],
-            },
-            { title: 'Reactome Result', items: ['Reactome Result'] },
-            { title: 'Deseq2 Statistics', items: ['Deseq2 Statistics'] },
-            { title: 'Deseq2 GSEA', items: ['Deseq2 GSEA'] },
-          ].map((dropdown, index) => (
-            <Dropdown
-            key={index}
-            title={dropdown.title}
-            items={dropdown.items}
-            isOpen={openDropdowns[`preprocess_${index}`] || false} // Ensuring unique keys for preprocess
-            onToggle={() => toggleDropdown(`preprocess_${index}`)} 
-            checked={checkedItems[`preprocess_${index}`] || false} 
-            onCheckChange={() => handleCheckChange(`preprocess_${index}`)} 
-          />
-          ))}
-        </GridContainer> */}
+
 
        
                {/* Deseq2 Section */}
@@ -819,9 +797,10 @@ const ProjectPage = () => {
         <GenericAnalysis
           title="General GSEA"
           config={analysisConfigs.GeneralGSEA}
-          //apiFunction={(params) => submitGeneralGSEA(projectId, params)}
-          //onResult={setGeneralGSEAResult}
+          apiFunction={(params) => submitGeneralGSEA(projectId, params)}
+          onResult={setGeneralGSEAResult}
         />
+
         <GenericAnalysis
           title="WGCNA"
           config={analysisConfigs.WGCNA}
@@ -829,6 +808,9 @@ const ProjectPage = () => {
           //onResult={setWgcnaResult}
         />
       </GridContainer>
+
+
+      <GSEANoDeseq resultData={generalGSEAResult} />
 
         {/* Modeling Section */}
         <SectionTitle>Modeling</SectionTitle>

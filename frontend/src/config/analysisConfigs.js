@@ -26,6 +26,32 @@ export const analysisConfigs = {
         organism: 'human',
         gene_sets_db: 'MSigDB_Hallmark_2020,KEGG_2021_Human',
       },
+
+      GeneralGSEA: {
+        items: [
+          'sample_col',
+          'control_col',
+          'target_col',
+          'set_target_th',
+          'gsea_plot_n',
+          'enrichment_cutoff',
+          'dotplot_cutoff',
+          'barplot_cutoff'
+
+        ],
+        defaultValues: {
+          sample_col: 'sample',
+          control_col: 'drug',
+          target_col: 'beat_per_min',
+          set_target_th: '40',
+          gsea_plot_n: '10',
+          enrichment_cutoff: '0.7',
+          dotplot_cutoff:'1',
+          barplot_cutoff:'0.7',
+        },
+      },
+
+
     },
 
     // deseq2Reactome: {
