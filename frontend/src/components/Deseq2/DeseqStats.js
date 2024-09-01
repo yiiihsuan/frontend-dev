@@ -30,7 +30,7 @@ const TableContainer = styled.div`
 `;
 
 const DeseqStats = ({ resultData }) => {
-  if (!resultData || resultData.length === 0) {
+  if (!Array.isArray(resultData) || resultData.length === 0) {
     return <ResultContainer><p>No data available.</p></ResultContainer>;
   }
 

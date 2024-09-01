@@ -266,6 +266,7 @@ import { submitDeseq2, submitDeseqGSEA ,submitDeseqStats} from '../api';  // 引
 import { analysisConfigs } from '../config/analysisConfigs';
 import DeseqGSEA from '../components/Deseq2/DeseqGSEA.js';
 import DeseqStats from '../components/Deseq2/DeseqStats.js';
+import Papa from 'papaparse';
 
 
 const Layout = styled.div`
@@ -584,6 +585,14 @@ const ProjectPage = () => {
     }
   };
 
+  const parseDeseqStats = (data) => {
+    return Papa.parse(data, {
+      header: true,
+      dynamicTyping: true,
+      skipEmptyLines: true,
+    }).data;
+  };
+
 
 
   return (
@@ -745,12 +754,17 @@ const ProjectPage = () => {
           </Deseq2StaticsItem> */}
 
 
+
+
+
+
 <Deseq2StaticsItem>
   <GenericAnalysis
     title="Deseq2 Statistics"
     //apiFunction={submitDeseqStats} // 直接传递函数，不需要参数
     apiFunction={() => submitDeseqStats(projectId)}
     onResult={setDeseq2Statistics} 
+    parseFunction={parseDeseqStats} 
   />
 </Deseq2StaticsItem>
 
@@ -789,6 +803,8 @@ const ProjectPage = () => {
 {showResults && deseq2Statistics && (
           <DeseqStats resultData={deseq2Statistics} /> 
         )}
+
+
 
 
         </div>

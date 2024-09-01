@@ -243,7 +243,7 @@ import Dropdown from './ParameterSection';
 import { useMutation } from 'react-query';
 import { FaCheckCircle } from 'react-icons/fa';
 
-const GenericAnalysis = ({ title, config = {}, apiFunction, onResult }) => {
+const GenericAnalysis = ({ title, config = {}, apiFunction, onResult, parseFunction}) => {
   const { items = [], defaultValues = {} } = config;
   const [openDropdown, setOpenDropdown] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -259,6 +259,14 @@ const GenericAnalysis = ({ title, config = {}, apiFunction, onResult }) => {
   const { mutate: submitAnalysis } = useMutation(apiFunction, {
     onSuccess: (data) => {
       console.log(`${title} analysis completed:`, data);
+
+      let parsedData = data;
+      if (parseFunction) {
+        parsedData = parseFunction(data);
+      }
+      
+
+
       setSubmitResult("Analysis completed successfully.");
       setSubmitted(true);
       // No need to fold the dropdown here, it's already done
