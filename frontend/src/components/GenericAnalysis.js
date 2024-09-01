@@ -266,12 +266,12 @@ const GenericAnalysis = ({ title, config = {}, apiFunction, onResult, parseFunct
       }
       
 
-
+      
       setSubmitResult("Analysis completed successfully.");
       setSubmitted(true);
       // No need to fold the dropdown here, it's already done
       setIsAnalyzing(false); // End analyzing state
-      onResult && onResult(data);
+      onResult && onResult(parsedData);
     },
     onError: (error) => {
       console.error('Error:', error);

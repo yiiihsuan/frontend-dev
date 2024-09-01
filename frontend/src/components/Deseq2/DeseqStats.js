@@ -30,6 +30,12 @@ const TableContainer = styled.div`
 `;
 
 const DeseqStats = ({ resultData }) => {
+
+
+  console.log('Result Data in deseastat.js:', resultData);
+
+
+
   if (!Array.isArray(resultData) || resultData.length === 0) {
     return <ResultContainer><p>No data available.</p></ResultContainer>;
   }

@@ -250,6 +250,7 @@ export const submitDeseqStats = async (projectId) => {
 
     const jsonResponse = await postResponse.json();
     const fileUrl = jsonResponse.result._url;
+    console.log('file url is', fileUrl)
     
     // Fetch the CSV data using the URL provided in the response
     const getResponse = await fetch(fileUrl, {
