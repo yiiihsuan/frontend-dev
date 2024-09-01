@@ -168,6 +168,11 @@ const GridItem = styled.div`
 `;
 
 const GSEANoDeseq = ({ resultData }) => {
+
+  if (!resultData) {
+    return <ResultContainer><p>No data available.</p></ResultContainer>;
+  }
+  
   return (
     <ResultContainer>
       <h4>General GSEA Results</h4>

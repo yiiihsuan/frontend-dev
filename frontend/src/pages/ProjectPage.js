@@ -783,7 +783,9 @@ const ProjectPage = () => {
         )}
 
 
-
+{showResults && generalGSEAResult && (
+        <GSEANoDeseq resultData={generalGSEAResult} />
+      )}
 
         </div>
 
@@ -809,8 +811,9 @@ const ProjectPage = () => {
         />
       </GridContainer>
 
+  
 
-      <GSEANoDeseq resultData={generalGSEAResult} />
+   
 
         {/* Modeling Section */}
         <SectionTitle>Modeling</SectionTitle>
