@@ -45,6 +45,10 @@ const GridItem = styled.div`
 `;
 
 const BaseModel = ({ resultData }) => {
+
+    console.log('BaseModel resultData:', resultData);
+
+
   if (!resultData) {
     return <ResultContainer><p>No data available.</p></ResultContainer>;
   }
@@ -55,6 +59,8 @@ const BaseModel = ({ resultData }) => {
 
       <GridContainer>
         {Object.entries(resultData).map(([filename, url]) => {
+
+console.log('Filename base model:', filename, 'URL base model:', url);
     
           if (filename.match(/^(base_ml_r2_plot|base_ml_abs_error_plot)$/)) {
             return (

@@ -46,6 +46,9 @@ const GridItem = styled.div`
 `;
 
 const MlpModel = ({ resultData }) => {
+
+    console.log('MLPModel resultData:', resultData);
+
   if (!resultData) {
     return <ResultContainer><p>No data available.</p></ResultContainer>;
   }
