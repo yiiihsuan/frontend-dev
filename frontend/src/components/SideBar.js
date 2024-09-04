@@ -1,6 +1,6 @@
 // SideBar.js
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import { FaHome, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 
@@ -43,6 +43,21 @@ const SidebarItem = styled(Link)`
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
 
+
+  const navigate = useNavigate(); // Use react-router-dom hook for navigation
+
+  const handleLogout = () => {
+    // Clear the token from localStorage
+    localStorage.removeItem('token');
+
+    // Optionally, clear other authentication-related items
+    localStorage.removeItem('isLoggedIn');
+
+    // Navigate to the login page
+    navigate('/'); // Redirect to the login page (assumed as "/")
+  };
+
+
   
   return (
     <SidebarContainer
@@ -54,18 +69,28 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <FaHome />
         <span>Home</span>
       </SidebarItem>
+
+
       <SidebarItem to="/profile" isOpen={isOpen}>
         <FaUser />
         <span>Profile</span>
       </SidebarItem>
+      
       <SidebarItem to="/settings" isOpen={isOpen}>
         <FaCog />
         <span>Settings</span>
       </SidebarItem>
-      <SidebarItem to="/" isOpen={isOpen}>
+
+      {/* <SidebarItem to="/" isOpen={isOpen}>
+        <FaSignOutAlt />
+        <span>Logout</span>
+      </SidebarItem> */}
+
+<SidebarItem as="div" onClick={handleLogout} isOpen={isOpen}>
         <FaSignOutAlt />
         <span>Logout</span>
       </SidebarItem>
+
     </SidebarContainer>
   );
 };
