@@ -79,7 +79,6 @@
 
 // export default BaseModel;
 
-
 import React from 'react';
 import styled from 'styled-components';
 
@@ -92,7 +91,7 @@ const ResultContainer = styled.div`
 
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(2, 1fr); /* Two equal columns */
   gap: 20px;
 `;
 
@@ -104,12 +103,15 @@ const GridItem = styled.div`
     width: 100%;
     height: auto;
     border-radius: 8px;
+    max-height: 500px; /* Adjust this for the desired height */
+    object-fit: contain; /* Ensures the image scales properly */
   }
 
   .grid-item-title {
     margin-top: 10px;
     font-weight: bold;
     text-align: center;
+    font-size: 1.2em;
   }
 
   .zoom-icon {
@@ -131,9 +133,9 @@ const BaseModel = ({ resultData }) => {
     return <ResultContainer><p>No data available.</p></ResultContainer>;
   }
 
-  const evaluateData = resultData.evaluateData; // Extract the evaluateData
+  const evaluateData = resultData.evaluateData; // Extract evaluateData
 
-  console.log('Evaluate Data:', evaluateData); // Log evaluate data to confirm
+  console.log('Evaluate Data:', evaluateData); // Log evaluate data for debugging
 
   return (
     <ResultContainer>
@@ -160,4 +162,3 @@ const BaseModel = ({ resultData }) => {
 };
 
 export default BaseModel;
-

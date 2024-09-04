@@ -96,7 +96,7 @@ export const analysisConfigs = {
         ],
         defaultValues: {
             target_col: 'beat_per_min',
-            min_score_th: '0.7',
+            min_score_th: '0.2',
             mode: 'regression',
         },
     },
@@ -110,7 +110,7 @@ export const analysisConfigs = {
         ],
         defaultValues: {
             target_col: 'beat_per_min',
-            min_score_th: '0.7',
+            min_score_th: '0.2',
             num_epochs: '100',
             mode: 'regression',
         },
