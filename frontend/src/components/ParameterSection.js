@@ -748,7 +748,7 @@ const SubmitButton = styled.button`
   text-align: center;
 
   &:hover {
-    background-color: #45A049;
+    background-color: #666666;
   }
 `;
 

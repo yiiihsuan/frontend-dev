@@ -1,6 +1,6 @@
 // SideBar.js
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import { FaHome, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 
@@ -42,6 +42,15 @@ const SidebarItem = styled(Link)`
 `;
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
+
+  const navigate = useNavigate(); // Hook to navigate to another route
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Clear the token from localStorage
+    navigate('/'); // Redirect to the home or login page
+  };
+
+
   return (
     <SidebarContainer
       onMouseEnter={() => setIsOpen(true)}
@@ -60,7 +69,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <FaCog />
         <span>Settings</span>
       </SidebarItem>
-      <SidebarItem to="/logout" isOpen={isOpen}>
+      {/* <SidebarItem to="/logout" isOpen={isOpen}>
+        <FaSignOutAlt />
+        <span>Logout</span>
+      </SidebarItem> */}
+        <SidebarItem as="div" onClick={handleLogout} isOpen={isOpen}>
         <FaSignOutAlt />
         <span>Logout</span>
       </SidebarItem>
