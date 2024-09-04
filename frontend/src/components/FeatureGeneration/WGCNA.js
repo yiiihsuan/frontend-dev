@@ -103,7 +103,7 @@ const KmeLinkContainer = styled.div`
   a {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #33333;
+    background-color: #b3b3b3;
     color: white;
     border-radius: 8px;
     text-decoration: none;
