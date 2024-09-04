@@ -40,6 +40,12 @@ const KmeLinkContainer = styled.div`
 `;
 
 const WGCNAResults = ({ resultData }) => {
+
+  // Check if the resultData object is valid and contains the expected properties
+  if (!resultData || !resultData.WGCNA_gene_set || !resultData.KME_membership_url) {
+    return <ResultContainer><p>No data available.</p></ResultContainer>;
+  }
+
   return (
     <ResultContainer>
       <h4>WGCNA Results</h4>
