@@ -91,7 +91,7 @@ const ResultContainer = styled.div`
 
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(2, 1fr); 
   gap: 20px;
 `;
 
@@ -103,12 +103,15 @@ const GridItem = styled.div`
     width: 100%;
     height: auto;
     border-radius: 8px;
+    max-height: 500px; /* Adjust this for the desired height */
+    object-fit: contain; /* Ensures the image scales properly */
   }
 
   .grid-item-title {
     margin-top: 10px;
     font-weight: bold;
     text-align: center;
+    font-size: 1.2em; /* Make the font a little bigger for clarity */
   }
 
   .zoom-icon {
@@ -130,9 +133,9 @@ const MlpModel = ({ resultData }) => {
     return <ResultContainer><p>No data available.</p></ResultContainer>;
   }
 
-  const evaluateData = resultData.evaluateData; // Extract evaluateData
+  const evaluateData = resultData.evaluateData; 
 
-  console.log('Evaluate Data (MLP Model):', evaluateData); // Debugging log
+  console.log('Evaluate Data (MLP Model):', evaluateData); 
 
   return (
     <ResultContainer>
@@ -140,7 +143,7 @@ const MlpModel = ({ resultData }) => {
 
       <GridContainer>
         {Object.entries(evaluateData).map(([filename, url]) => {
-          console.log('Filename MLP model:', filename, 'URL:', url); // Log filename and URL for debugging
+          console.log('Filename MLP model:', filename, 'URL:', url); 
 
           // Display only MLP model plots
           if (filename.includes('ml_r2_plot') || filename.includes('ml_abs_error_plot')) {
@@ -151,7 +154,7 @@ const MlpModel = ({ resultData }) => {
               </GridItem>
             );
           }
-          return null; // Skip unrelated images
+          return null; 
         })}
       </GridContainer>
     </ResultContainer>
