@@ -395,4 +395,136 @@ const mockGeneralGSEAResponse = {
 }
 
 
+//submitWGCNA API
+export const submitWGCNA = async (projectId, params) => {
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    console.error('No token found, unable to submit WGCNA request.');
+    return mockWGCNAResponse; 
+  }
+
+  const requestBody = JSON.stringify(params);
+  console.log('Sending request with body:', requestBody);
+
+  try {
+    const response = await fetch(`${API_URL}/gsea/${projectId}/nodeseq`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: requestBody,
+    });
+
+    if (!response.ok) {
+      console.error('API request not successful, returning mock response');
+      return mockWGCNAResponse; 
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error); // Will log the complete error object
+    return mockWGCNAResponse; 
+  }
+};
+
+const mockWGCNAResponse =  {
+  "WGCNA_gene_set": [
+    "UCHL1",
+    "HSPA1A",
+    "UBC",
+    "HSPA1B",
+    "SQSTM1",
+    "CLU",
+    "HSP90AB1",
+    "PSMB4",
+    "HSPA8",
+    "GABARAPL1",
+    "FLNC",
+    "CYB5R1",
+    "SOD1",
+    "PSMB7",
+    "HSP90AA1",
+    "HSPA5",
+    "PCBP2",
+    "PABPC1",
+    "PRDX1",
+    "RPS21",
+    "BTF3",
+    "CALR",
+    "UBB",
+    "EIF1",
+    "ATP6V0C",
+    "FTL",
+    "RPL39",
+    "CRYAB",
+    "RNA5-8SN2",
+    "NPM1",
+    "CXCL12",
+    "IGF2",
+    "MYL9",
+    "CHCHD10",
+    "ATP5ME",
+    "FHL2",
+    "MYL4",
+    "FABP3",
+    "MYL3",
+    "TNNI1",
+    "SELENOW",
+    "ACTA2",
+    "MYL7",
+    "TNNI3",
+    "TNNC1",
+    "NREP",
+    "H19",
+    "COX7B",
+    "MYL2",
+    "ACTC1",
+    "TPM1",
+    "IFITM3",
+    "PLN",
+    "COX3",
+    "TNNT2",
+    "ND4",
+    "MIF",
+    "COL3A1",
+    "ATP6",
+    "COX1",
+    "ACTA2",
+    "LGALS1",
+    "KRT8",
+    "IGFBP7",
+    "IGF2",
+    "IFITM3",
+    "HSPB7",
+    "HSPB1",
+    "RPL13",
+    "RPS6",
+    "S100A11",
+    "S100A6",
+    "HLA-B",
+    "H3P6",
+    "H3-3A",
+    "SELENOW",
+    "H19",
+    "SERF2",
+    "GPX1",
+    "GNAS",
+    "SERPINE1",
+    "RPL8",
+    "SPARC",
+    "FSTL1",
+    "MFGE8",
+    "TIMP1",
+    "MIF",
+    "MYH6",
+    "RPS2",
+    "PRDX2"
+  ],
+  "KME_membership_url": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/wgcna/KME_membership.csv?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=genenet-genex-features%40genenet.iam.gserviceaccount.com%2F20240902%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20240902T062047Z&X-Goog-Expires=900&X-Goog-SignedHeaders=host&X-Goog-Signature=c8ed4ee96fb164f6d2f3fa97bf77243def5e57be8e32ad7e7ad2eac2d47493f0dbccd8e9cd21da0dada5462d12d21c3c449243c8cf0ddba8bc8b3a1df6c2e1d05cfaa38dbc2e272cb64bca951b9e6c25242ed1428d61cd2a23ffe98de5045cda5832872880d5b6a8c82f701e15bec2391d755bfb085a410837f1fabdcdd2eb15a6cdd49695a9845cf4bff6d2a092e43ed16260c0aa0c40b0aa8b736946bc039fe84ec74c472fb508d2654ba8fc5fd4f445aecbf41d89b11cd1efc811421195387d9c2f545ec328de009ad2aecd6e8d5db5bf25e53c7f5ee579590de3e418a6d7f4b16332d7326db4d370f814d6434965d16f41e3a074772d7059dc76a45c6397"
+}
+
+
   

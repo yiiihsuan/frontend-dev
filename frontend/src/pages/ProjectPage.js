@@ -205,14 +205,14 @@
 //     <Container>
 //       <Link to="/home">&lt; Home</Link>
 //       <Title>{`Project ${projectId}`}</Title>
-      
+
 //       <Steps>
 //         <Step active>1 Upload</Step>
 //         <Step showLine>2 Preprocess</Step>
 //         <Step showLine>3 Setting</Step>
 //         <Step showLine>4 Analysis</Step>
 //       </Steps>
-      
+
 //       <UploadSection>
 //         <SubTitle>Gene Sequence Data</SubTitle>
 //         <UploadArea>
@@ -254,20 +254,23 @@ import { useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { uploadFile } from '../api';
 import styled from 'styled-components';
-import { FaCloudUploadAlt, FaCheckCircle, FaChevronDown} from 'react-icons/fa';
-import Sidebar from '../components/SideBar'; 
+import { FaCloudUploadAlt, FaCheckCircle, FaChevronDown } from 'react-icons/fa';
+import Sidebar from '../components/SideBar';
 import CollapsibleSection from '../components/Parameters';
 import Dropdown from '../components/ParameterSection';
 import PreprocessResult from '../components/PreprocessResult';
 import ResultModal from '../components/ResultModal';
 
 import GenericAnalysis from '../components/GenericAnalysis';
-import { submitDeseq2, submitDeseqGSEA ,submitDeseqStats, submitGeneralGSEA} from '../api';  // 引入 API 函数
+import { submitDeseq2, submitDeseqGSEA, submitDeseqStats, submitGeneralGSEA, submitWGCNA } from '../api';  // 引入 API 函数
 import { analysisConfigs } from '../config/analysisConfigs';
 import DeseqGSEA from '../components/Deseq2/DeseqGSEA.js';
 import DeseqStats from '../components/Deseq2/DeseqStats.js';
 import Papa from 'papaparse';
 import GSEANoDeseq from '../components/FeatureGeneration/GeneralGSEA.js';
+import WGCNAResults from '../components/FeatureGeneration/WGCNA.js';
+
+
 
 
 
@@ -435,11 +438,29 @@ const UploadButton = styled.button`
   }
 `;
 
+// const ShowButton = styled.button`
+//   background-color: #4CAF50;
+//   color: white;
+//   border: none;
+//   border-radius: 8px;
+//   cursor: pointer;
+//   padding: 10px 20px;
+//   margin-top: 20px;
+
+//   &:hover {
+//     background-color: #45A049;
+//   }
+// `;
+
 const ShowButton = styled.button`
-  background-color: #4CAF50;
+  background-color: black;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
+  border-top: 1px solid #000;
+  border-right: 5px solid #000;
+  border-bottom: 5px solid #000;
+  border-left: 1px solid #000;  
   cursor: pointer;
   padding: 10px 20px;
   margin-top: 20px;
@@ -458,7 +479,7 @@ const ResultContainer = styled.div`
 
 
 const ProjectPage = () => {
-  const [isOpen, setIsOpen] = useState(false); 
+  const [isOpen, setIsOpen] = useState(false);
   const { projectId } = useParams();
   const [geneFile, setGeneFile] = useState(null);
   const [heartFile, setHeartFile] = useState(null);
@@ -497,19 +518,23 @@ const ProjectPage = () => {
   const [reactomeResult, setReactomeResult] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [deseq2Statistics, setDeseq2Statistics] = useState(null);
-  const [generalGSEAResult,  setGeneralGSEAResult] = useState(null);
+  const [generalGSEAResult, setGeneralGSEAResult] = useState(null);
+  const [wgcnaResult, setWgcnaResult] = useState(null);
 
 
- 
-
-  
+  //WGCNAResults
 
 
-  
+
+
+
+
+
+
   const toggleDropdown = (index) => {
     setOpenDropdowns((prevState) => ({
       ...prevState,
-      [index]: !prevState[index], 
+      [index]: !prevState[index],
     }));
   };
 
@@ -543,7 +568,7 @@ const ProjectPage = () => {
   };
 
   const handleUpload = (file, type) => {
-    const projectId = localStorage.getItem('projectId'); 
+    const projectId = localStorage.getItem('projectId');
     console.log('Handle upload parameters:', { file, type, projectId });
 
     if (!projectId) {
@@ -562,7 +587,7 @@ const ProjectPage = () => {
       type: type
     });
   };
-  
+
 
   // const handleUpload = (file, type) => {
   //   mutation.mutate({ file, projectId, type });
@@ -604,56 +629,56 @@ const ProjectPage = () => {
 
   return (
     <Layout>
-    <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-    <MainContent>
-      <Title>{`Project ${projectId}`}</Title>
-      
-      <UploadSection>
-        <SubTitle>Gene Sequence Data</SubTitle>
-        <UploadArea
-          onClick={() => document.getElementById('geneFileInput').click()}
-          onDragOver={handleDragOver}
-          onDrop={(e) => handleDrop(e, setGeneFile)}
-        >
-          <UploadIcon fileSelected={geneFile}>
-            {geneFile ? <FaCheckCircle /> : <FaCloudUploadAlt />}
-          </UploadIcon>
-          <UploadInstructions>*csv file only<br />*example here</UploadInstructions>
-          <FileInput
-            id="geneFileInput"
-            type="file"
-            onChange={handleFileChange(setGeneFile)}
-          />
-          {geneFile && <FileName>{geneFile.name}</FileName>}
-        </UploadArea>
-        <UploadButton  onClick={() => handleUpload(geneFile, 'gene')}>Upload</UploadButton >
-        {/* <button onClick={() => handleUpload(geneFile, 'gene', true)}>Upload to GCP</button> */}
-      </UploadSection>
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+      <MainContent>
+        <Title>{`Project ${projectId}`}</Title>
 
-      <UploadSection>
-        <SubTitle>Heart Beat Data</SubTitle>
-        <UploadArea
-          onClick={() => document.getElementById('heartFileInput').click()}
-          onDragOver={handleDragOver}
-          onDrop={(e) => handleDrop(e, setHeartFile)}
-        >
-          <UploadIcon fileSelected={heartFile}>
-            {heartFile ? <FaCheckCircle /> : <FaCloudUploadAlt />}
-          </UploadIcon>
-          <UploadInstructions>*csv file only<br />*example here</UploadInstructions>
-          <FileInput
-            id="heartFileInput"
-            type="file"
-            onChange={handleFileChange(setHeartFile)}
-          />
-          {heartFile && <FileName>{heartFile.name}</FileName>}
-        </UploadArea>
-        <UploadButton  onClick={() => handleUpload(heartFile, 'heart')}>Upload</UploadButton >
-        {/* <button onClick={() => handleUpload(heartFile, 'heart', true)}>Upload to GCP</button> */}
-      </UploadSection>
+        <UploadSection>
+          <SubTitle>Gene Sequence Data</SubTitle>
+          <UploadArea
+            onClick={() => document.getElementById('geneFileInput').click()}
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, setGeneFile)}
+          >
+            <UploadIcon fileSelected={geneFile}>
+              {geneFile ? <FaCheckCircle /> : <FaCloudUploadAlt />}
+            </UploadIcon>
+            <UploadInstructions>*csv file only<br />*example here</UploadInstructions>
+            <FileInput
+              id="geneFileInput"
+              type="file"
+              onChange={handleFileChange(setGeneFile)}
+            />
+            {geneFile && <FileName>{geneFile.name}</FileName>}
+          </UploadArea>
+          <UploadButton onClick={() => handleUpload(geneFile, 'gene')}>Upload</UploadButton >
+          {/* <button onClick={() => handleUpload(geneFile, 'gene', true)}>Upload to GCP</button> */}
+        </UploadSection>
+
+        <UploadSection>
+          <SubTitle>Heart Beat Data</SubTitle>
+          <UploadArea
+            onClick={() => document.getElementById('heartFileInput').click()}
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, setHeartFile)}
+          >
+            <UploadIcon fileSelected={heartFile}>
+              {heartFile ? <FaCheckCircle /> : <FaCloudUploadAlt />}
+            </UploadIcon>
+            <UploadInstructions>*csv file only<br />*example here</UploadInstructions>
+            <FileInput
+              id="heartFileInput"
+              type="file"
+              onChange={handleFileChange(setHeartFile)}
+            />
+            {heartFile && <FileName>{heartFile.name}</FileName>}
+          </UploadArea>
+          <UploadButton onClick={() => handleUpload(heartFile, 'heart')}>Upload</UploadButton >
+          {/* <button onClick={() => handleUpload(heartFile, 'heart', true)}>Upload to GCP</button> */}
+        </UploadSection>
 
 
-      {/* <SectionTitle>Deseq2</SectionTitle>
+        {/* <SectionTitle>Deseq2</SectionTitle>
       <GridContainer>
           {dropdownData.map((dropdown, index) => (
             <Dropdown
@@ -666,8 +691,8 @@ const ProjectPage = () => {
           ))}
         </GridContainer> */}
 
-<SectionTitle>Preprocess</SectionTitle>
-         <PreprocessContainer>
+        <SectionTitle>Preprocess</SectionTitle>
+        <PreprocessContainer>
           {[
             {
               title: 'Preprocess',
@@ -699,28 +724,28 @@ const ProjectPage = () => {
         </PreprocessContainer>
 
         {/* <PreprocessResult projectId={projectId} /> */}
- 
+
         <SectionTitle onClick={() => toggleDropdown('result_preprocess')}>
-  Preprocess Result
-  <span>{openDropdowns['result_preprocess'] ? '▲' : '▼'}</span>
-</SectionTitle>
-{openDropdowns['result_preprocess'] && <PreprocessResult />}
-
-         
+          Preprocess Result
+          <span>{openDropdowns['result_preprocess'] ? '▲' : '▼'}</span>
+        </SectionTitle>
+        {openDropdowns['result_preprocess'] && <PreprocessResult />}
 
 
-       
-               {/* Deseq2 Section */}
-               <SectionTitle>Deseq2</SectionTitle>
+
+
+
+        {/* Deseq2 Section */}
+        <SectionTitle>Deseq2</SectionTitle>
         <GridContainer>
-        <Deseq2Item>
-          <GenericAnalysis
-            title="Deseq2"
-            config={analysisConfigs.deseq2}
-            apiFunction={(params) => submitDeseq2(projectId, params)}
-            onResult={setDeseq2Result}
-          />
-         </Deseq2Item>
+          <Deseq2Item>
+            <GenericAnalysis
+              title="Deseq2"
+              config={analysisConfigs.deseq2}
+              apiFunction={(params) => submitDeseq2(projectId, params)}
+              onResult={setDeseq2Result}
+            />
+          </Deseq2Item>
 
           {/* <Deseq2StaticsItem>
           <GenericAnalysis
@@ -736,37 +761,37 @@ const ProjectPage = () => {
 
 
 
-<Deseq2StaticsItem>
-  <GenericAnalysis
-    title="Deseq2 Statistics"
-    //apiFunction={submitDeseqStats} // 直接传递函数，不需要参数
-    apiFunction={() => submitDeseqStats(projectId)}
-    onResult={setDeseq2Statistics} 
-    parseFunction={parseDeseqStats} 
-  />
-</Deseq2StaticsItem>
+          <Deseq2StaticsItem>
+            <GenericAnalysis
+              title="Deseq2 Statistics"
+              //apiFunction={submitDeseqStats} // 直接传递函数，不需要参数
+              apiFunction={() => submitDeseqStats(projectId)}
+              onResult={setDeseq2Statistics}
+              parseFunction={parseDeseqStats}
+            />
+          </Deseq2StaticsItem>
 
           <Deseq2GSEAItem>
-          <GenericAnalysis
-            title="Deseq2 GSEA"
-            config={analysisConfigs.deseq2GSEA}
-            apiFunction={(params) => submitDeseqGSEA(projectId, params)}
-            onResult={setDeseq2GSEAResult}
-          />
+            <GenericAnalysis
+              title="Deseq2 GSEA"
+              config={analysisConfigs.deseq2GSEA}
+              apiFunction={(params) => submitDeseqGSEA(projectId, params)}
+              onResult={setDeseq2GSEAResult}
+            />
           </Deseq2GSEAItem>
 
 
           <ReactomeItem>
-          <GenericAnalysis
-            title="Reactome Result"
-            config={analysisConfigs.deseq2Reactome}
-            apiFunction={(params) => submitDeseq2(projectId, params)}
+            <GenericAnalysis
+              title="Reactome Result"
+              config={analysisConfigs.deseq2Reactome}
+              apiFunction={(params) => submitDeseq2(projectId, params)}
             //onResult={setDeseq2GSEAResult}
-          />
-           </ReactomeItem>
-           
+            />
+          </ReactomeItem>
+
         </GridContainer>
-       
+
 
 
         <div>
@@ -778,14 +803,18 @@ const ProjectPage = () => {
             <DeseqGSEA resultData={deseq2GSEAResult} />
           )}
 
-{showResults && deseq2Statistics && (
-          <DeseqStats resultData={deseq2Statistics} /> 
-        )}
+          {showResults && deseq2Statistics && (
+            <DeseqStats resultData={deseq2Statistics} />
+          )}
 
 
-{showResults && generalGSEAResult && (
-        <GSEANoDeseq resultData={generalGSEAResult} />
-      )}
+          {showResults && generalGSEAResult && (
+            <GSEANoDeseq resultData={generalGSEAResult} />
+          )}
+
+          {showResults && wgcnaResult && (
+            <WGCNAResults resultData={wgcnaResult} />
+          )}
 
         </div>
 
@@ -793,30 +822,33 @@ const ProjectPage = () => {
 
 
 
+
+
+
         {/* Feature Generation Section */}
         <SectionTitle>Feature Generation</SectionTitle>
-      <GridContainer>
-        <GenericAnalysis
-          title="General GSEA"
-          config={analysisConfigs.GeneralGSEA}
-          apiFunction={(params) => submitGeneralGSEA(projectId, params)}
-          onResult={setGeneralGSEAResult}
-        />
+        <GridContainer>
+          <GenericAnalysis
+            title="General GSEA"
+            config={analysisConfigs.GeneralGSEA}
+            apiFunction={(params) => submitGeneralGSEA(projectId, params)}
+            onResult={setGeneralGSEAResult}
+          />
 
-        <GenericAnalysis
-          title="WGCNA"
-          config={analysisConfigs.WGCNA}
-          //apiFunction={(params) => submitWGCNA(projectId, params)}
-          //onResult={setWgcnaResult}
-        />
-      </GridContainer>
+          <GenericAnalysis
+            title="WGCNA"
+            config={analysisConfigs.WGCNA}
+            apiFunction={(params) => submitWGCNA(projectId, params)}
+            onResult={setWgcnaResult}
+          />
+        </GridContainer>
 
-  
 
-   
+
+
 
         {/* Modeling Section */}
-        <SectionTitle>Modeling</SectionTitle>
+        {/* <SectionTitle>Modeling</SectionTitle>
         <GridContainer>
           {[
             { title: 'Baseline Selection', items: ['Baseline Selection'] },
@@ -835,10 +867,66 @@ const ProjectPage = () => {
               onCheckChange={() => handleCheckChange(index + 6)}
             />
           ))}
-        </GridContainer>
+        </GridContainer> */}
+
+<SectionTitle>Modeling</SectionTitle>
+        <GridContainer>
+
+
+          <Deseq2Item> 
+            <GenericAnalysis
+              title="Baseline Selection"
+              config={analysisConfigs.baselineSelection}
+              //apiFunction={(params) => submitDeseq2(projectId, params)}
+              //onResult={setDeseq2Result}
+            />
+          </Deseq2Item>
+
+          <Deseq2Item> 
+            <GenericAnalysis
+              title="Gene Collection"
+              config={analysisConfigs.geneCollection}
+              //apiFunction={(params) => submitDeseq2(projectId, params)}
+              //onResult={setDeseq2Result}
+            />
+          </Deseq2Item>
+          
+          {/* this block is for model */}
+          <Deseq2StaticsItem> 
+            <GenericAnalysis
+              title="Gene Selection"
+              config={analysisConfigs.geneSelection}
+              apiFunction={() => submitDeseqStats(projectId)}
+              onResult={setDeseq2Statistics}
+              parseFunction={parseDeseqStats}
+            />
+          </Deseq2StaticsItem>
+
+          <Deseq2GSEAItem>
+            <GenericAnalysis
+              title="Base Model"
+              config={analysisConfigs.baseModel}
+              //apiFunction={(params) => submitDeseqGSEA(projectId, params)}
+              //onResult={setDeseq2GSEAResult}
+            />
+          </Deseq2GSEAItem>
+
+
+          <ReactomeItem>
+            <GenericAnalysis
+              title="MLP Model"
+              config={analysisConfigs.MLPModel}
+             // apiFunction={(params) => submitDeseq2(projectId, params)}
+            //onResult={setDeseq2GSEAResult}
+            />
+          </ReactomeItem>
+
+
+
+          </GridContainer>
 
       </MainContent>
-      </Layout>
+    </Layout>
   );
 };
 
