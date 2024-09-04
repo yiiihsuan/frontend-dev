@@ -483,7 +483,7 @@ const ResultContainer = styled.div`
 `;
 
 
-const ProjectPage = () => {
+const ProjectPage = (setIsLoggedIn) => {
   const [isOpen, setIsOpen] = useState(false);
   const { projectId } = useParams();
   const [geneFile, setGeneFile] = useState(null);
@@ -638,7 +638,7 @@ const ProjectPage = () => {
 
   return (
     <Layout>
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} setIsLoggedIn={setIsLoggedIn}/>
       <MainContent>
         <Title>{`Project ${projectId}`}</Title>
 

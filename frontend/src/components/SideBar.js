@@ -41,7 +41,7 @@ const SidebarItem = styled(Link)`
   }
 `;
 
-const Sidebar = ({ isOpen, setIsOpen }) => {
+const Sidebar = ({ isOpen, setIsOpen , setIsLoggedIn }) => {
 
 
   const navigate = useNavigate(); // Use react-router-dom hook for navigation
@@ -56,14 +56,14 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     // Log the state of the token after removing it
     console.log('Token after logout:', localStorage.getItem('token'));
 
-    // Optionally, clear other authentication-related items
-    localStorage.removeItem('isLoggedIn');
-
-    // Log navigation event
-    console.log('Navigating to login page...');
-
+    setIsLoggedIn(false);
+  
     // Navigate to the login page
     navigate('/'); // Redirect to the login page (assumed as "/")
+
+      // Log navigation event
+      console.log('Navigating to login page...');
+
   };
 
   

@@ -1413,7 +1413,7 @@ const UserAvatar = styled.div`
 
 
 
-const HomePage = () => {
+const HomePage = (setIsLoggedIn) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -1456,7 +1456,7 @@ const HomePage = () => {
   return (
     <Layout>
       {/* <Sidebar isOpen={false} setIsOpen={() => {}} /> */}
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} setIsLoggedIn={setIsLoggedIn} />
       <MainContent>
         <Title>Projects</Title>
         <ProjectGrid>
