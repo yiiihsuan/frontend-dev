@@ -73,7 +73,7 @@
 // export default Sidebar;
 
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // 使用 useNavigate
 import styled from 'styled-components';
 import { FaHome, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 
@@ -115,14 +115,14 @@ const SidebarItem = styled(Link)`
 `;
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
-  const history = useHistory();
+  const navigate = useNavigate(); // 使用 useNavigate 进行页面跳转
 
   const handleLogout = () => {
-    // 清除localStorage的token
+    // 清除 localStorage 的 token
     localStorage.removeItem('token');
 
     // 重定向到首页
-    history.push('/');
+    navigate('/');
   };
 
   return (
@@ -153,4 +153,3 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 };
 
 export default Sidebar;
-
