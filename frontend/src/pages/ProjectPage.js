@@ -466,7 +466,7 @@ const ShowButton = styled.button`
   margin-top: 20px;
 
   &:hover {
-    background-color: #45A049;
+    background-color: #33333;
   }
 `;
 
