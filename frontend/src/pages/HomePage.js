@@ -1417,6 +1417,8 @@ const HomePage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const { data: projects, error, isLoading, isError } = useQuery('projects', fetchProjects);
   const { data: userInfo } = useQuery('userInfo', getUserInfo);
 
