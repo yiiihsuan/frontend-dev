@@ -262,13 +262,18 @@ import PreprocessResult from '../components/PreprocessResult';
 import ResultModal from '../components/ResultModal';
 
 import GenericAnalysis from '../components/GenericAnalysis';
-import { submitDeseq2, submitDeseqGSEA, submitDeseqStats, submitGeneralGSEA, submitWGCNA } from '../api';  // 引入 API 函数
+import { submitDeseq2, submitDeseqGSEA, submitDeseqStats, submitGeneralGSEA, submitWGCNA,submitBaselineSelection,submitGeneCollection,submitGeneSelection,trainAndEvaluateBaseModel,trainAndEvaluateMlpModel } from '../api'; 
 import { analysisConfigs } from '../config/analysisConfigs';
 import DeseqGSEA from '../components/Deseq2/DeseqGSEA.js';
 import DeseqStats from '../components/Deseq2/DeseqStats.js';
 import Papa from 'papaparse';
 import GSEANoDeseq from '../components/FeatureGeneration/GeneralGSEA.js';
 import WGCNAResults from '../components/FeatureGeneration/WGCNA.js';
+import BaseModel from '../components/Model/BaseModel.js';
+import MlpModel from '../components/Model/MLPModel.js';
+
+
+
 
 
 
@@ -520,9 +525,13 @@ const ProjectPage = () => {
   const [deseq2Statistics, setDeseq2Statistics] = useState(null);
   const [generalGSEAResult, setGeneralGSEAResult] = useState(null);
   const [wgcnaResult, setWgcnaResult] = useState(null);
+  const [baselineSelectionResult, setBaselineSelectionResult] = useState(null);
+  const [geneCollectionResult, setGeneCollectionResult] = useState(null);
+  const [geneSelection, setGeneSelection] = useState(null);
+  const [baseModel, setBaseModel] = useState(null);
+  const [mlpModel, setMlpModel] = useState(null);
 
 
-  //WGCNAResults
 
 
 
@@ -816,6 +825,21 @@ const ProjectPage = () => {
             <WGCNAResults resultData={wgcnaResult} />
           )}
 
+
+{showResults && baseModel && (
+            <BaseModel resultData={baseModel} />
+          )}
+
+
+
+
+{showResults && mlpModel && (
+            <MlpModel resultData={mlpModel} />
+          )}
+
+
+
+
         </div>
 
 
@@ -877,49 +901,56 @@ const ProjectPage = () => {
             <GenericAnalysis
               title="Baseline Selection"
               config={analysisConfigs.baselineSelection}
-              //apiFunction={(params) => submitDeseq2(projectId, params)}
-              //onResult={setDeseq2Result}
+              apiFunction={(params) => submitBaselineSelection(projectId, params)}
+              onResult={setBaselineSelectionResult}
             />
           </Deseq2Item>
 
+
+    
           <Deseq2Item> 
             <GenericAnalysis
               title="Gene Collection"
               config={analysisConfigs.geneCollection}
-              //apiFunction={(params) => submitDeseq2(projectId, params)}
-              //onResult={setDeseq2Result}
+              apiFunction={(params) => submitGeneCollection(projectId, params)}
+              onResult={setGeneCollectionResult}
             />
           </Deseq2Item>
+
+      
           
           {/* this block is for model */}
           <Deseq2StaticsItem> 
             <GenericAnalysis
               title="Gene Selection"
               config={analysisConfigs.geneSelection}
-              apiFunction={() => submitDeseqStats(projectId)}
-              onResult={setDeseq2Statistics}
-              parseFunction={parseDeseqStats}
+              apiFunction={(params) => submitGeneSelection(projectId, params)}
+              onResult={setGeneSelection}
             />
           </Deseq2StaticsItem>
+
+        
 
           <Deseq2GSEAItem>
             <GenericAnalysis
               title="Base Model"
               config={analysisConfigs.baseModel}
-              //apiFunction={(params) => submitDeseqGSEA(projectId, params)}
-              //onResult={setDeseq2GSEAResult}
+              apiFunction={(params) => trainAndEvaluateBaseModel(projectId, params)}
+              onResult={setBaseModel}
             />
           </Deseq2GSEAItem>
 
-
+       
           <ReactomeItem>
             <GenericAnalysis
               title="MLP Model"
               config={analysisConfigs.MLPModel}
-             // apiFunction={(params) => submitDeseq2(projectId, params)}
-            //onResult={setDeseq2GSEAResult}
+              apiFunction={(params) => trainAndEvaluateMlpModel(projectId, params)}
+              onResult={setMlpModel}
             />
           </ReactomeItem>
+
+      
 
 
 

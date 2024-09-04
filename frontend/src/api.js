@@ -527,4 +527,375 @@ const mockWGCNAResponse =  {
 }
 
 
+
+
+export const submitBaselineSelection = async (projectId, params) => {
+  const token = localStorage.getItem('token'); 
+
+  const requestBody = JSON.stringify(params);
+  console.log('Sending request with body:', requestBody);
+
+  try {
+    const response = await fetch(`${API_URL}/feature_selection/${projectId}/baseline`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,  
+        'Content-Type': 'application/json',
+      },
+      body: requestBody,
+    });
+
+    if (!response.ok) {
+      console.error('API request not successful');
+      return mockBaselinSelection; 
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error.message);
+    return mockBaselinSelection; 
+  }
+};
+
+
+const mockBaselinSelection = {
+  status: "success",
+};
+
+
+
+export const submitGeneCollection = async (projectId, params) => {
+  const token = localStorage.getItem('token'); 
+
+  const requestBody = JSON.stringify(params);
+  console.log('Sending request with body:', requestBody);
+
+  try {
+    const response = await fetch(`${API_URL}/feature_selection/${projectId}/collect`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,  
+        'Content-Type': 'application/json',
+      },
+      body: requestBody,
+    });
+
+    if (!response.ok) {
+      console.error('API request not successful');
+      return mockGeneCollection; 
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error.message);
+    return mockGeneCollection; 
+  }
+};
+
+
+const mockGeneCollection = {
+  status: "success",
+};
+
+
+export const submitGeneSelection = async (projectId, params) => {
+  const token = localStorage.getItem('token'); 
+
+  const requestBody = JSON.stringify(params);
+  console.log('Sending request with body:', requestBody);
+
+  try {
+    const response = await fetch(`${API_URL}/feature_selection/${projectId}/select`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,  
+        'Content-Type': 'application/json',
+      },
+      body: requestBody,
+    });
+
+    if (!response.ok) {
+      console.error('API request not successful');
+      return mockGeneSelection; 
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error.message);
+    return mockGeneSelection; 
+  }
+};
+
+const mockGeneSelection = {
+  status: "success",
+};
+
+
+// BuildBaseModel API
+export const buildBaseModel = async (projectId, params) => {
+  const token = localStorage.getItem('token'); 
+
+  const requestBody = JSON.stringify(params);
+  console.log('Sending request with body:', requestBody);
+
+  try {
+    const response = await fetch(`${API_URL}/model/${projectId}/base/train`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: requestBody,
+    });
+
+   
+    if (!response.ok) {
+      console.error('API request not successful');
+      return mockBuildBaseModel;
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error.message);
+    return mockBuildBaseModel;
+  }
+};
+
+
+const mockBuildBaseModel = {
+  status: "success",
+};
+
+
+
+// evaluateBaseModel API
+export const evaluateBaseModel = async (projectId, params) => {
+  const token = localStorage.getItem('token'); 
+
+  const requestBody = JSON.stringify(params);
+  console.log('Sending request with body:', requestBody);
+
+  try {
+
+    const response = await fetch(`${API_URL}/model/${projectId}/base/evaluate`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: requestBody,
+    });
+
+    if (!response.ok) {
+      console.error('API request not successful');
+      return mockEvaluateBaseModel;
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error.message);
+    return mockEvaluateBaseModel;
+  }
+};
+
+
+const mockEvaluateBaseModel = {
+  "base_ml_r2_plot": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/gene_set/static_plots/base_ml_r2_plot.png?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=genenet-genex-features%40genenet.iam.gserviceaccount.com%2F20240904%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20240904T205526Z&X-Goog-Expires=900&X-Goog-SignedHeaders=host&X-Goog-Signature=deacddbbfd62f996b93c24b0451ae23a8c766ad0c6dc1cc341f40e2eb964551696e18f37667e90e58ccfe4d80ed713f2ad61f1bf2dd16649ae2f7f59af0f546c04b1a4da6d974852cdc08756bf4a3d6fccebc054f067beafc392dea72023bd31b2b899927b34c2dcbf5a1fcaaa5895a03bcc4563cae211a83fee95121df9950a92478dd790c777e226f2b4980e8baecf104128bad8112f5ccbcdafe25f20d5c0758a1752760b4b7b97a225a9fe9f65318d2a058e9c86f422c08309dafaa770b147040d7c52cfad0c9099fbbbf16384117e59a80d0ef0b87c7f64468aa6e5a22d1a64dc3c127b33c87e068ac122f25c90e10320305c822742a626e45f91895a24",
+  "base_ml_abs_error_plot": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/gene_set/static_plots/base_ml_abs_error_plot.png?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=genenet-genex-features%40genenet.iam.gserviceaccount.com%2F20240904%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20240904T205526Z&X-Goog-Expires=900&X-Goog-SignedHeaders=host&X-Goog-Signature=33e6a08af192c9e4406b5dcf6e3e49e5644ff47a63c7933405a1519d27bc6ae5d397a8839a7cda855c676797b9353375aae7e82328093ea58060e73f87c4329d7cc94d76da1fd8a3f2041e38ee45b5f306d8fdb02b79ed2870c43e64ba86c8af1e7812024f049e2c3cb6ffc440ca18d9f673e2f729927fe5688e5edef5c2f31cd1a78054adf61c84ec2a8a105e0b5a11c69534b6a3e52870c0b071d7ca2f2ac1dbc6897b81daec7ae7785056eb6d8e47e0c933736728ad306bca9597c378d172267ba1b6c5e1a4f2d8103fb4e02572195ce1d00340a2cc606dec2d9f39ba43ea0b083abede7a24a13d578bab016711f798c862e6ca8569dfda3539287cdbb790"
+};
+
+
+// trainMlpModel API
+export const trainMlpModel = async (projectId, params) => {
+  const token = localStorage.getItem('token'); 
+
+  const requestBody = JSON.stringify(params); 
+  console.log('Sending request with body:', requestBody);
+
+  try {
+    const response = await fetch(`${API_URL}/model/${projectId}/mlp/train`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,  
+        'Content-Type': 'application/json',  
+      },
+      body: requestBody,  
+    });
+
+    if (!response.ok) {
+      console.error('API request not successful');
+      return mockTrainMlpModel; 
+    }
+
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error.message);
+    return mockTrainMlpModel; 
+  }
+};
+
+const mockTrainMlpModel = {
+  status: "success", 
+};
+
+// evaluateMlpModel API
+export const evaluateMlpModel = async (projectId, params) => {
+  const token = localStorage.getItem('token'); // 从 localStorage 中获取 token
+
+  const requestBody = JSON.stringify(params); // 将请求体转为 JSON 字符串
+  console.log('Sending request with body:', requestBody);
+
+  try {
+    // 发送 POST 请求进行 MLP 模型评估
+    const response = await fetch(`${API_URL}/model/${projectId}/mlp/evaluate`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,  // 使用 token 进行认证
+        'Content-Type': 'application/json',  // 指定内容类型为 JSON
+      },
+      body: requestBody,  // 包含请求参数的 JSON 字符串
+    });
+
+
+    if (!response.ok) {
+      console.error('API request not successful');
+      return mockEvaluateMlpModelResponse;
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error.message);
+    return mockEvaluateMlpModelResponse; 
+  }
+};
+
+
+
+// Chained API function for Base Model and Evaluate Model
+export const trainAndEvaluateBaseModel = async (projectId, params) => {
+  const token = localStorage.getItem('token'); 
+
+  const requestBody = JSON.stringify(params);
+  console.log('Sending request with body:', requestBody);
+
+  try {
+    // First API call to build the base model
+    const buildResponse = await fetch(`${API_URL}/model/${projectId}/base/train`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: requestBody,
+    });
+
+    if (!buildResponse.ok) {
+      console.error('Build base model request not successful');
+      return mockBuildBaseModel;
+    }
+
+    const buildData = await buildResponse.json();
+    console.log('Base model built successfully:', buildData);
+
+    const evaluateResponse = await fetch(`${API_URL}/model/${projectId}/base/evaluate`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: requestBody, // Reuse the same request body if the params are similar
+    });
+
+    if (!evaluateResponse.ok) {
+      console.error('Evaluate base model request not successful');
+      return mockEvaluateBaseModel;
+    }
+
+    const evaluateData = await evaluateResponse.json();
+    console.log('Base model evaluated successfully:', evaluateData);
+
+    return {
+      buildData,
+      evaluateData
+    };
+  } catch (error) {
+    console.error('Error:', error.message);
+    return mockEvaluateBaseModel; 
+  }
+};
+
+
+
+// Chained API function for training and evaluating MLP model
+export const trainAndEvaluateMlpModel = async (projectId, params) => {
+  const token = localStorage.getItem('token');
+
+  const requestBody = JSON.stringify(params);
+  console.log('Sending request with body:', requestBody);
+
+  try {
+    // First API call to train the MLP model
+    const trainResponse = await fetch(`${API_URL}/model/${projectId}/mlp/train`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: requestBody,
+    });
+
+    if (!trainResponse.ok) {
+      console.error('MLP model training request not successful');
+      return mockTrainMlpModel;
+    }
+
+    const trainData = await trainResponse.json();
+    console.log('MLP model trained successfully:', trainData);
+
+    // After successful training, call the evaluate API
+    const evaluateResponse = await fetch(`${API_URL}/model/${projectId}/mlp/evaluate`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: requestBody,  // Reuse the same request body if params are similar
+    });
+
+    if (!evaluateResponse.ok) {
+      console.error('MLP model evaluation request not successful');
+      return mockEvaluateMlpModelResponse;
+    }
+
+    const evaluateData = await evaluateResponse.json();
+    console.log('MLP model evaluated successfully:', evaluateData);
+
+    // Return both train and evaluate data, or just evaluate data if you prefer
+    return {
+      trainData,
+      evaluateData,
+    };
+  } catch (error) {
+    console.error('Error:', error.message);
+    return mockEvaluateMlpModelResponse;
+  }
+};
+
+const mockEvaluateMlpModelResponse = {
+  "ml_r2_plot": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/gene_set/static_plots/MLP_r2_plot.png?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=genenet-genex-features%40genenet.iam.gserviceaccount.com%2F20240904%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20240904T205929Z&X-Goog-Expires=900&X-Goog-SignedHeaders=host&X-Goog-Signature=1b946748b80792be2e34745dedb81f7437b4bd2bb7d61e1238f3dc768409d1601ce16f2c24f0e815bff1a09d372893dc3fec67d89bf83c57345277f0e203d1e1b53992deb9d73fe07874d8890f63e68a83d5888bfa7f648044670fc1f04d386753a81cee12a539077faa9a72087cedeccb9c238ce980438227e6945e94e685aba0916e185cc9f319b0df2b630f7b1bf2633fec145b1457b2dbdb873fd6b8c9539184895ea0ab96f0c1849c42d38f289aff290cd9ebecda758868b45396bdb98a5615095a0d39eb9efc8c1569a56e0ceecdccd7a2de7228aedf81eb13dabe7d52884266e4f84770a8dc9b59aa99bfb6da2219bcb256b50e4495fb484841d5cac7",
+  "ml_abs_error_plot": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/gene_set/static_plots/MLP_abs_error_plot.png?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=genenet-genex-features%40genenet.iam.gserviceaccount.com%2F20240904%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20240904T205929Z&X-Goog-Expires=900&X-Goog-SignedHeaders=host&X-Goog-Signature=5be02fd53b5d00adcb0731b197760f9bbb9952eff5e184720ff6e08851c31fa58810597f768b8c5f2a8f0e5523d09969e603f69bd7c541dfcd3e5a6b9613a00fd723da66aabc5382ce61429286fb567d1d83d305fe12c19784042a20d94e6be8ca09a908011c5a4ec1bf3e1d2462081f13118b48a4512a7f698ecd2f26f57946a094416f33230ae21232ca4338712dc5bf8c56f5e8bf35fffbcdbb3b524513edd8b15e8fb5df01e20c1148b78329742f62681c259a6a57104104e05cb643414719a304348816c509f5e7842c164f79c12f1912713e2606369a149e84c6b0e66cc68d6f0e2e5578f7e9ef6b4049ea4e59e3eeb4a00d92faa26faa50ecbc5efe74"
+};
+
+
+
+
+
+
   

@@ -123,7 +123,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// Styled-components
 const ResultContainer = styled.div`
   margin-top: 20px;
   background-color: #f9f9f9;
@@ -172,7 +171,7 @@ const GSEANoDeseq = ({ resultData }) => {
   if (!resultData) {
     return <ResultContainer><p>No data available.</p></ResultContainer>;
   }
-  
+
   return (
     <ResultContainer>
       <h4>General GSEA Results</h4>
