@@ -408,7 +408,7 @@ export const submitWGCNA = async (projectId, params) => {
   console.log('Sending request with body:', requestBody);
 
   try {
-    const response = await fetch(`${API_URL}/gsea/${projectId}/nodeseq`, {
+    const response = await fetch(`${API_URL}/wgcna/${projectId}/`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
