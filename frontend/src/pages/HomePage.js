@@ -1453,7 +1453,8 @@ const HomePage = () => {
 
   return (
     <Layout>
-      <Sidebar isOpen={false} setIsOpen={() => {}} />
+      {/* <Sidebar isOpen={false} setIsOpen={() => {}} /> */}
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
       <MainContent>
         <Title>Projects</Title>
         <ProjectGrid>
