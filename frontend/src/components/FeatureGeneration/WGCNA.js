@@ -103,13 +103,13 @@ const KmeLinkContainer = styled.div`
   a {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #33333;
     color: white;
     border-radius: 8px;
     text-decoration: none;
 
     &:hover {
-      background-color: #0056b3;
+      background-color: #33333;
     }
   }
 `;

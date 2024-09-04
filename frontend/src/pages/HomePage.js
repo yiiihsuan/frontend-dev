@@ -1370,7 +1370,7 @@ const ModalInput = styled.input`
 `;
 
 const ModalButton = styled.button`
-  background-color: #007bff;
+  background-color: #33333;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -1379,7 +1379,7 @@ const ModalButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #66666;
   }
 
   &:not(:last-child) {
