@@ -1370,7 +1370,7 @@ const ModalInput = styled.input`
 `;
 
 const ModalButton = styled.button`
-  background-color: #b3b3b3;
+  background-color: black;
   color: white;
   border: none;
   padding: 10px 20px;
