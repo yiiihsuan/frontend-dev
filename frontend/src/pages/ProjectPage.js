@@ -483,7 +483,7 @@ const ResultContainer = styled.div`
 `;
 
 
-const ProjectPage = (setIsLoggedIn) => {
+const ProjectPage = ({ setIsLoggedIn }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { projectId } = useParams();
   const [geneFile, setGeneFile] = useState(null);

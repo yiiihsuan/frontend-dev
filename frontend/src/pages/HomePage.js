@@ -1413,7 +1413,7 @@ const UserAvatar = styled.div`
 
 
 
-const HomePage = (setIsLoggedIn) => {
+const HomePage = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
