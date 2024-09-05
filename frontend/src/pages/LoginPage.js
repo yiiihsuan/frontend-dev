@@ -228,8 +228,15 @@ const LoginPage = ({ onLogin }) => {
         {mutation.isLoading ? 'Logging in...' : 'log in'}
       </Button>
       {mutation.isError && <div>Error: {mutation.error.message}</div>}
-      <SignUpText>
+      {/* <SignUpText>
         <a href="/sign-up">sign up here</a>
+      </SignUpText> */}
+
+<SignUpText>
+        Don't have an account?{' '}
+        <span onClick={() => navigate('/sign-up')} style={{ cursor: 'pointer' }}>
+          Sign up here
+        </span>
       </SignUpText>
     </Container>
   );

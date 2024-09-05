@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import ProjectPage from './pages/ProjectPage';
+import SignUpPage from './pages/SignupPage'; 
 
 
 function App() {
@@ -19,6 +20,9 @@ function App() {
       <div>
         <Routes>
             <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <LoginPage onLogin={handleLogin} />} />
+             {/* 註冊頁面 */}
+             <Route path="/sign-up" element={<SignUpPage />} />  {/* 添加註冊頁面的路由 */}
+            
             <Route path="/home" element={isLoggedIn ? <HomePage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
             <Route path="/project/:projectId" element={isLoggedIn ? <ProjectPage setIsLoggedIn={setIsLoggedIn}/> : <Navigate to="/" />} />
             

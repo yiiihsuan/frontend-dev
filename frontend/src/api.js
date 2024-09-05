@@ -40,6 +40,25 @@ export const loginUser = async (username, password) => {
     return data;
   };
 
+  export const registerUser = async (username, password) => {
+    const response = await fetch(`${API_URL}/auth/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', 
+      },
+      body: JSON.stringify({ username, password }), 
+    });
+  
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Network response was not ok');
+    }
+  
+    const data = await response.json();
+    return data;
+  };
+  
+
 
   export const fetchProjects = async () => {
     const token = localStorage.getItem('token');
