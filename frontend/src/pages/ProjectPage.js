@@ -11,7 +11,7 @@ import PreprocessResult from '../components/PreprocessResult';
 import ResultModal from '../components/ResultModal';
 
 import GenericAnalysis from '../components/GenericAnalysis';
-import { submitDeseq2, submitDeseqGSEA, submitDeseqStats, submitGeneralGSEA, submitWGCNA,submitBaselineSelection,submitGeneCollection,submitGeneSelection,trainAndEvaluateBaseModel,trainAndEvaluateMlpModel } from '../api'; 
+import { submitDeseq2, submitDeseqGSEA, submitDeseqStats, submitGeneralGSEA, submitWGCNA,submitBaselineSelection,submitGeneCollection,submitGeneSelection,trainAndEvaluateBaseModel,trainAndEvaluateMlpModel,runReactomeAndStatus } from '../api'; 
 import { analysisConfigs } from '../config/analysisConfigs';
 import DeseqGSEA from '../components/Deseq2/DeseqGSEA.js';
 import DeseqStats from '../components/Deseq2/DeseqStats.js';
@@ -536,8 +536,8 @@ const ProjectPage = ({ setIsLoggedIn }) => {
           <ReactomeItem>
             <GenericAnalysis
               title="Reactome Result"
-              config={analysisConfigs.deseq2Reactome}
-              apiFunction={(params) => submitDeseq2(projectId, params)}
+              //config={analysisConfigs.deseq2Reactome}
+              apiFunction={() => runReactomeAndStatus(projectId)}
              onResult={setReactomeResult} 
             />
           </ReactomeItem>

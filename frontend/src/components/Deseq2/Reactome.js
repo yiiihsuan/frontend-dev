@@ -53,6 +53,8 @@ const DeseqReactome = ({ resultData }) => {
     return <p>Loading...</p>;
   }
 
+  console.log('reactome resultData:', resultData);
+
   const { task_info: taskInfo, task_status: taskStatus } = resultData;
 
   return (
