@@ -915,6 +915,80 @@ const mockEvaluateMlpModelResponse = {
 
 
 
+export const runReactomeAndStatus = async (projectId, interval = 5000) => {
+  const token = localStorage.getItem('token');
+
+  const mockreactomeData = 
+    {
+      "task_id": "9ff94536-2e4a-4553-8222-2c1a5a24b121",
+      "task_status": "IN_PROGRESS",
+      "task_info": {
+        "done": 4,
+        "total": 12,
+        "detail": "Exporting dmso_vs_nitrendipine reports"
+      }
+    }
+  ;
+
+  try {
+    const response = await fetch(`${API_URL}/deseq/${projectId}/reactome/`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to start task. Status: ${response.status}`);
+    }
+
+    const { task_id } = await response.json();  
+    console.log(`Task started with ID: ${task_id}`);
+
+    const checkTaskStatus = async () => {
+      const statusResponse = await fetch(`${API_URL}/deseq/${projectId}/reactome/${task_id}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+        },
+      });
+
+      if (!statusResponse.ok) {
+        throw new Error(`Failed to fetch task status. Status: ${statusResponse.status}`);
+      }
+
+      const statusData = await statusResponse.json();
+
+      if (statusData.task_status === 'SUCCESS') {
+        console.log('Task completed successfully:', statusData);
+        return statusData;  
+      } else if (statusData.task_status === 'FAILED') {
+        console.log('Task failed:', statusData);
+        throw new Error('Task failed');
+      } else {
+        console.log(`Task status: ${statusData.task_status}, Progress: ${statusData.task_info?.done || 0} / ${statusData.task_info?.total || 'unknown'}`);
+
+        await new Promise(resolve => setTimeout(resolve, interval));
+        return checkTaskStatus();  // 遞迴再次檢查
+      }
+    };
+
+    // 開始檢查任務狀態
+    return await checkTaskStatus();
+
+  } catch (error) {
+    console.error('API Error:', error.message);
+    console.log('Returning mock data due to error.');
+    return mockreactomeData;  // 返回 mockData 以替代真實 API 數據
+  }
+};
+
+
+
+
 
 
   

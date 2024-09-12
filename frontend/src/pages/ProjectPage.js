@@ -1,254 +1,3 @@
-// import React, { useState } from 'react';
-// import { useParams, Link } from 'react-router-dom';
-// import { useMutation } from 'react-query';
-// import { uploadFile } from '../api';
-// import styled from 'styled-components';
-
-// const Container = styled.div`
-//   padding: 20px;
-// `;
-
-// const Title = styled.h1`
-//   font-size: 2em;
-//   margin-bottom: 20px;
-//   color: #333;
-// `;
-
-// const Section = styled.div`
-//   margin-bottom: 20px;
-// `;
-
-// const SubTitle = styled.h2`
-//   font-size: 1.5em;
-//   margin-bottom: 10px;
-// `;
-
-// const FileInput = styled.input`
-//   display: block;
-//   margin-bottom: 10px;
-// `;
-
-// const UploadButton = styled.button`
-//   background-color: #007bff;
-//   color: white;
-//   border: none;
-//   padding: 10px 20px;
-//   font-size: 1em;
-//   border-radius: 5px;
-//   cursor: pointer;
-
-//   &:hover {
-//     background-color: #0056b3;
-//   }
-// `;
-
-// const ProjectPage = () => {
-//   const { projectId } = useParams();
-//   const [geneFile, setGeneFile] = useState(null);
-//   const [heartFile, setHeartFile] = useState(null);
-
-//   const mutation = useMutation(uploadFile, {
-//     onSuccess: (data, variables) => {
-//       alert(`${variables.type} uploaded successfully`);
-//     },
-//     onError: (error, variables) => {
-//       console.error('Error:', error);
-//       alert(`Failed to upload ${variables.type}`);
-//     },
-//   });
-
-//   const handleFileChange = (setter) => (event) => {
-//     setter(event.target.files[0]);
-//   };
-
-//   const handleUpload = (file, type, useGCP = false) => {
-//     mutation.mutate({ file, projectId, type, useGCP });
-//   };
-
-//   return (
-//     <Container>
-//       <Link to="/home">&lt; Home</Link>
-//       <Title>{`Project ID: ${projectId}`}</Title>
-//       <Section>
-//         <SubTitle>Upload Data</SubTitle>
-//         <div>
-//           <SubTitle>Gene Sequence Data:</SubTitle>
-//           <FileInput type="file" onChange={handleFileChange(setGeneFile)} />
-//           <UploadButton onClick={() => handleUpload(geneFile, 'gene')}>Upload to Local</UploadButton>
-//           <UploadButton onClick={() => handleUpload(geneFile, 'gene', true)}>Upload to GCP</UploadButton>
-//         </div>
-//         <div>
-//           <SubTitle>Heart Beating Data:</SubTitle>
-//           <FileInput type="file" onChange={handleFileChange(setHeartFile)} />
-//           <UploadButton onClick={() => handleUpload(heartFile, 'heart')}>Upload to Local</UploadButton>
-//           <UploadButton onClick={() => handleUpload(heartFile, 'heart', true)}>Upload to GCP</UploadButton>
-//         </div>
-//       </Section>
-//     </Container>
-//   );
-// };
-
-// export default ProjectPage;
-
-
-// import React, { useState } from 'react';
-// import { useParams, Link } from 'react-router-dom';
-// import { useMutation } from 'react-query';
-// import { uploadFile } from '../api';
-// import styled from 'styled-components';
-// import { FaCloudUploadAlt } from 'react-icons/fa';
-
-// const Container = styled.div`
-//   padding: 20px;
-// `;
-
-// const Title = styled.h1`
-//   font-size: 2.5em;
-//   text-align: center;
-//   margin-bottom: 20px;
-//   color: #333;
-// `;
-
-// const Steps = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   margin-bottom: 20px;
-// `;
-
-// const Step = styled.div`
-//   display: flex;
-//   align-items: center;
-//   margin: 0 15px;
-//   font-size: 1.2em;
-//   color: ${props => (props.active ? '#000' : '#999')};
-
-//   &::after {
-//     content: '';
-//     display: ${props => (props.showLine ? 'block' : 'none')};
-//     width: 60px;
-//     height: 1px;
-//     background-color: #999;
-//     margin-left: 15px;
-//   }
-// `;
-
-// const UploadSection = styled.div`
-//   margin-bottom: 40px;
-//   text-align: center;
-// `;
-
-// const SubTitle = styled.h2`
-//   font-size: 1.5em;
-//   margin-bottom: 10px;
-// `;
-
-// const UploadArea = styled.div`
-//   border: 2px dashed #aaa;
-//   border-radius: 10px;
-//   padding: 40px;
-//   margin-bottom: 20px;
-//   background-color: #f9f9f9;
-// `;
-
-// const UploadIcon = styled(FaCloudUploadAlt)`
-//   font-size: 4em;
-//   margin-bottom: 10px;
-//   color: #333;
-// `;
-
-// const UploadInstructions = styled.p`
-//   margin-bottom: 20px;
-//   color: #333;
-// `;
-
-// const FileInput = styled.input`
-//   display: none;
-// `;
-
-// const UploadButtonLabel = styled.label`
-//   display: inline-block;
-//   background-color: #007bff;
-//   color: white;
-//   padding: 10px 20px;
-//   border-radius: 5px;
-//   cursor: pointer;
-
-//   &:hover {
-//     background-color: #0056b3;
-//   }
-// `;
-
-// const ProjectPage = () => {
-//   const { projectId } = useParams();
-//   const [geneFile, setGeneFile] = useState(null);
-//   const [heartFile, setHeartFile] = useState(null);
-
-//   const mutation = useMutation(uploadFile, {
-//     onSuccess: (data, variables) => {
-//       alert(`${variables.type} uploaded successfully`);
-//     },
-//     onError: (error, variables) => {
-//       console.error('Error:', error);
-//       alert(`Failed to upload ${variables.type}`);
-//     },
-//   });
-
-//   const handleFileChange = (setter) => (event) => {
-//     setter(event.target.files[0]);
-//   };
-
-//   const handleUpload = (file, type, useGCP = false) => {
-//     mutation.mutate({ file, projectId, type, useGCP });
-//   };
-
-//   return (
-//     <Container>
-//       <Link to="/home">&lt; Home</Link>
-//       <Title>{`Project ${projectId}`}</Title>
-
-//       <Steps>
-//         <Step active>1 Upload</Step>
-//         <Step showLine>2 Preprocess</Step>
-//         <Step showLine>3 Setting</Step>
-//         <Step showLine>4 Analysis</Step>
-//       </Steps>
-
-//       <UploadSection>
-//         <SubTitle>Gene Sequence Data</SubTitle>
-//         <UploadArea>
-//           <UploadIcon />
-//           <UploadInstructions>*csv file only<br />*example here</UploadInstructions>
-//           <UploadButtonLabel>
-//             Select File
-//             <FileInput type="file" onChange={handleFileChange(setGeneFile)} />
-//           </UploadButtonLabel>
-//         </UploadArea>
-//         <UploadButtonLabel onClick={() => handleUpload(geneFile, 'gene')}>Upload to Local</UploadButtonLabel>
-//         <UploadButtonLabel onClick={() => handleUpload(geneFile, 'gene', true)}>Upload to GCP</UploadButtonLabel>
-//       </UploadSection>
-
-//       <UploadSection>
-//         <SubTitle>Heart Beat Data</SubTitle>
-//         <UploadArea>
-//           <UploadIcon />
-//           <UploadInstructions>*csv file only<br />*example here</UploadInstructions>
-//           <UploadButtonLabel>
-//             Select File
-//             <FileInput type="file" onChange={handleFileChange(setHeartFile)} />
-//           </UploadButtonLabel>
-//         </UploadArea>
-//         <UploadButtonLabel onClick={() => handleUpload(heartFile, 'heart')}>Upload to Local</UploadButtonLabel>
-//         <UploadButtonLabel onClick={() => handleUpload(heartFile, 'heart', true)}>Upload to GCP</UploadButtonLabel>
-//       </UploadSection>
-//     </Container>
-//   );
-// };
-
-// export default ProjectPage;
-
-
-//只有一個項目的下拉選單
-
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
@@ -271,6 +20,9 @@ import GSEANoDeseq from '../components/FeatureGeneration/GeneralGSEA.js';
 import WGCNAResults from '../components/FeatureGeneration/WGCNA.js';
 import BaseModel from '../components/Model/BaseModel.js';
 import MlpModel from '../components/Model/MLPModel.js';
+import DeseqReactome from '../components/Deseq2/Reactome.js';
+
+
 
 
 
@@ -540,6 +292,9 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
 
+
+
+
   const toggleDropdown = (index) => {
     setOpenDropdowns((prevState) => ({
       ...prevState,
@@ -756,18 +511,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             />
           </Deseq2Item>
 
-          {/* <Deseq2StaticsItem>
-          <GenericAnalysis
-            title="Deseq2 Statistics"
-            //config={analysisConfigs.deseq2Statistics}
-            //apiFunction={(params) => submitDeseqStatistics(projectId, params)}
-            //onResult={setDeseq2Statistics}
-          />
-          </Deseq2StaticsItem> */}
-
-
-
-
 
 
           <Deseq2StaticsItem>
@@ -795,7 +538,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
               title="Reactome Result"
               config={analysisConfigs.deseq2Reactome}
               apiFunction={(params) => submitDeseq2(projectId, params)}
-            //onResult={setDeseq2GSEAResult}
+             onResult={setReactomeResult} 
             />
           </ReactomeItem>
 
@@ -815,6 +558,13 @@ const ProjectPage = ({ setIsLoggedIn }) => {
           {showResults && deseq2Statistics && (
             <DeseqStats resultData={deseq2Statistics} />
           )}
+
+
+
+{showResults && reactomeResult && (
+            <DeseqReactome resultData={reactomeResult} />
+          )}
+
 
 
           {showResults && generalGSEAResult && (
@@ -867,31 +617,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
           />
         </GridContainer>
 
-
-
-
-
-        {/* Modeling Section */}
-        {/* <SectionTitle>Modeling</SectionTitle>
-        <GridContainer>
-          {[
-            { title: 'Baseline Selection', items: ['Baseline Selection'] },
-            { title: 'Gene Collection', items: ['Gene Collection'] },
-            { title: 'Gene Selection', items: ['Gene Selection'] },
-            { title: 'Base Model', items: ['Base Model'] },
-            { title: 'MLP Model', items: ['MLP Model'] },
-          ].map((dropdown, index) => (
-            <Dropdown
-              key={index + 6}
-              title={dropdown.title}
-              items={dropdown.items}
-              isOpen={openDropdowns[index + 6] || false}
-              onToggle={() => toggleDropdown(index + 6)}
-              checked={checkedItems[index + 6] || false}
-              onCheckChange={() => handleCheckChange(index + 6)}
-            />
-          ))}
-        </GridContainer> */}
 
 <SectionTitle>Modeling</SectionTitle>
         <GridContainer>
