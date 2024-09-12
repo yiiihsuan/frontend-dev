@@ -1,4 +1,36 @@
 export const analysisConfigs = {
+
+
+    preprocess: {
+        items: [
+            'sample_col',
+            'raw_gene_col',
+            'response_col',
+            'min_val',
+            'min_percent',
+            'select_meta_groupby_cols',
+            'control_col',
+            'control_val',
+            'vehicle_control_val',
+            'gene_col',
+            'target_col',
+        ],
+        defaultValues: {
+            sample_col:"sample",
+            raw_gene_col:"Name",
+            response_col:"beat_per_min",
+            min_val:"5",
+            min_percent:"90",
+            select_meta_groupby_cols:"drug,hours,sample,duplicate_id",
+            control_col:"drug",
+            control_val:"untreated",
+            vehicle_control_val:"dmso",
+            gene_col:"gene_id",
+            target_col:"beat_per_min",
+        },
+    },
+    
+    
     deseq2: {
         items: [
             'sample_col',

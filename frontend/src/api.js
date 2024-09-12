@@ -319,13 +319,70 @@ const mockgResponse = [
 
 
 //preprocess
-export const fetchPlotData = async (projectId, plotType, params) => {
-  const response = await fetch(`${API_URL}/preprocess/${projectId}/plots/${plotType}`, params, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return response.data;
+// export const fetchPlotData = async (projectId, plotType, params) => {
+//   const response = await fetch(`${API_URL}/preprocess/${projectId}/plots/${plotType}`, params, {
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//   });
+//   return response.data;
+// };
+
+const mockpreResponse = {
+  message: "API request failed, this is a mock response",
+};
+
+// 通用的 fetch 請求封裝
+const fetchData = async (url, method = 'POST', data = null) => {
+  const token = localStorage.getItem('token');
+  const requestBody = JSON.stringify(data);
+  console.log('Sending request to', url, 'with body:', requestBody);
+
+  try {
+    const response = await fetch(url, {
+      method: method,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: data ? requestBody : null,
+    });
+
+    if (!response.ok) {
+      console.error('API request not successful, returning mock response');
+      return mockpreResponse;
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error('Error:', error.message);
+    return mockpreResponse;
+  }
+};
+
+// 提交 Preprocess 設定 API
+export const submitPreprocess = async (projectId, params) => {
+  const url = `${API_URL}/preprocess/${projectId}/`;
+  return await fetchData(url, 'POST', params);
+};
+
+// 繪製 Bar Plot API
+export const fetchPreprocessBarPlot = async (projectId, params) => {
+  const url = `${API_URL}/preprocess/${projectId}/plots/bar`;
+  return await fetchData(url, 'POST', params);
+};
+
+// 繪製 Violin Plot API
+export const fetchPreprocessViolinPlot = async (projectId, params) => {
+  const url = `${API_URL}/preprocess/${projectId}/plots/violin`;
+  return await fetchData(url, 'POST', params);
+};
+
+// 繪製 Heatmap API
+export const fetchPreprocessHeatmap = async (projectId) => {
+  const url = `${API_URL}/preprocess/${projectId}/plots/heatmap`;
+  return await fetchData(url, 'POST');
 };
 
 

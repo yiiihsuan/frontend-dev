@@ -22,6 +22,7 @@ import BaseModel from '../components/Model/BaseModel.js';
 import MlpModel from '../components/Model/MLPModel.js';
 import DeseqReactome from '../components/Deseq2/Reactome.js';
 
+import PreprocessComponent from '../components/Preprocess';  // 引入 PreprocessComponent
 
 
 
@@ -252,24 +253,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   });
 
   const [deseq2Selected, setDeseq2Selected] = useState(false);
-
-  const handleDeseq2Select = () => {
-    setDeseq2Selected(!deseq2Selected);
-  };
-
-  // const dropdownData = [
-  //   { title: 'DESEQˇ', items: ['Deseq2', 'Deseq2 Statistics', 'Deseq2 GSEA', 'Reactome Result'] },
-  //   { title: 'Feature Generation', items: ['General GSEA', 'WGCNA'] },
-  //   { title: 'Modeling', items: ['Baseline Selection', 'Gene Collection', 'Gene Selection', 'Base Model'] },
-  // ];
-
-  //   const dropdownData = [
-  //   { title: 'DESEQ', items: ['Deseq2', 'Deseq2 Statistics', 'Deseq2 GSEA', 'Reactome Result'] },
-  //   { title: 'Deseq2 Statistics', items: ['General GSEA', 'WGCNA'] },
-  //   { title: 'Deseq2 GSEA', items: ['Baseline Selection', 'Gene Collection', 'Gene Selection', 'Base Model'] },
-  //   { title: 'Reactome Result', items: ['Baseline Selection', 'Gene Collection', 'Gene Selection', 'Base Model'] },
-  // ];
-
   const [deseq2Result, setDeseq2Result] = useState(null);
   const [deseq2GSEAResult, setDeseq2GSEAResult] = useState(null);
   const [reactomeResult, setReactomeResult] = useState(null);
@@ -282,13 +265,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   const [geneSelection, setGeneSelection] = useState(null);
   const [baseModel, setBaseModel] = useState(null);
   const [mlpModel, setMlpModel] = useState(null);
-
-
-
-
-
-
-
 
 
 
@@ -442,20 +418,8 @@ const ProjectPage = ({ setIsLoggedIn }) => {
         </UploadSection>
 
 
-        {/* <SectionTitle>Deseq2</SectionTitle>
-      <GridContainer>
-          {dropdownData.map((dropdown, index) => (
-            <Dropdown
-              key={index}
-              title={dropdown.title}
-              items={dropdown.items}
-              isOpen={openDropdowns[index] || false}
-              onToggle={() => toggleDropdown(index)}
-            />
-          ))}
-        </GridContainer> */}
 
-        <SectionTitle>Preprocess</SectionTitle>
+        {/* <SectionTitle>Preprocess</SectionTitle>
         <PreprocessContainer>
           {[
             {
@@ -485,17 +449,36 @@ const ProjectPage = ({ setIsLoggedIn }) => {
               onCheckChange={() => handleCheckChange(index)}
             />
           ))}
-        </PreprocessContainer>
+        </PreprocessContainer> */}
 
         {/* <PreprocessResult projectId={projectId} /> */}
 
-        <SectionTitle onClick={() => toggleDropdown('result_preprocess')}>
+
+        {/* <SectionTitle>Preprocess</SectionTitle>
+      <GridContainer>
+        <Preprocesssection>
+          <GenericAnalysis
+            title="Preprocess"
+            config={analysisConfigs.preprocess}
+            apiFunction={(params) => fetchPlotData(projectId, params)}
+            onResult={setPreprocessResult}
+          />
+        </Preprocesssection>
+      </GridContainer> */}
+
+        {/* <SectionTitle onClick={() => toggleDropdown('result_preprocess')}>
           Preprocess Result
           <span>{openDropdowns['result_preprocess'] ? '▲' : '▼'}</span>
         </SectionTitle>
         {openDropdowns['result_preprocess'] && <PreprocessResult />}
+ */}
+
+<PreprocessComponent projectId={projectId} />
 
 
+
+
+  
 
 
 
