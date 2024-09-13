@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { FaHome, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 
 const SidebarContainer = styled.div`
-  width: ${(props) => (props.isOpen ? '200px' : '80px')}; /* Control the sidebar width */
+  width: ${(props) => (props.isOpen ? '200px' : '80px')}; 
   background-color: #333;
   padding: 20px;
   display: flex;
@@ -41,28 +41,30 @@ const SidebarItem = styled(Link)`
   }
 `;
 
+const LogoContainer = styled.div`
+  padding: 10px;
+  margin-bottom: 30px;
+  text-align: center;
+  width: 100%;
+
+  img {
+    width: ${(props) => (props.isOpen ? '150px' : '50px')};
+    transition: width 0.3s ease;
+  }
+`;
+
 const Sidebar = ({ isOpen, setIsOpen , setIsLoggedIn }) => {
 
 
-  const navigate = useNavigate(); // Use react-router-dom hook for navigation
+  const navigate = useNavigate(); 
 
   const handleLogout = () => {
-    // Log the current state of the token before removing it
     console.log('Token before logout:', localStorage.getItem('token'));
-    
-    // Clear the token from localStorage
     localStorage.removeItem('token');
-    
-    // Log the state of the token after removing it
     console.log('Token after logout:', localStorage.getItem('token'));
-
     setIsLoggedIn(false);
-  
-    // Navigate to the login page
-    navigate('/'); // Redirect to the login page (assumed as "/")
-
-      // Log navigation event
-      console.log('Navigating to login page...');
+    navigate('/'); 
+    console.log('Navigating to login page...');
 
   };
 
@@ -73,6 +75,12 @@ const Sidebar = ({ isOpen, setIsOpen , setIsLoggedIn }) => {
       onMouseLeave={() => setIsOpen(false)}
       isOpen={isOpen}
     >
+
+<LogoContainer isOpen={isOpen}>
+        <img src="genenetlogo_small.png" alt="Genenet Logo" />
+      </LogoContainer>
+
+
       <SidebarItem to="/" isOpen={isOpen}>
         <FaHome />
         <span>Home</span>
@@ -89,10 +97,6 @@ const Sidebar = ({ isOpen, setIsOpen , setIsLoggedIn }) => {
         <span>Settings</span>
       </SidebarItem>
 
-      {/* <SidebarItem to="/" isOpen={isOpen}>
-        <FaSignOutAlt />
-        <span>Logout</span>
-      </SidebarItem> */}
 
 <SidebarItem as="div" onClick={handleLogout} isOpen={isOpen}>
         <FaSignOutAlt />

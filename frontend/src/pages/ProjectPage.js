@@ -632,8 +632,9 @@ const ProjectPage = ({ setIsLoggedIn }) => {
                 />
               </ReactomeItem>
 
+            </GridContainer>
 
-              <div>
+            <div>
                 <ShowButton onClick={() => setModelShowResults(!modelShowResults)}>
                   {modelShowResults ? 'Hide Results' : 'Show Results'}
                 </ShowButton>
@@ -648,13 +649,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
                 )}
 
               </div>
-
-
-
-
-
-
-            </GridContainer>
 
 
 
