@@ -235,6 +235,18 @@ const ResultContainer = styled.div`
   border-radius: 8px;
 `;
 
+const Footer = styled.footer`
+  text-align: center;
+  padding: 10px 0;
+  background-color: #fff;
+  color: #333;
+  font-size: 0.9em;
+  border-top: 1px solid #ddd;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+`;
+
 
 const ProjectPage = ({ setIsLoggedIn }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -665,6 +677,12 @@ const ProjectPage = ({ setIsLoggedIn }) => {
           </GridContainer>
 
       </MainContent>
+
+      <Footer>
+        © Copyright Genenet Technology (UK). All Rights Reserved.
+      </Footer>
+
+      
     </Layout>
   );
 };

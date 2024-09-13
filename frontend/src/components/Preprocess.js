@@ -328,8 +328,21 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useMutation } from 'react-query';
-import { submitPreprocess } from '../api';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa'; // 用於顯示箭頭圖標
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { submitPreprocess, fetchPreprocessBarPlot, fetchPreprocessViolinPlot, fetchPreprocessHeatmap } from '../api';
+
+// const TitleContainer = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   cursor: pointer;
+//   padding: 10px;
+//   border: 1px solid #ddd;
+//   border-radius: 5px;
+//   font-size: 2rem;
+//   font-weight: bold;
+//   position: relative;
+// `;
 
 const TitleContainer = styled.div`
   display: flex;
@@ -337,12 +350,22 @@ const TitleContainer = styled.div`
   align-items: center;
   cursor: pointer;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
   position: relative;
+  
+  /* 添加下劃線 */
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px; /* 粗細 */
+    background-color: black; 
+  }
 `;
+
 
 const Icon = styled.div`
   position: absolute;
@@ -386,7 +409,7 @@ const SubmitButton = styled.button`
   grid-column: 1 / -1;
   padding: 10px 20px;
   font-size: 1.2rem;
-  background-color: #4caf50;
+  background-color: black;
   color: white;
   border: none;
   border-radius: 5px;
@@ -398,9 +421,48 @@ const SubmitButton = styled.button`
   }
 `;
 
-const PreprocessComponent = ({ projectId }) => {
-  const [isOpen, setIsOpen] = useState(false); // 管理折疊狀態
-  const mutation = useMutation((params) => submitPreprocess(projectId, params));
+const PlotContainer = styled.div`
+  margin-top: 40px;
+  text-align: center;
+`;
+
+const PlotImage = styled.img`
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+`;
+
+
+
+  const PreprocessComponent = ({ projectId }) => {
+    const [isOpen, setIsOpen] = useState(false); 
+    const [barPlotUrl, setBarPlotUrl] = useState(null);
+    const [violinPlotUrl, setViolinPlotUrl] = useState(null);
+    const [heatmapUrl, setHeatmapUrl] = useState(null);
+  
+    const mutation = useMutation((params) => submitPreprocess(projectId, params), {
+      onSuccess: async () => {
+        console.log('Preprocess Success');
+        try {
+          const barPlotResponse = await fetchPreprocessBarPlot(projectId, {});
+          const violinPlotResponse = await fetchPreprocessViolinPlot(projectId, {});
+          const heatmapResponse = await fetchPreprocessHeatmap(projectId);
+  
+          setBarPlotUrl(barPlotResponse.url);
+          setViolinPlotUrl(violinPlotResponse.url);
+          setHeatmapUrl(heatmapResponse.url);
+        } catch (error) {
+          console.error('Error fetching plots:', error);
+        }
+      },
+      onError: (error) => {
+        console.error('Preprocess Error', error);
+      },
+    });
+
+
 
   const handleSubmit = () => {
     const params = {
@@ -493,6 +555,12 @@ const PreprocessComponent = ({ projectId }) => {
         {mutation.isError && <p>Error occurred</p>}
         {mutation.isSuccess && <p>Preprocess completed!</p>}
       </FormContainer>
+
+      <PlotContainer>
+        {barPlotUrl && <PlotImage src={barPlotUrl} alt="Bar Plot" />}
+        {violinPlotUrl && <PlotImage src={violinPlotUrl} alt="Violin Plot" />}
+        {heatmapUrl && <PlotImage src={heatmapUrl} alt="Heatmap" />}
+      </PlotContainer>
     </>
   );
 };
