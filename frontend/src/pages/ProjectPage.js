@@ -92,6 +92,7 @@ const SectionTitle = styled.h2`
   font-weight: bold;
   margin-bottom: 20px;
   text-transform: uppercase;
+  textAlign: center;
 `;
 
 const SectionItem = styled.div`
@@ -233,7 +234,6 @@ const ResultContainer = styled.div`
 const Footer = styled.footer`
   text-align: center;
   padding: 10px 0;
-  background-color: #fff;
   color: #333;
   font-size: 0.9em;
   border-top: 1px solid #ddd;
@@ -304,9 +304,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
     },
   });
 
-  // const handleFileChange = (setter) => (event) => {
-  //   setter(event.target.files[0]);
-  // };
+
 
   const handleFileChange = (setter) => (event) => {
     const file = event.target.files[0];
@@ -335,19 +333,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
     });
   };
 
-
-  // const handleUpload = (file, type) => {
-  //   mutation.mutate({ file, projectId, type });
-  // };
-
-  // const handleUpload = (file, type) => {
-  //   const projectId = localStorage.getItem('projectId'); 
-  //   mutation.mutate({
-  //     file: file,
-  //     projectId: projectId,
-  //     type: type
-  //   });
-  // };
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -426,59 +411,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
 
-        {/* <SectionTitle>Preprocess</SectionTitle>
-        <PreprocessContainer>
-          {[
-            {
-              title: 'Preprocess',
-              items: [
-                'sample_col',
-                'raw_gene_col',
-                'response_col',
-                'min_val',
-                'min_percent',
-                'select_meta_groupby_cols',
-                'control_col',
-                'control_val',
-                'vehicle_control_val',
-                'gene_col',
-                'target_col',
-              ],
-            },
-          ].map((dropdown, index) => (
-            <Dropdown
-              key={index}
-              title={dropdown.title}
-              items={dropdown.items}
-              isOpen={openDropdowns[index] || false}
-              onToggle={() => toggleDropdown(index)}
-              checked={checkedItems[index] || false}
-              onCheckChange={() => handleCheckChange(index)}
-            />
-          ))}
-        </PreprocessContainer> */}
-
-        {/* <PreprocessResult projectId={projectId} /> */}
-
-
-        {/* <SectionTitle>Preprocess</SectionTitle>
-      <GridContainer>
-        <Preprocesssection>
-          <GenericAnalysis
-            title="Preprocess"
-            config={analysisConfigs.preprocess}
-            apiFunction={(params) => fetchPlotData(projectId, params)}
-            onResult={setPreprocessResult}
-          />
-        </Preprocesssection>
-      </GridContainer> */}
-
-        {/* <SectionTitle onClick={() => toggleDropdown('result_preprocess')}>
-          Preprocess Result
-          <span>{openDropdowns['result_preprocess'] ? '▲' : '▼'}</span>
-        </SectionTitle>
-        {openDropdowns['result_preprocess'] && <PreprocessResult />}
- */}
 
 <PreprocessComponent projectId={projectId} />
 
