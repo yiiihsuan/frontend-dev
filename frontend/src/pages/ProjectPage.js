@@ -671,11 +671,13 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
           </GridContainer>
 
-      </MainContent>
-
-      <div>
+          <div>
     © Copyright Genenet Technology (UK). All Rights Reserved.
   </div>
+
+      </MainContent>
+
+
 
       
     </Layout>
