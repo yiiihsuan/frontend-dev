@@ -36,7 +36,6 @@ import PreprocessComponent from '../components/Preprocess';  // 引入 Preproces
 const Layout = styled.div`
   display: flex;
   height: 100vh; 
-  flex-direction: column;
 `;
 
 const MainContent = styled.div`
@@ -45,10 +44,6 @@ const MainContent = styled.div`
   overflow-y: auto;
   background-color: #f0f0f0; 
 `;
-
-
-
-
 
 
 
@@ -246,9 +241,6 @@ const Footer = styled.footer`
   bottom: 0;
   width: 100%;
 `;
-
-
-
 
 
 const ProjectPage = ({ setIsLoggedIn }) => {
@@ -681,9 +673,9 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
       </MainContent>
 
-      <Footer>
-        © Copyright Genenet Technology (UK). All Rights Reserved.
-      </Footer>
+      <div>
+    © Copyright Genenet Technology (UK). All Rights Reserved.
+  </div>
 
       
     </Layout>
