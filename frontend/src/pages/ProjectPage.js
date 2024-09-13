@@ -11,7 +11,7 @@ import PreprocessResult from '../components/PreprocessResult';
 import ResultModal from '../components/ResultModal';
 
 import GenericAnalysis from '../components/GenericAnalysis';
-import { submitDeseq2, submitDeseqGSEA, submitDeseqStats, submitGeneralGSEA, submitWGCNA,submitBaselineSelection,submitGeneCollection,submitGeneSelection,trainAndEvaluateBaseModel,trainAndEvaluateMlpModel,runReactomeAndStatus } from '../api'; 
+import { submitDeseq2, submitDeseqGSEA, submitDeseqStats, submitGeneralGSEA, submitWGCNA, submitBaselineSelection, submitGeneCollection, submitGeneSelection, trainAndEvaluateBaseModel, trainAndEvaluateMlpModel, runReactomeAndStatus } from '../api';
 import { analysisConfigs } from '../config/analysisConfigs';
 import DeseqGSEA from '../components/Deseq2/DeseqGSEA.js';
 import DeseqStats from '../components/Deseq2/DeseqStats.js';
@@ -23,7 +23,7 @@ import MlpModel from '../components/Model/MLPModel.js';
 import DeseqReactome from '../components/Deseq2/Reactome.js';
 
 import PreprocessComponent from '../components/Preprocess';  // 引入 PreprocessComponent
-import {  FaChevronUp } from 'react-icons/fa';
+import { FaChevronUp } from 'react-icons/fa';
 
 
 
@@ -313,6 +313,11 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   const [baseModel, setBaseModel] = useState(null);
   const [mlpModel, setMlpModel] = useState(null);
 
+  const [deseqShowResults, setDeseqShowResults] = useState(false); // Deseq2 show/hide state
+  const [featureGenShowResults, setFeatureGenShowResults] = useState(false); // Feature Generation show/hide state
+  const [modelShowResults, setModelShowResults] = useState(false); // Modeling show/hide state
+
+
 
 
 
@@ -401,7 +406,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
   return (
     <Layout>
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} setIsLoggedIn={setIsLoggedIn}/>
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} setIsLoggedIn={setIsLoggedIn} />
       <MainContent>
         <Title>{`Project ${projectId}`}</Title>
 
@@ -452,222 +457,221 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
 
-<PreprocessComponent projectId={projectId} />
+        <PreprocessComponent projectId={projectId} />
 
 
 
 
-  
 
-  
-      <TitleContainer onClick={() => setIsProcessOpen(!isProcessOpen)}>
-  process selection
-  <Icon>
-    {isProcessOpen ? <FaChevronUp /> : <FaChevronDown />}
-  </Icon>
-</TitleContainer>
 
 
-{isProcessOpen && (
-  <FormContainer>
+        <TitleContainer onClick={() => setIsProcessOpen(!isProcessOpen)}>
+          process selection
+          <Icon>
+            {isProcessOpen ? <FaChevronUp /> : <FaChevronDown />}
+          </Icon>
+        </TitleContainer>
 
-     {/* Deseq2 Section */}
-     <SectionTitle>Deseq2</SectionTitle>
-        <GridContainer>
-          <Deseq2Item>
-            <GenericAnalysis
-              title="Deseq2"
-              config={analysisConfigs.deseq2}
-              apiFunction={(params) => submitDeseq2(projectId, params)}
-              onResult={setDeseq2Result}
-            />
-          </Deseq2Item>
 
+        {isProcessOpen && (
+          <FormContainer>
 
+            {/* Deseq2 Section */}
+            <SectionTitle>Deseq2</SectionTitle>
+            <GridContainer>
+              <Deseq2Item>
+                <GenericAnalysis
+                  title="Deseq2"
+                  config={analysisConfigs.deseq2}
+                  apiFunction={(params) => submitDeseq2(projectId, params)}
+                  onResult={setDeseq2Result}
+                />
+              </Deseq2Item>
 
-          <Deseq2StaticsItem>
-            <GenericAnalysis
-              title="Deseq2 Statistics"
-              apiFunction={() => submitDeseqStats(projectId)}
-              onResult={setDeseq2Statistics}
-              parseFunction={parseDeseqStats}
-            />
-          </Deseq2StaticsItem>
 
-          <Deseq2GSEAItem>
-            <GenericAnalysis
-              title="Deseq2 GSEA"
-              config={analysisConfigs.deseq2GSEA}
-              apiFunction={(params) => submitDeseqGSEA(projectId, params)}
-              onResult={setDeseq2GSEAResult}
-            />
-          </Deseq2GSEAItem>
 
+              <Deseq2StaticsItem>
+                <GenericAnalysis
+                  title="Deseq2 Statistics"
+                  apiFunction={() => submitDeseqStats(projectId)}
+                  onResult={setDeseq2Statistics}
+                  parseFunction={parseDeseqStats}
+                />
+              </Deseq2StaticsItem>
 
-          <ReactomeItem>
-            <GenericAnalysis
-              title="Reactome Result"
-              //config={analysisConfigs.deseq2Reactome}
-              apiFunction={() => runReactomeAndStatus(projectId)}
-             onResult={setReactomeResult} 
-            />
-          </ReactomeItem>
+              <Deseq2GSEAItem>
+                <GenericAnalysis
+                  title="Deseq2 GSEA"
+                  config={analysisConfigs.deseq2GSEA}
+                  apiFunction={(params) => submitDeseqGSEA(projectId, params)}
+                  onResult={setDeseq2GSEAResult}
+                />
+              </Deseq2GSEAItem>
 
-        </GridContainer>
 
+              <ReactomeItem>
+                <GenericAnalysis
+                  title="Reactome Result"
+                  //config={analysisConfigs.deseq2Reactome}
+                  apiFunction={() => runReactomeAndStatus(projectId)}
+                  onResult={setReactomeResult}
+                />
+              </ReactomeItem>
 
+            </GridContainer>
 
-        <div>
-          <ShowButton onClick={() => setShowResults(!showResults)}>
-            {showResults ? 'Hide Results' : 'Show Results'}
-          </ShowButton>
 
-          {showResults && deseq2GSEAResult && (
-            <DeseqGSEA resultData={deseq2GSEAResult} />
-          )}
 
-          {showResults && deseq2Statistics && (
-            <DeseqStats resultData={deseq2Statistics} />
-          )}
+            <div>
+              <ShowButton onClick={() => setDeseqShowResults(!deseqShowResults)}>
+                {deseqShowResults ? 'Hide Results' : 'Show Results'}
+              </ShowButton>
 
+              {deseqShowResults && deseq2GSEAResult && (
+                <DeseqGSEA resultData={deseq2GSEAResult} />
+              )}
 
+              {deseqShowResults && deseq2Statistics && (
+                <DeseqStats resultData={deseq2Statistics} />
+              )}
 
-{showResults && reactomeResult && (
-            <DeseqReactome resultData={reactomeResult} />
-          )}
+              {deseqShowResults && reactomeResult && (
+                <DeseqReactome resultData={reactomeResult} />
+              )}
 
+            </div>
 
 
-          {showResults && generalGSEAResult && (
-            <GSEANoDeseq resultData={generalGSEAResult} />
-          )}
+            {/* Feature Generation Section */}
+            <SectionTitle>Feature Generation</SectionTitle>
+            <GridContainer>
+              <GenericAnalysis
+                title="General GSEA"
+                config={analysisConfigs.GeneralGSEA}
+                apiFunction={(params) => submitGeneralGSEA(projectId, params)}
+                onResult={setGeneralGSEAResult}
+              />
 
-          {showResults && wgcnaResult && (
-            <WGCNAResults resultData={wgcnaResult} />
-          )}
+              <GenericAnalysis
+                title="WGCNA"
+                config={analysisConfigs.WGCNA}
+                apiFunction={(params) => submitWGCNA(projectId, params)}
+                onResult={setWgcnaResult}
+              />
+            </GridContainer>
 
+            <div>
+              <ShowButton onClick={() => setFeatureGenShowResults(!featureGenShowResults)}>
+                {featureGenShowResults ? 'Hide Results' : 'Show Results'}
+              </ShowButton>
 
-{showResults && baseModel && (
-            <BaseModel resultData={baseModel} />
-          )}
+              {featureGenShowResults && generalGSEAResult && (
+                <GSEANoDeseq resultData={generalGSEAResult} />
+              )}
 
+              {featureGenShowResults && wgcnaResult && (
+                <WGCNAResults resultData={wgcnaResult} />
+              )}
+            </div>
 
 
+            <SectionTitle>Modeling</SectionTitle>
+            <GridContainer>
 
-{showResults && mlpModel && (
-            <MlpModel resultData={mlpModel} />
-          )}
 
+              <Deseq2Item>
+                <GenericAnalysis
+                  title="Baseline Selection"
+                  config={analysisConfigs.baselineSelection}
+                  apiFunction={(params) => submitBaselineSelection(projectId, params)}
+                  onResult={setBaselineSelectionResult}
+                />
+              </Deseq2Item>
 
 
 
-        </div>
+              <Deseq2Item>
+                <GenericAnalysis
+                  title="Gene Collection"
+                  config={analysisConfigs.geneCollection}
+                  apiFunction={(params) => submitGeneCollection(projectId, params)}
+                  onResult={setGeneCollectionResult}
+                />
+              </Deseq2Item>
 
 
 
+              {/* this block is for model */}
+              <Deseq2StaticsItem>
+                <GenericAnalysis
+                  title="Gene Selection"
+                  config={analysisConfigs.geneSelection}
+                  apiFunction={(params) => submitGeneSelection(projectId, params)}
+                  onResult={setGeneSelection}
+                />
+              </Deseq2StaticsItem>
 
 
 
+              <Deseq2GSEAItem>
+                <GenericAnalysis
+                  title="Base Model"
+                  config={analysisConfigs.baseModel}
+                  apiFunction={(params) => trainAndEvaluateBaseModel(projectId, params)}
+                  onResult={setBaseModel}
+                />
+              </Deseq2GSEAItem>
 
 
-        {/* Feature Generation Section */}
-        <SectionTitle>Feature Generation</SectionTitle>
-        <GridContainer>
-          <GenericAnalysis
-            title="General GSEA"
-            config={analysisConfigs.GeneralGSEA}
-            apiFunction={(params) => submitGeneralGSEA(projectId, params)}
-            onResult={setGeneralGSEAResult}
-          />
+              <ReactomeItem>
+                <GenericAnalysis
+                  title="MLP Model"
+                  config={analysisConfigs.MLPModel}
+                  apiFunction={(params) => trainAndEvaluateMlpModel(projectId, params)}
+                  onResult={setMlpModel}
+                />
+              </ReactomeItem>
 
-          <GenericAnalysis
-            title="WGCNA"
-            config={analysisConfigs.WGCNA}
-            apiFunction={(params) => submitWGCNA(projectId, params)}
-            onResult={setWgcnaResult}
-          />
-        </GridContainer>
 
+              <div>
+                <ShowButton onClick={() => setModelShowResults(!modelShowResults)}>
+                  {modelShowResults ? 'Hide Results' : 'Show Results'}
+                </ShowButton>
 
-<SectionTitle>Modeling</SectionTitle>
-        <GridContainer>
 
+                {modelShowResults && baseModel && (
+                  <BaseModel resultData={baseModel} />
+                )}
 
-          <Deseq2Item> 
-            <GenericAnalysis
-              title="Baseline Selection"
-              config={analysisConfigs.baselineSelection}
-              apiFunction={(params) => submitBaselineSelection(projectId, params)}
-              onResult={setBaselineSelectionResult}
-            />
-          </Deseq2Item>
+                {modelShowResults && mlpModel && (
+                  <MlpModel resultData={mlpModel} />
+                )}
 
+              </div>
 
-    
-          <Deseq2Item> 
-            <GenericAnalysis
-              title="Gene Collection"
-              config={analysisConfigs.geneCollection}
-              apiFunction={(params) => submitGeneCollection(projectId, params)}
-              onResult={setGeneCollectionResult}
-            />
-          </Deseq2Item>
 
-      
-          
-          {/* this block is for model */}
-          <Deseq2StaticsItem> 
-            <GenericAnalysis
-              title="Gene Selection"
-              config={analysisConfigs.geneSelection}
-              apiFunction={(params) => submitGeneSelection(projectId, params)}
-              onResult={setGeneSelection}
-            />
-          </Deseq2StaticsItem>
 
-        
 
-          <Deseq2GSEAItem>
-            <GenericAnalysis
-              title="Base Model"
-              config={analysisConfigs.baseModel}
-              apiFunction={(params) => trainAndEvaluateBaseModel(projectId, params)}
-              onResult={setBaseModel}
-            />
-          </Deseq2GSEAItem>
 
-       
-          <ReactomeItem>
-            <GenericAnalysis
-              title="MLP Model"
-              config={analysisConfigs.MLPModel}
-              apiFunction={(params) => trainAndEvaluateMlpModel(projectId, params)}
-              onResult={setMlpModel}
-            />
-          </ReactomeItem>
 
-      
+            </GridContainer>
 
 
 
-          </GridContainer>
+          </FormContainer>)}
 
 
 
-  </FormContainer>)}
 
-
-       
-
-          <Footer>
-        © Copyright Genenet Technology (UK). All Rights Reserved.
-      </Footer>
+        <Footer>
+          © Copyright Genenet Technology (UK). All Rights Reserved.
+        </Footer>
 
       </MainContent>
 
 
 
-      
+
     </Layout>
   );
 };
