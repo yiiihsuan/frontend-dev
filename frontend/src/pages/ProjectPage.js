@@ -458,12 +458,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
   
-<TitleContainer onClick={() => setIsProcessOpen(!isProcessOpen)}>
-        process selection
-        <Icon>
-          {isProcessOpen ? <FaChevronUp /> : <FaChevronDown />}
-        </Icon>
-      </TitleContainer>
 
   
       <TitleContainer onClick={() => setIsProcessOpen(!isProcessOpen)}>
@@ -475,10 +469,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
   <FormContainer>
-
-
-
-
      {/* Deseq2 Section */}
      <SectionTitle>Deseq2</SectionTitle>
         <GridContainer>
