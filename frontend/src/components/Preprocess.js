@@ -440,19 +440,33 @@ const PlotImage = styled.img`
     const [isOpen, setIsOpen] = useState(false); 
     const [barPlotUrl, setBarPlotUrl] = useState(null);
     const [violinPlotUrl, setViolinPlotUrl] = useState(null);
+    const [violinLogPlotUrl, setViolinLogPlotUrl] = useState(null);
     const [heatmapUrl, setHeatmapUrl] = useState(null);
   
     const mutation = useMutation((params) => submitPreprocess(projectId, params), {
       onSuccess: async () => {
         console.log('Preprocess Success');
         try {
-          const barPlotResponse = await fetchPreprocessBarPlot(projectId, {});
-          const violinPlotResponse = await fetchPreprocessViolinPlot(projectId, {});
-          const heatmapResponse = await fetchPreprocessHeatmap(projectId);
-  
-          setBarPlotUrl(barPlotResponse.url);
-          setViolinPlotUrl(violinPlotResponse.url);
-          setHeatmapUrl(heatmapResponse.url);
+        const barPlotResponse = await fetchPreprocessBarPlot(projectId, {});
+        const violinPlotResponse = await fetchPreprocessViolinPlot(projectId, {
+          "target_col": "beat_per_min",
+          "sample_col": "sample",
+          "control_col": "drug",
+          "log_transform": false, 
+        });
+        const violinLogPlotResponse = await fetchPreprocessViolinPlot(projectId, {
+          "target_col": "beat_per_min",
+          "sample_col": "sample",
+          "control_col": "drug",
+          "log_transform": true, 
+        });
+        const heatmapResponse = await fetchPreprocessHeatmap(projectId);
+
+   
+        setBarPlotUrl(barPlotResponse.url);
+        setViolinPlotUrl(violinPlotResponse.url);
+        setViolinLogPlotUrl(violinLogPlotResponse.url);  
+        setHeatmapUrl(heatmapResponse.url);
         } catch (error) {
           console.error('Error fetching plots:', error);
         }
@@ -559,6 +573,7 @@ const PlotImage = styled.img`
       <PlotContainer>
         {barPlotUrl && <PlotImage src={barPlotUrl} alt="Bar Plot" />}
         {violinPlotUrl && <PlotImage src={violinPlotUrl} alt="Violin Plot" />}
+        {violinLogPlotUrl && <PlotImage src={violinLogPlotUrl} alt="Log Violin Plot" />}
         {heatmapUrl && <PlotImage src={heatmapUrl} alt="Heatmap" />}
       </PlotContainer>
     </>

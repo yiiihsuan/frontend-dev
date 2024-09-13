@@ -671,9 +671,9 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
           </GridContainer>
 
-          <div>
-    © Copyright Genenet Technology (UK). All Rights Reserved.
-  </div>
+          <Footer>
+        © Copyright Genenet Technology (UK). All Rights Reserved.
+      </Footer>
 
       </MainContent>
 
