@@ -248,6 +248,7 @@ const Footer = styled.footer`
   position: relative;
   bottom: 0;
   width: 100%;
+  margin-top: 20px;
 `;
 
 const TitleContainer = styled.div`
@@ -292,12 +293,12 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   const [openDropdowns, setOpenDropdowns] = useState({});
   const [checkedItems, setCheckedItems] = useState({});
 
-  const [dropdownStates, setDropdownStates] = useState({
-    preprocess: false,
-    deseq: false,
-    featureGeneration: false,
-    modeling: false,
-  });
+  // const [dropdownStates, setDropdownStates] = useState({
+  //   preprocess: false,
+  //   deseq: false,
+  //   featureGeneration: false,
+  //   modeling: false,
+  // });
 
   const [deseq2Selected, setDeseq2Selected] = useState(false);
   const [deseq2Result, setDeseq2Result] = useState(null);

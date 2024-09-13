@@ -1,70 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import Dropdown from './ParameterSection.js';
-// import { useMutation } from 'react-query';
-// import { FaCheckCircle } from 'react-icons/fa';
-
-// const GenericAnalysis = ({ title, config = {}, apiFunction }) => {
-//   const { items = [], defaultValues = {} } = config; // 确保items和defaultValues始终有默认值
-//   const [openDropdown, setOpenDropdown] = useState(false);
-//   const [checked, setChecked] = useState(false);
-//   const [submitResult, setSubmitResult] = useState(null);
-//   const [submitted, setSubmitted] = useState(false); // State to track if submitted
-
-
-//   const [inputValues, setInputValues] = useState(
-//     items.map(item => defaultValues[item] || '')
-//   );
-
-
-//   const { mutate: submitAnalysis } = useMutation(apiFunction, {
-//     onSuccess: (data) => {
-//       console.log(`${title} analysis completed:`, data);
-//       setSubmitResult("Success! Analysis has been submitted.");
-//       setSubmitted(true); // Mark as submitted
-//       setOpenDropdown(false); // Close dropdown after successful submission
-//     },
-//     onError: (error) => {
-//       console.error('Error:', error);
-//       setSubmitResult("Failed to submit analysis.");
-//     }
-//   });
-
-//   const handleSubmit = () => {
-//     const params = items.reduce((acc, item, index) => {
-//       acc[item] = inputValues[index];
-//       return acc;
-//     }, {});
-//     submitAnalysis(params);
-//   };
-
-//   const toggleDropdown = () => {
-//     if (!submitted) {
-//       setOpenDropdown(!openDropdown);
-//     }
-//   };
-
-
-//   return (
-//     <div>
-//       <Dropdown
-//         title={submitted ? <><FaCheckCircle style={{ color: 'green', marginRight: '5px' }} /> {title} - Submitted</> : title}
-//         items={items}
-//         defaultValues={defaultValues}
-//         isOpen={openDropdown}
-//         onToggle={toggleDropdown}
-//         checked={checked}
-//         onCheckChange={() => setChecked(!checked)}
-//         onSubmit={handleSubmit}
-//       />
-//       {submitResult && <div>{submitResult}</div>}
-//     </div>
-//   );
-// };
-
-// export default GenericAnalysis;
-
-
-
 // 目前的是送出api之後他會在原地等待 然後等response完成後才說submittted跟折疊
 // import React, { useState } from 'react';
 // import Dropdown from './ParameterSection';
@@ -249,7 +182,7 @@ const GenericAnalysis = ({ title, config = {}, apiFunction, onResult, parseFunct
   const [checked, setChecked] = useState(false);
   const [submitResult, setSubmitResult] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-  const [isAnalyzing, setIsAnalyzing] = useState(false); // New state for showing analyzing text
+  const [isAnalyzing, setIsAnalyzing] = useState(false); 
 
 
   const [inputValues, setInputValues] = useState(
