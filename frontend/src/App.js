@@ -19,15 +19,15 @@ function App() {
     <Router>
       <div>
         <Routes>
-            {/* <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <LoginPage onLogin={handleLogin} />} />
+            <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <LoginPage onLogin={handleLogin} />} />
              <Route path="/sign-up" element={<SignUpPage />} />  
             <Route path="/home" element={isLoggedIn ? <HomePage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
             <Route path="/project/:projectId" element={isLoggedIn ? <ProjectPage setIsLoggedIn={setIsLoggedIn}/> : <Navigate to="/" />} />
-             */}
             
-            <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
+            
+            {/* <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
             <Route path="/home" element={<HomePage />} />
-            <Route path="/project/:projectId" element={<ProjectPage />} />
+            <Route path="/project/:projectId" element={<ProjectPage />} /> */}
         </Routes>
       </div>
     </Router>
