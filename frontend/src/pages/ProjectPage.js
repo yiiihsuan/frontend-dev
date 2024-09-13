@@ -23,6 +23,7 @@ import MlpModel from '../components/Model/MLPModel.js';
 import DeseqReactome from '../components/Deseq2/Reactome.js';
 
 import PreprocessComponent from '../components/Preprocess';  // 引入 PreprocessComponent
+import {  FaChevronUp } from 'react-icons/fa';
 
 
 
@@ -92,7 +93,7 @@ const SectionTitle = styled.h2`
   font-weight: bold;
   margin-bottom: 20px;
   text-transform: uppercase;
-  textAlign: center;
+  text-align: center;
 `;
 
 const SectionItem = styled.div`
@@ -110,9 +111,16 @@ const SectionItem = styled.div`
   }
 `;
 
-const IconWrapper = styled.div`
-  margin-left: 10px;
+// const IconWrapper = styled.div`
+//   margin-left: 10px;
+// `;
+
+const Icon = styled.div`
+  position: absolute;
+  right: 20px;
+  font-size: 1.2rem;
 `;
+
 
 
 
@@ -242,12 +250,44 @@ const Footer = styled.footer`
   width: 100%;
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 2rem;
+  font-weight: bold;
+  position: relative;
+  
+  /* 添加下劃線 */
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px; /* 粗細 */
+    background-color: black; 
+  }
+`;
+const FormContainer = styled.div`
+  display: ${(props) => (props.isProcessOpen ? 'grid' : 'none')};
+  grid-template-columns: repeat(3, 1fr);  
+  gap: 20px;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
+
 
 const ProjectPage = ({ setIsLoggedIn }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { projectId } = useParams();
   const [geneFile, setGeneFile] = useState(null);
   const [heartFile, setHeartFile] = useState(null);
+  const [isProcessOpen, setIsProcessOpen] = useState(false);
 
   const [openDropdowns, setOpenDropdowns] = useState({});
   const [checkedItems, setCheckedItems] = useState({});
@@ -418,11 +458,29 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
   
+<TitleContainer onClick={() => setIsProcessOpen(!isProcessOpen)}>
+        process selection
+        <Icon>
+          {isProcessOpen ? <FaChevronUp /> : <FaChevronDown />}
+        </Icon>
+      </TitleContainer>
+
+  
+      <TitleContainer onClick={() => setIsProcessOpen(!isProcessOpen)}>
+  process selection
+  <Icon>
+    {isProcessOpen ? <FaChevronUp /> : <FaChevronDown />}
+  </Icon>
+</TitleContainer>
+
+{isProcessOpen && (
+  <FormContainer>
 
 
 
-        {/* Deseq2 Section */}
-        <SectionTitle>Deseq2</SectionTitle>
+
+     {/* Deseq2 Section */}
+     <SectionTitle>Deseq2</SectionTitle>
         <GridContainer>
           <Deseq2Item>
             <GenericAnalysis
@@ -438,7 +496,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
           <Deseq2StaticsItem>
             <GenericAnalysis
               title="Deseq2 Statistics"
-              //apiFunction={submitDeseqStats} // 直接传递函数，不需要参数
               apiFunction={() => submitDeseqStats(projectId)}
               onResult={setDeseq2Statistics}
               parseFunction={parseDeseqStats}
@@ -602,6 +659,13 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
           </GridContainer>
+
+
+
+  </FormContainer>
+)}
+
+       
 
           <Footer>
         © Copyright Genenet Technology (UK). All Rights Reserved.
