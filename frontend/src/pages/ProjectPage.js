@@ -273,12 +273,12 @@ const TitleContainer = styled.div`
 `;
 const FormContainer = styled.div`
   display: ${(props) => (props.isProcessOpen ? 'grid' : 'none')};
-  grid-template-columns: repeat(3, 1fr);  
-  gap: 20px;
-  margin: 20px 0;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  // grid-template-columns: repeat(3, 1fr);  
+  // gap: 20px;
+  // margin: 20px 0;
+  // padding: 20px;
+  // border-radius: 8px;
+  // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
 
@@ -473,7 +473,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   </Icon>
 </TitleContainer>
 
-{isProcessOpen && (
+
   <FormContainer>
 
 
@@ -663,7 +663,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
   </FormContainer>
-)}
+
 
        
 
