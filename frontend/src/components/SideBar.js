@@ -23,7 +23,7 @@ const SidebarContainer = styled.div`
 const SidebarItem = styled(Link)`
   color: white;
   text-decoration: none;
-  margin-bottom: 20px;
+  margin-bottom: 30px; /* 增加間距 */
   font-family: 'Luckiest Guy', "Chocolate Classical Sans", sans-serif, cursive;
   font-size: 1.5em;
   display: flex;
@@ -53,6 +53,12 @@ const LogoContainer = styled.div`
   }
 `;
 
+const Icon = styled.div`
+  font-size: ${(props) => (props.isOpen ? '2.5em' : '1.8em')}; /* 調整圖標大小 */
+  transition: font-size 0.3s ease;
+`;
+
+
 const Sidebar = ({ isOpen, setIsOpen , setIsLoggedIn }) => {
 
 
@@ -76,30 +82,36 @@ const Sidebar = ({ isOpen, setIsOpen , setIsLoggedIn }) => {
       isOpen={isOpen}
     >
 
-<LogoContainer isOpen={isOpen}>
-        <img src="genenetlogo_small.png" alt="Genenet Logo" />
+     <LogoContainer isOpen={isOpen}>
+        <img src="/genenetlogo_small.png" alt="Genenet Logo" />
       </LogoContainer>
 
 
       <SidebarItem to="/" isOpen={isOpen}>
-        <FaHome />
+        <Icon isOpen={isOpen}>
+          <FaHome />
+        </Icon>
         <span>Home</span>
       </SidebarItem>
 
-
       <SidebarItem to="/profile" isOpen={isOpen}>
-        <FaUser />
+        <Icon isOpen={isOpen}>
+          <FaUser />
+        </Icon>
         <span>Profile</span>
       </SidebarItem>
-      
+
       <SidebarItem to="/settings" isOpen={isOpen}>
-        <FaCog />
+        <Icon isOpen={isOpen}>
+          <FaCog />
+        </Icon>
         <span>Settings</span>
       </SidebarItem>
 
-
-<SidebarItem as="div" onClick={handleLogout} isOpen={isOpen}>
-        <FaSignOutAlt />
+      <SidebarItem as="div" onClick={handleLogout} isOpen={isOpen}>
+        <Icon isOpen={isOpen}>
+          <FaSignOutAlt />
+        </Icon>
         <span>Logout</span>
       </SidebarItem>
 
