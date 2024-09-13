@@ -36,6 +36,7 @@ import PreprocessComponent from '../components/Preprocess';  // 引入 Preproces
 const Layout = styled.div`
   display: flex;
   height: 100vh; 
+  flex-direction: column;
 `;
 
 const MainContent = styled.div`
@@ -46,12 +47,11 @@ const MainContent = styled.div`
 `;
 
 
-// const GridContainer = styled.div`
-//   display: grid;
-//   grid-template-columns: repeat(3, 1fr); 
-//   gap: 20px;
-//   margin-bottom: 40px;
-// `;
+
+
+
+
+
 
 const GridContainer = styled.div`
   display: grid;
@@ -246,6 +246,9 @@ const Footer = styled.footer`
   bottom: 0;
   width: 100%;
 `;
+
+
+
 
 
 const ProjectPage = ({ setIsLoggedIn }) => {
