@@ -48,13 +48,13 @@ const LogoContainer = styled.div`
   width: 100%;
 
   img {
-    width: ${(props) => (props.isOpen ? '150px' : '50px')};
+    width: ${(props) => (props.isOpen ? '100px' : '80px')};
     transition: width 0.3s ease;
   }
 `;
 
 const Icon = styled.div`
-  font-size: ${(props) => (props.isOpen ? '2.5em' : '1.8em')}; /* 調整圖標大小 */
+  font-size: ${(props) => (props.isOpen ? '1.8em' : '2.3em')}; /* 調整圖標大小 */
   transition: font-size 0.3s ease;
 `;
 
