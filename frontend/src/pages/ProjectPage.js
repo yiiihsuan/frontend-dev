@@ -272,7 +272,7 @@ const TitleContainer = styled.div`
   }
 `;
 const FormContainer = styled.div`
-  display: ${(props) => (props.isProcessOpen ? 'grid' : 'none')};
+  //display: ${(props) => (props.isProcessOpen ? 'grid' : 'none')};
   // grid-template-columns: repeat(3, 1fr);  
   // gap: 20px;
   // margin: 20px 0;
@@ -468,7 +468,9 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 </TitleContainer>
 
 
+{isProcessOpen && (
   <FormContainer>
+
      {/* Deseq2 Section */}
      <SectionTitle>Deseq2</SectionTitle>
         <GridContainer>
@@ -652,7 +654,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
 
-  </FormContainer>
+  </FormContainer>)}
 
 
        
