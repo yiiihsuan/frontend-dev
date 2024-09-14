@@ -5,10 +5,10 @@
 // import styled from 'styled-components';
 // import { FaCloudUploadAlt, FaCheckCircle, FaChevronDown } from 'react-icons/fa';
 // import Sidebar from '../components/SideBar';
-// import CollapsibleSection from '../components/Parameters';
-// import Dropdown from '../components/ParameterSection';
-// import PreprocessResult from '../components/PreprocessResult';
-// import ResultModal from '../components/ResultModal';
+// // import CollapsibleSection from '../components/Parameters';
+// // import Dropdown from '../components/ParameterSection';
+// // import PreprocessResult from '../components/PreprocessResult';
+// // import ResultModal from '../components/ResultModal';
 
 // import GenericAnalysis from '../components/GenericAnalysis';
 // import { submitDeseq2, submitDeseqGSEA, submitDeseqStats, submitGeneralGSEA, submitWGCNA, submitBaselineSelection, submitGeneCollection, submitGeneSelection, trainAndEvaluateBaseModel, trainAndEvaluateMlpModel, runReactomeAndStatus } from '../api';
@@ -21,16 +21,8 @@
 // import BaseModel from '../components/Model/BaseModel.js';
 // import MlpModel from '../components/Model/MLPModel.js';
 // import DeseqReactome from '../components/Deseq2/Reactome.js';
-
-// import PreprocessComponent from '../components/Preprocess';  // 引入 PreprocessComponent
+// import PreprocessComponent from '../components/Preprocess';  
 // import { FaChevronUp } from 'react-icons/fa';
-
-
-
-
-
-
-
 
 
 
@@ -200,19 +192,6 @@
 //   }
 // `;
 
-// // const ShowButton = styled.button`
-// //   background-color: #4CAF50;
-// //   color: white;
-// //   border: none;
-// //   border-radius: 8px;
-// //   cursor: pointer;
-// //   padding: 10px 20px;
-// //   margin-top: 20px;
-
-// //   &:hover {
-// //     background-color: #45A049;
-// //   }
-// // `;
 
 // const ShowButton = styled.button`
 //   background-color: black;
@@ -319,25 +298,20 @@
 //   const [modelShowResults, setModelShowResults] = useState(false); // Modeling show/hide state
 
 
+//   // const toggleDropdown = (index) => {
+//   //   setOpenDropdowns((prevState) => ({
+//   //     ...prevState,
+//   //     [index]: !prevState[index],
+//   //   }));
+//   // };
 
 
-
-
-
-//   const toggleDropdown = (index) => {
-//     setOpenDropdowns((prevState) => ({
-//       ...prevState,
-//       [index]: !prevState[index],
-//     }));
-//   };
-
-
-//   const handleCheckChange = (index) => {
-//     setCheckedItems((prevState) => ({
-//       ...prevState,
-//       [index]: !prevState[index],
-//     }));
-//   };
+//   // const handleCheckChange = (index) => {
+//   //   setCheckedItems((prevState) => ({
+//   //     ...prevState,
+//   //     [index]: !prevState[index],
+//   //   }));
+//   // };
 
 
 //   const mutation = useMutation(uploadFile, {
@@ -675,6 +649,10 @@
 
 
 
+
+
+
+
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
@@ -682,10 +660,10 @@ import { uploadFile } from '../api';
 import styled from 'styled-components';
 import { FaCloudUploadAlt, FaCheckCircle, FaChevronDown } from 'react-icons/fa';
 import Sidebar from '../components/SideBar';
-import CollapsibleSection from '../components/Parameters';
-import Dropdown from '../components/ParameterSection';
-import PreprocessResult from '../components/PreprocessResult';
-import ResultModal from '../components/ResultModal';
+// import CollapsibleSection from '../components/Parameters';
+// import Dropdown from '../components/ParameterSection';
+// import PreprocessResult from '../components/PreprocessResult';
+// import ResultModal from '../components/ResultModal';
 
 import GenericAnalysis from '../components/GenericAnalysis';
 import { submitDeseq2, submitDeseqGSEA, submitDeseqStats, submitGeneralGSEA, submitWGCNA, submitBaselineSelection, submitGeneCollection, submitGeneSelection, trainAndEvaluateBaseModel, trainAndEvaluateMlpModel, runReactomeAndStatus } from '../api';
@@ -698,16 +676,8 @@ import WGCNAResults from '../components/FeatureGeneration/WGCNA.js';
 import BaseModel from '../components/Model/BaseModel.js';
 import MlpModel from '../components/Model/MLPModel.js';
 import DeseqReactome from '../components/Deseq2/Reactome.js';
-
-import PreprocessComponent from '../components/Preprocess';  // 引入 PreprocessComponent
+import PreprocessComponent from '../components/Preprocess';  
 import { FaChevronUp } from 'react-icons/fa';
-
-
-
-
-
-
-
 
 
 
@@ -877,19 +847,6 @@ const UploadButton = styled.button`
   }
 `;
 
-// const ShowButton = styled.button`
-//   background-color: #4CAF50;
-//   color: white;
-//   border: none;
-//   border-radius: 8px;
-//   cursor: pointer;
-//   padding: 10px 20px;
-//   margin-top: 20px;
-
-//   &:hover {
-//     background-color: #45A049;
-//   }
-// `;
 
 const ShowButton = styled.button`
   background-color: black;
@@ -960,20 +917,35 @@ const FormContainer = styled.div`
 `;
 
 
-const SectionContainer = ({ title, isOpen, toggleOpen, children }) => (
-  <>
-    <SectionTitle onClick={toggleOpen}>
-      {title}
-      <Icon>{isOpen ? <FaChevronUp /> : <FaChevronDown />}</Icon>
-    </SectionTitle>
-    {isOpen && <GridContainer>{children}</GridContainer>}
-  </>
-);
+const AnalysisSectionContainer = styled.div`
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+`;
+
+const SectionHeader = styled.div`
+  padding: 20px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+`;
+
+const SectionContent = styled.div`
+  padding: 20px;
+  display: ${(props) => (props.isOpen ? 'block' : 'none')};  /* 控制展開與收合 */
+`;
+
+const ParaIcon = styled.div`
+  font-size: 1.2rem;
+`;
 
 
 const ProjectPage = ({ setIsLoggedIn }) => {
-  //const [isOpen, setIsOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
+  const [isOpen, setIsOpen] = useState(false);
   const { projectId } = useParams();
   const [geneFile, setGeneFile] = useState(null);
   const [heartFile, setHeartFile] = useState(null);
@@ -1007,32 +979,30 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   const [featureGenShowResults, setFeatureGenShowResults] = useState(false); // Feature Generation show/hide state
   const [modelShowResults, setModelShowResults] = useState(false); // Modeling show/hide state
 
-
-  const [isDeseqOpen, setIsDeseqOpen] = useState(false);
-  const [isFeatureGenOpen, setIsFeatureGenOpen] = useState(false);
-  const [isModelOpen, setIsModelOpen] = useState(false);
+  const [isDeseqOpen, setIsDeseqOpen] = useState(false); // 控制 Deseq2 區塊的展開/收合
+  const [isFeatureGenOpen, setIsFeatureGenOpen] = useState(false); // 控制 Feature Generation 區塊的展開/收合
+  const [isModelOpen, setIsModelOpen] = useState(false); // 控制 Modeling 區塊的展開/收合
+  
 
   const toggleDeseqOpen = () => setIsDeseqOpen(!isDeseqOpen);
   const toggleFeatureGenOpen = () => setIsFeatureGenOpen(!isFeatureGenOpen);
   const toggleModelOpen = () => setIsModelOpen(!isModelOpen);
 
 
+  // const toggleDropdown = (index) => {
+  //   setOpenDropdowns((prevState) => ({
+  //     ...prevState,
+  //     [index]: !prevState[index],
+  //   }));
+  // };
 
 
-  const toggleDropdown = (index) => {
-    setOpenDropdowns((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index],
-    }));
-  };
-
-
-  const handleCheckChange = (index) => {
-    setCheckedItems((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index],
-    }));
-  };
+  // const handleCheckChange = (index) => {
+  //   setCheckedItems((prevState) => ({
+  //     ...prevState,
+  //     [index]: !prevState[index],
+  //   }));
+  // };
 
 
   const mutation = useMutation(uploadFile, {
@@ -1102,8 +1072,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
   return (
     <Layout>
-      {/* <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} setIsLoggedIn={setIsLoggedIn} /> */}
-      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} setIsLoggedIn={setIsLoggedIn} />
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} setIsLoggedIn={setIsLoggedIn} />
       <MainContent>
         <Title>{`Project ${projectId}`}</Title>
 
@@ -1172,88 +1141,208 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
         {isProcessOpen && (
           <FormContainer>
-        <SectionContainer
-          title="Deseq2"
-          isOpen={isDeseqOpen}
-          toggleOpen={toggleDeseqOpen}
-        >
-          <GenericAnalysis
-            title="Deseq2"
-            config={analysisConfigs.deseq2}
-            apiFunction={(params) => submitDeseq2(projectId, params)}
-          />
-          <GenericAnalysis
-            title="Deseq2 Statistics"
-            config={analysisConfigs.deseqStats}
-            apiFunction={() => submitDeseqStats(projectId)}
-          />
-          <GenericAnalysis
-            title="Deseq2 GSEA"
-            config={analysisConfigs.deseq2GSEA}
-            apiFunction={(params) => submitDeseqGSEA(projectId, params)}
-          />
-        </SectionContainer>
 
-        <ShowButton onClick={() => setDeseqShowResults(!deseqShowResults)}>
-          {deseqShowResults ? 'Hide Results' : 'Show Results'}
-        </ShowButton>
+            {/* Deseq2 Section */}
 
-        {deseqShowResults && <DeseqGSEA />}
-        {deseqShowResults && <DeseqStats />}
-        {deseqShowResults && <DeseqReactome />}
+              <AnalysisSectionContainer>
+      <SectionHeader onClick={toggleDeseqOpen}>
+        <SectionTitle>Deseq2</SectionTitle>
+        <Icon>{isDeseqOpen ? <FaChevronUp /> : <FaChevronDown />}</Icon>
+      </SectionHeader>
+      <SectionContent isOpen={isDeseqOpen}>
+        <GridContainer>
 
-        <SectionContainer
-          title="Feature Generation"
-          isOpen={isFeatureGenOpen}
-          toggleOpen={toggleFeatureGenOpen}
-        >
-          <GenericAnalysis
-            title="General GSEA"
-            config={analysisConfigs.GeneralGSEA}
-            apiFunction={(params) => submitGeneralGSEA(projectId, params)}
-          />
-          <GenericAnalysis
-            title="WGCNA"
-            config={analysisConfigs.WGCNA}
-            apiFunction={(params) => submitWGCNA(projectId, params)}
-          />
-        </SectionContainer>
 
-        <ShowButton onClick={() => setFeatureGenShowResults(!featureGenShowResults)}>
-          {featureGenShowResults ? 'Hide Results' : 'Show Results'}
-        </ShowButton>
 
-        {featureGenShowResults && <GSEANoDeseq />}
-        {featureGenShowResults && <WGCNAResults />}
+          <Deseq2Item>
+            <GenericAnalysis
+              title="Deseq2"
+              config={analysisConfigs.deseq2}
+              apiFunction={(params) => submitDeseq2(projectId, params)}
+              onResult={setDeseq2Result}
+            />
+          </Deseq2Item>
 
-        <SectionContainer
-          title="Modeling"
-          isOpen={isModelOpen}
-          toggleOpen={toggleModelOpen}
-        >
-          <GenericAnalysis
-            title="Baseline Selection"
-            config={analysisConfigs.baselineSelection}
-            apiFunction={(params) => submitBaselineSelection(projectId, params)}
-          />
-          <GenericAnalysis
-            title="Gene Collection"
-            config={analysisConfigs.geneCollection}
-            apiFunction={(params) => submitGeneCollection(projectId, params)}
-          />
-          <GenericAnalysis
-            title="Gene Selection"
-            config={analysisConfigs.geneSelection}
-            apiFunction={(params) => submitGeneSelection(projectId, params)}
-          />
-        </SectionContainer>
 
-        <ShowButton onClick={() => setModelShowResults(!modelShowResults)}>
-          {modelShowResults ? 'Hide Results' : 'Show Results'}
-        </ShowButton>
 
-        {modelShowResults && <BaseModel />}
-        {modelShowResults && <MlpModel />}
+
+              <Deseq2StaticsItem>
+                <GenericAnalysis
+                  title="Deseq2 Statistics"
+                  apiFunction={() => submitDeseqStats(projectId)}
+                  onResult={setDeseq2Statistics}
+                  parseFunction={parseDeseqStats}
+                />
+              </Deseq2StaticsItem>
+
+              <Deseq2GSEAItem>
+                <GenericAnalysis
+                  title="Deseq2 GSEA"
+                  config={analysisConfigs.deseq2GSEA}
+                  apiFunction={(params) => submitDeseqGSEA(projectId, params)}
+                  onResult={setDeseq2GSEAResult}
+                />
+              </Deseq2GSEAItem>
+
+
+              <ReactomeItem>
+                <GenericAnalysis
+                  title="Reactome Result"
+                  //config={analysisConfigs.deseq2Reactome}
+                  apiFunction={() => runReactomeAndStatus(projectId)}
+                  onResult={setReactomeResult}
+                />
+              </ReactomeItem>
+
+            </GridContainer>
+            </SectionContent>
+            </AnalysisSectionContainer>
+
+
+
+            <div>
+              <ShowButton onClick={() => setDeseqShowResults(!deseqShowResults)}>
+                {deseqShowResults ? 'Hide Results' : 'Show Results'}
+              </ShowButton>
+
+              {deseqShowResults && deseq2GSEAResult && (
+                <DeseqGSEA resultData={deseq2GSEAResult} />
+              )}
+
+              {deseqShowResults && deseq2Statistics && (
+                <DeseqStats resultData={deseq2Statistics} />
+              )}
+
+              {deseqShowResults && reactomeResult && (
+                <DeseqReactome resultData={reactomeResult} />
+              )}
+
+            </div>
+
+
+            {/* Feature Generation Section */}
+            <AnalysisSectionContainer>
+              <SectionHeader onClick={toggleFeatureGenOpen}>
+                <SectionTitle>Feature Generation</SectionTitle>
+                <Icon>{isFeatureGenOpen ? <FaChevronUp /> : <FaChevronDown />}</Icon>
+              </SectionHeader>
+              <SectionContent isOpen={isFeatureGenOpen}>
+            <GridContainer>
+              <GenericAnalysis
+                title="General GSEA"
+                config={analysisConfigs.GeneralGSEA}
+                apiFunction={(params) => submitGeneralGSEA(projectId, params)}
+                onResult={setGeneralGSEAResult}
+              />
+
+              <GenericAnalysis
+                title="WGCNA"
+                config={analysisConfigs.WGCNA}
+                apiFunction={(params) => submitWGCNA(projectId, params)}
+                onResult={setWgcnaResult}
+              />
+            </GridContainer>
+            </SectionContent>
+            </AnalysisSectionContainer>
+
+            <div>
+              <ShowButton onClick={() => setFeatureGenShowResults(!featureGenShowResults)}>
+                {featureGenShowResults ? 'Hide Results' : 'Show Results'}
+              </ShowButton>
+
+              {featureGenShowResults && generalGSEAResult && (
+                <GSEANoDeseq resultData={generalGSEAResult} />
+              )}
+
+              {featureGenShowResults && wgcnaResult && (
+                <WGCNAResults resultData={wgcnaResult} />
+              )}
+            </div>
+
+
+            <AnalysisSectionContainer>
+              <SectionHeader onClick={toggleModelOpen}>
+                <SectionTitle>Modeling</SectionTitle>
+                <Icon>{isModelOpen ? <FaChevronUp /> : <FaChevronDown />}</Icon>
+              </SectionHeader>
+              <SectionContent isOpen={isModelOpen}>
+            <GridContainer>
+
+
+              <Deseq2Item>
+                <GenericAnalysis
+                  title="Baseline Selection"
+                  config={analysisConfigs.baselineSelection}
+                  apiFunction={(params) => submitBaselineSelection(projectId, params)}
+                  onResult={setBaselineSelectionResult}
+                />
+              </Deseq2Item>
+
+
+
+              <Deseq2Item>
+                <GenericAnalysis
+                  title="Gene Collection"
+                  config={analysisConfigs.geneCollection}
+                  apiFunction={(params) => submitGeneCollection(projectId, params)}
+                  onResult={setGeneCollectionResult}
+                />
+              </Deseq2Item>
+
+
+
+              {/* this block is for model */}
+              <Deseq2StaticsItem>
+                <GenericAnalysis
+                  title="Gene Selection"
+                  config={analysisConfigs.geneSelection}
+                  apiFunction={(params) => submitGeneSelection(projectId, params)}
+                  onResult={setGeneSelection}
+                />
+              </Deseq2StaticsItem>
+
+
+
+              <Deseq2GSEAItem>
+                <GenericAnalysis
+                  title="Base Model"
+                  config={analysisConfigs.baseModel}
+                  apiFunction={(params) => trainAndEvaluateBaseModel(projectId, params)}
+                  onResult={setBaseModel}
+                />
+              </Deseq2GSEAItem>
+
+
+              <ReactomeItem>
+                <GenericAnalysis
+                  title="MLP Model"
+                  config={analysisConfigs.MLPModel}
+                  apiFunction={(params) => trainAndEvaluateMlpModel(projectId, params)}
+                  onResult={setMlpModel}
+                />
+              </ReactomeItem>
+
+            </GridContainer>
+
+            </SectionContent>
+            </AnalysisSectionContainer>
+
+            <div>
+                <ShowButton onClick={() => setModelShowResults(!modelShowResults)}>
+                  {modelShowResults ? 'Hide Results' : 'Show Results'}
+                </ShowButton>
+
+
+                {modelShowResults && baseModel && (
+                  <BaseModel resultData={baseModel} />
+                )}
+
+                {modelShowResults && mlpModel && (
+                  <MlpModel resultData={mlpModel} />
+                )}
+
+              </div>
+
 
 
           </FormContainer>)}
