@@ -135,7 +135,7 @@ const BaseModel = ({ resultData }) => {
 
   const evaluateData = resultData.evaluateData; // Extract evaluateData
 
-  console.log('Evaluate Data:', evaluateData); // Log evaluate data for debugging
+  console.log('Evaluate Data:', evaluateData); 
 
   return (
     <ResultContainer>
