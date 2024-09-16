@@ -720,10 +720,11 @@ const SectionContainer = ({ title, isOpen, toggleOpen, children }) => (
 );
 
 const SectionWrapper = styled.div`
+  margin-top:10px;
   border: 2px solid #ccc; 
   border-radius: 8px;
   margin-bottom: 20px;
-  padding: 10px;
+  padding: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
@@ -781,12 +782,25 @@ const DropdownContainer = styled.div`
   position: relative; 
   overflow: visible;  
 `;
-const SectionTitle = styled.h2`
+// const SectionTitle = styled.h2`
+//   font-size: 1.5em;
+//   font-weight: bold;
+//   margin-bottom: 20px;
+//   text-transform: uppercase;
+//   text-align: center;
+// `;
+
+const SectionTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 1.5em;
   font-weight: bold;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  text-align: center;
+  cursor: pointer;
+  padding: 10px;
+  background-color: #e0e0e0; 
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const SectionItem = styled.div`
