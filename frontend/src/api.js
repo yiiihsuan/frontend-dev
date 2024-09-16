@@ -878,20 +878,19 @@ const mockTrainMlpModel = {
 
 // evaluateMlpModel API
 export const evaluateMlpModel = async (projectId, params) => {
-  const token = localStorage.getItem('token'); // 从 localStorage 中获取 token
+  const token = localStorage.getItem('token'); 
 
-  const requestBody = JSON.stringify(params); // 将请求体转为 JSON 字符串
+  const requestBody = JSON.stringify(params); 
   console.log('Sending request with body:', requestBody);
 
   try {
-    // 发送 POST 请求进行 MLP 模型评估
     const response = await fetch(`${API_URL}/model/${projectId}/mlp/evaluate`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,  // 使用 token 进行认证
-        'Content-Type': 'application/json',  // 指定内容类型为 JSON
+        'Authorization': `Bearer ${token}`,  
+        'Content-Type': 'application/json',  
       },
-      body: requestBody,  // 包含请求参数的 JSON 字符串
+      body: requestBody,  
     });
 
 

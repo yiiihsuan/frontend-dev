@@ -425,7 +425,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             />
             {heartFile && <FileName>{heartFile.name}</FileName>}
           </UploadArea>
-          <UploadButton onClick={() => handleUpload(heartFile, 'heart')}>Upload</UploadButton >
+          <UploadButton onClick={() => handleUpload(heartFile, 'meta')}>Upload</UploadButton >
           {/* <button onClick={() => handleUpload(heartFile, 'heart', true)}>Upload to GCP</button> */}
         </UploadSection>
 
