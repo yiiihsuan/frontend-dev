@@ -713,7 +713,7 @@ const SectionContainer = ({ title, isOpen, toggleOpen, children }) => (
   <SectionWrapper>
     <SectionTitle onClick={toggleOpen}>
       {title}
-      <Icon>{isOpen ? <FaChevronUp /> : <FaChevronDown />}</Icon>
+      <ParaIcon>{isOpen ? <FaChevronUp /> : <FaChevronDown />}</ParaIcon>
     </SectionTitle>
     {isOpen && <GridContainer>{children}</GridContainer>}
     </SectionWrapper>
@@ -798,7 +798,6 @@ const SectionTitle = styled.div`
   font-weight: bold;
   cursor: pointer;
   padding: 10px;
-  background-color: #e0e0e0; 
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
@@ -826,6 +825,11 @@ const Icon = styled.div`
   position: absolute;
   right: 20px;
   font-size: 1.2rem;
+`;
+
+const ParaIcon = styled.div`
+  font-size: 1.5rem;
+  color: #000;
 `;
 
 
