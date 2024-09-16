@@ -403,7 +403,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             />
             {geneFile && <FileName>{geneFile.name}</FileName>}
           </UploadArea>
-          <UploadButton onClick={() => handleUpload(geneFile, 'gene')}>Upload</UploadButton >
+          <UploadButton onClick={() => handleUpload(geneFile, 'gene_counts')}>Upload</UploadButton >
           {/* <button onClick={() => handleUpload(geneFile, 'gene', true)}>Upload to GCP</button> */}
         </UploadSection>
 
