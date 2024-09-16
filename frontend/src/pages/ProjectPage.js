@@ -945,7 +945,7 @@ const ParaIcon = styled.div`
 
 
 const ProjectPage = ({ setIsLoggedIn }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isBarOpen, setIsBarOpen] = useState(false);
   const { projectId } = useParams();
   const [geneFile, setGeneFile] = useState(null);
   const [heartFile, setHeartFile] = useState(null);
@@ -1072,7 +1072,8 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
   return (
     <Layout>
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} setIsLoggedIn={setIsLoggedIn} />
+      {/* <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} setIsLoggedIn={setIsLoggedIn} /> */}
+      <Sidebar isBarOpen={isBarOpen} setIsBarOpen={setIsBarOpen} setIsLoggedIn={setIsLoggedIn} />
       <MainContent>
         <Title>{`Project ${projectId}`}</Title>
 
@@ -1124,12 +1125,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
         <PreprocessComponent projectId={projectId} />
-
-
-
-
-
-
 
         <TitleContainer onClick={() => setIsProcessOpen(!isProcessOpen)}>
           process selection
@@ -1355,9 +1350,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
         </Footer>
 
       </MainContent>
-
-
-
 
     </Layout>
   );

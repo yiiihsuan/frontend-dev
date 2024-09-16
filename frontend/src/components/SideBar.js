@@ -1,8 +1,8 @@
 // SideBar.js
 import React from 'react';
-import { Link , useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaHome, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaUser, FaCog, FaSignOutAlt, FaFileAlt } from 'react-icons/fa';
 
 const SidebarContainer = styled.div`
   width: ${(props) => (props.isOpen ? '200px' : '80px')}; 
@@ -59,22 +59,22 @@ const Icon = styled.div`
 `;
 
 
-const Sidebar = ({ isOpen, setIsOpen , setIsLoggedIn }) => {
+const Sidebar = ({ isOpen, setIsOpen, setIsLoggedIn }) => {
 
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     console.log('Token before logout:', localStorage.getItem('token'));
     localStorage.removeItem('token');
     console.log('Token after logout:', localStorage.getItem('token'));
     setIsLoggedIn(false);
-    navigate('/'); 
+    navigate('/');
     console.log('Navigating to login page...');
 
   };
 
-  
+
   return (
     <SidebarContainer
       onMouseEnter={() => setIsOpen(true)}
@@ -82,7 +82,7 @@ const Sidebar = ({ isOpen, setIsOpen , setIsLoggedIn }) => {
       isOpen={isOpen}
     >
 
-     <LogoContainer isOpen={isOpen}>
+      <LogoContainer isOpen={isOpen}>
         <img src="/genenetlogo_small.png" alt="Genenet Logo" />
       </LogoContainer>
 
@@ -101,11 +101,18 @@ const Sidebar = ({ isOpen, setIsOpen , setIsLoggedIn }) => {
         <span>Profile</span>
       </SidebarItem>
 
-      <SidebarItem to="/settings" isOpen={isOpen}>
+      {/* <SidebarItem to="/settings" isOpen={isOpen}>
         <Icon isOpen={isOpen}>
           <FaCog />
         </Icon>
         <span>Settings</span>
+      </SidebarItem> */}
+
+      <SidebarItem to="/document" isOpen={isOpen}>
+        <Icon isOpen={isOpen}>
+          <FaFileAlt />
+        </Icon>
+        <span>Document</span>
       </SidebarItem>
 
       <SidebarItem as="div" onClick={handleLogout} isOpen={isOpen}>
