@@ -709,17 +709,23 @@ import PreprocessComponent from '../components/Preprocess';
 import { FaChevronUp } from 'react-icons/fa';
 
 
-
-// 添加一個可折疊的區塊容器
 const SectionContainer = ({ title, isOpen, toggleOpen, children }) => (
-  <>
+  <SectionWrapper>
     <SectionTitle onClick={toggleOpen}>
       {title}
       <Icon>{isOpen ? <FaChevronUp /> : <FaChevronDown />}</Icon>
     </SectionTitle>
     {isOpen && <GridContainer>{children}</GridContainer>}
-  </>
+    </SectionWrapper>
 );
+
+const SectionWrapper = styled.div`
+  border: 2px solid #ccc; 
+  border-radius: 8px;
+  margin-bottom: 20px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
 
 const Layout = styled.div`
   display: flex;
