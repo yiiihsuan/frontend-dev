@@ -727,7 +727,7 @@ const SectionWrapper = styled.div`
   border-radius: 8px;
   margin-bottom: 20px;
   padding: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
 const Layout = styled.div`
@@ -775,15 +775,17 @@ const PreprocessContainer = styled.div`
   position: relative;
 `;
 
-const DropdownContainer = styled.div`
-  background-color: #ccc;
-  border-radius: 8px;
-  padding: 10px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative; 
-  overflow: visible;  
-`;
+// const DropdownContainer = styled.div`
+//   background-color: #ccc;
+//   border-radius: 8px;
+//   padding: 10px;
+//   cursor: pointer;
+//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//   position: relative; 
+//   overflow: visible;  
+// `;
+
+
 // const SectionTitle = styled.h2`
 //   font-size: 1.5em;
 //   font-weight: bold;
@@ -799,25 +801,25 @@ const SectionTitle = styled.div`
   font-size: 1.5em;
   font-weight: bold;
   cursor: pointer;
-  //padding: 10px;
+  padding: 10px;
   //border-radius: 8px;
   //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-const SectionItem = styled.div`
-  background-color: #ccc;
-  padding: 10px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: bold;
-  cursor: pointer;
+// const SectionItem = styled.div`
+//   background-color: #ccc;
+//   padding: 10px;
+//   border-radius: 8px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   font-weight: bold;
+//   cursor: pointer;
 
-  &:hover {
-    background-color: #b3b3b3;
-  }
-`;
+//   &:hover {
+//     background-color: #b3b3b3;
+//   }
+// `;
 
 
 const Icon = styled.div`
