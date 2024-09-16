@@ -708,12 +708,14 @@ import DeseqReactome from '../components/Deseq2/Reactome.js';
 import PreprocessComponent from '../components/Preprocess';  
 import { FaChevronUp } from 'react-icons/fa';
 
+import { CiCircleChevDown,CiCircleChevUp } from "react-icons/ci";
+
 
 const SectionContainer = ({ title, isOpen, toggleOpen, children }) => (
   <SectionWrapper>
     <SectionTitle onClick={toggleOpen}>
       {title}
-      <ParaIcon>{isOpen ? <FaChevronUp /> : <FaChevronDown />}</ParaIcon>
+      <ParaIcon>{isOpen ? <CiCircleChevUp /> : <CiCircleChevDown />}</ParaIcon>
     </SectionTitle>
     {isOpen && <GridContainer>{children}</GridContainer>}
     </SectionWrapper>
@@ -797,9 +799,9 @@ const SectionTitle = styled.div`
   font-size: 1.5em;
   font-weight: bold;
   cursor: pointer;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  //padding: 10px;
+  //border-radius: 8px;
+  //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const SectionItem = styled.div`
@@ -817,9 +819,6 @@ const SectionItem = styled.div`
   }
 `;
 
-// const IconWrapper = styled.div`
-//   margin-left: 10px;
-// `;
 
 const Icon = styled.div`
   position: absolute;
@@ -831,9 +830,6 @@ const ParaIcon = styled.div`
   font-size: 1.5rem;
   color: #000;
 `;
-
-
-
 
 const Title = styled.h1`
   font-size: 2.5em;
@@ -987,16 +983,9 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   const [geneFile, setGeneFile] = useState(null);
   const [heartFile, setHeartFile] = useState(null);
   const [isProcessOpen, setIsProcessOpen] = useState(false);
-
   const [openDropdowns, setOpenDropdowns] = useState({});
   const [checkedItems, setCheckedItems] = useState({});
 
-  // const [dropdownStates, setDropdownStates] = useState({
-  //   preprocess: false,
-  //   deseq: false,
-  //   featureGeneration: false,
-  //   modeling: false,
-  // });
 
   const [deseq2Selected, setDeseq2Selected] = useState(false);
   const [deseq2Result, setDeseq2Result] = useState(null);
@@ -1027,22 +1016,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
     const toggleModelOpen = () => setIsModelOpen(!isModelOpen);
   
 
-  // const toggleDropdown = (index) => {
-  //   setOpenDropdowns((prevState) => ({
-  //     ...prevState,
-  //     [index]: !prevState[index],
-  //   }));
-  // };
-
-
-  // const handleCheckChange = (index) => {
-  //   setCheckedItems((prevState) => ({
-  //     ...prevState,
-  //     [index]: !prevState[index],
-  //   }));
-  // };
-
-
   const mutation = useMutation(uploadFile, {
     onSuccess: (data, variables) => {
       alert(`${variables.type} uploaded successfully`);
@@ -1052,7 +1025,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
       alert(`Failed to upload ${variables.type}`);
     },
   });
-
 
 
   const handleFileChange = (setter) => (event) => {
@@ -1159,14 +1131,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
         </UploadSection>
 
 
-
-
         <PreprocessComponent projectId={projectId} />
-
-
-
-
-
 
 
         <TitleContainer onClick={() => setIsProcessOpen(!isProcessOpen)}>
@@ -1249,8 +1214,9 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
             {/* Feature Generation Section */}
-            <SectionTitle>Feature Generation</SectionTitle>
-            <GridContainer>
+            {/* <SectionTitle>Feature Generation</SectionTitle>
+            <GridContainer> */}
+             <SectionContainer title="Feature Generation" isOpen={isFeatureGenOpen} toggleOpen={toggleFeatureGenOpen}>
               <GenericAnalysis
                 title="General GSEA"
                 config={analysisConfigs.GeneralGSEA}
@@ -1264,7 +1230,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
                 apiFunction={(params) => submitWGCNA(projectId, params)}
                 onResult={setWgcnaResult}
               />
-            </GridContainer>
+            </SectionContainer>
 
             <div>
               <ShowButton onClick={() => setFeatureGenShowResults(!featureGenShowResults)}>
@@ -1281,8 +1247,10 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             </div>
 
 
-            <SectionTitle>Modeling</SectionTitle>
-            <GridContainer>
+            {/* <SectionTitle>Modeling</SectionTitle>
+            <GridContainer> */}
+
+<SectionContainer title="Modeling" isOpen={isModelOpen} toggleOpen={toggleModelOpen}>
 
 
               <Deseq2Item>
@@ -1338,7 +1306,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
                 />
               </ReactomeItem>
 
-            </GridContainer>
+              </SectionContainer>
 
             <div>
                 <ShowButton onClick={() => setModelShowResults(!modelShowResults)}>
