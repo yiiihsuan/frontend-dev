@@ -54,7 +54,7 @@ const LogoContainer = styled.div`
 `;
 
 const Icon = styled.div`
-  font-size: ${(props) => (props.isOpen ? '1.8em' : '2.3em')}; /* 調整圖標大小 */
+  font-size: ${(props) => (props.isOpen ? '1.8em' : '2.0em')}; /* 調整圖標大小 */
   transition: font-size 0.3s ease;
 `;
 
