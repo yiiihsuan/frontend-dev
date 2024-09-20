@@ -65,6 +65,7 @@ const Button = styled.button`
   }
 `;
 
+
 const LoginText = styled.p`
   margin-top: 10px;
   font-size: 14px;
@@ -139,6 +140,13 @@ const SignUpPage = () => {
         <Button onClick={handleSignUp} disabled={mutation.isLoading}>
           {mutation.isLoading ? 'Creating account...' : 'Create account'}
         </Button>
+
+        <LoginText>
+        Already have an account?{' '}
+        <span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+          Log in here
+        </span>
+      </LoginText>
       </Container>
     );
   };
