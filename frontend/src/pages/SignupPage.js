@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { registerUser } from '../api';  // 這裡需要確保你有這個註冊 API
+import { registerUser } from '../api'; 
 import Swal from 'sweetalert2';
 
 import { FaUser, FaLock } from 'react-icons/fa';
