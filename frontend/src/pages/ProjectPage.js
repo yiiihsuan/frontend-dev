@@ -5,11 +5,6 @@ import { uploadFile } from '../api';
 import styled from 'styled-components';
 import { FaCloudUploadAlt, FaCheckCircle, FaChevronDown } from 'react-icons/fa';
 import Sidebar from '../components/SideBar';
-// import CollapsibleSection from '../components/Parameters';
-// import Dropdown from '../components/ParameterSection';
-// import PreprocessResult from '../components/PreprocessResult';
-// import ResultModal from '../components/ResultModal';
-
 import GenericAnalysis from '../components/GenericAnalysis';
 import { submitDeseq2, submitDeseqGSEA, submitDeseqStats, submitGeneralGSEA, submitWGCNA, submitBaselineSelection, submitGeneCollection, submitGeneSelection, trainAndEvaluateBaseModel, trainAndEvaluateMlpModel, runReactomeAndStatus } from '../api';
 import { analysisConfigs } from '../config/analysisConfigs';
