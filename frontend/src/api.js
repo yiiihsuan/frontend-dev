@@ -1,6 +1,4 @@
-const API_URL = 'http://35.206.195.197:8000';
-//to add in .env
-
+const API_URL = process.env.API_URL;
 
 export const loginUser = async (username, password) => {
   const response = await fetch(`${API_URL}/auth/token`, {
