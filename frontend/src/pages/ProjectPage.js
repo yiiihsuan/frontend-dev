@@ -342,7 +342,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
           title="Gene Sequence Data"
           file={geneFile}
           setFile={setGeneFile}
-          uploadType="gene"
+          uploadType="gene_counts"
           handleUpload={handleUpload}
         />
         {/* Heart Beat Data Uploader */}

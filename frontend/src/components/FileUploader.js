@@ -70,7 +70,6 @@ const UploadButton = styled.button`
   }
 `;
 
-// FileUploader Component
 const FileUploader = ({ title, file, setFile, uploadType, handleUpload }) => {
 
   const handleFileChange = (event) => {
