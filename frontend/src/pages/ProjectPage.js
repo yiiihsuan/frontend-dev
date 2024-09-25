@@ -350,7 +350,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
           title="Heart Beat Data"
           file={heartFile}
           setFile={setHeartFile}
-          uploadType="heart"
+          uploadType="meta"
           handleUpload={handleUpload}
         />
         <PreprocessComponent projectId={projectId} />
