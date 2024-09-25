@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { uploadFile } from '../api';
 import styled from 'styled-components';
-import { FaCloudUploadAlt, FaCheckCircle, FaChevronDown } from 'react-icons/fa';
+import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
+import { CiCircleChevDown, CiCircleChevUp } from "react-icons/ci";
 import Sidebar from '../components/SideBar';
 import GenericAnalysis from '../components/GenericAnalysis';
 import { submitDeseq2, submitDeseqGSEA, submitDeseqStats, submitGeneralGSEA, submitWGCNA, submitBaselineSelection, submitGeneCollection, submitGeneSelection, trainAndEvaluateBaseModel, trainAndEvaluateMlpModel, runReactomeAndStatus } from '../api';
@@ -16,10 +17,7 @@ import WGCNAResults from '../components/FeatureGeneration/WGCNA.js';
 import BaseModel from '../components/Model/BaseModel.js';
 import MlpModel from '../components/Model/MLPModel.js';
 import DeseqReactome from '../components/Deseq2/Reactome.js';
-import PreprocessComponent from '../components/Preprocess';  
-import { FaChevronUp } from 'react-icons/fa';
-
-import { CiCircleChevDown,CiCircleChevUp } from "react-icons/ci";
+import PreprocessComponent from '../components/Preprocess';
 import FileUploader from '../components/FileUploader';
 
 
@@ -30,7 +28,7 @@ const SectionContainer = ({ title, isOpen, toggleOpen, children }) => (
       <ParaIcon>{isOpen ? <CiCircleChevUp /> : <CiCircleChevDown />}</ParaIcon>
     </SectionTitle>
     {isOpen && <GridContainer>{children}</GridContainer>}
-    </SectionWrapper>
+  </SectionWrapper>
 );
 
 const SectionWrapper = styled.div`
@@ -80,31 +78,6 @@ const Deseq2GSEAItem = styled.div`
 const ReactomeItem = styled.div`
   grid-column: 3 / span 1; 
 `;
-
-const PreprocessContainer = styled.div`
-  display: grid;
-  margin-bottom: 40px;
-  position: relative;
-`;
-
-// const DropdownContainer = styled.div`
-//   background-color: #ccc;
-//   border-radius: 8px;
-//   padding: 10px;
-//   cursor: pointer;
-//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-//   position: relative; 
-//   overflow: visible;  
-// `;
-
-
-// const SectionTitle = styled.h2`
-//   font-size: 1.5em;
-//   font-weight: bold;
-//   margin-bottom: 20px;
-//   text-transform: uppercase;
-//   text-align: center;
-// `;
 
 const SectionTitle = styled.div`
   display: flex;
@@ -327,7 +300,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   //   setter(file);
   // };
 
-  
+
 
   const handleUpload = (file, type) => {
     const projectId = localStorage.getItem('projectId');
@@ -350,23 +323,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
     });
   };
 
-
-  // const handleDragOver = (e) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  // };
-
-  // const handleDrop = (e, setter) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-
-  //   if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-  //     setter(e.dataTransfer.files[0]);
-  //     e.dataTransfer.clearData();
-  //   }
-  // };
-
-
   const parseDeseqStats = (data) => {
     return Papa.parse(data, {
       header: true,
@@ -381,60 +337,14 @@ const ProjectPage = ({ setIsLoggedIn }) => {
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} setIsLoggedIn={setIsLoggedIn} />
       <MainContent>
         <Title>{`Project ${projectId}`}</Title>
-
-        {/* <UploadSection>
-          <SubTitle>Gene Sequence Data</SubTitle>
-          <UploadArea
-            onClick={() => document.getElementById('geneFileInput').click()}
-            onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, setGeneFile)}
-          >
-            <UploadIcon fileSelected={geneFile}>
-              {geneFile ? <FaCheckCircle /> : <FaCloudUploadAlt />}
-            </UploadIcon>
-            <UploadInstructions>*csv file only<br />*example here</UploadInstructions>
-            <FileInput
-              id="geneFileInput"
-              type="file"
-              onChange={handleFileChange(setGeneFile)}
-            />
-            {geneFile && <FileName>{geneFile.name}</FileName>}
-          </UploadArea>
-          <UploadButton onClick={() => handleUpload(geneFile, 'gene_counts')}>Upload</UploadButton >
-        </UploadSection>
-
-        <UploadSection>
-          <SubTitle>Heart Beat Data</SubTitle>
-          <UploadArea
-            onClick={() => document.getElementById('heartFileInput').click()}
-            onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, setHeartFile)}
-          >
-            <UploadIcon fileSelected={heartFile}>
-              {heartFile ? <FaCheckCircle /> : <FaCloudUploadAlt />}
-            </UploadIcon>
-            <UploadInstructions>*csv file only<br />*example here</UploadInstructions>
-            <FileInput
-              id="heartFileInput"
-              type="file"
-              onChange={handleFileChange(setHeartFile)}
-            />
-            {heartFile && <FileName>{heartFile.name}</FileName>}
-          </UploadArea>
-          <UploadButton onClick={() => handleUpload(heartFile, 'meta')}>Upload</UploadButton >
-        </UploadSection>
- */}
-
-
-         {/* Gene Sequence Data Uploader */}
-         <FileUploader
+        {/* Gene Sequence Data Uploader */}
+        <FileUploader
           title="Gene Sequence Data"
           file={geneFile}
           setFile={setGeneFile}
           uploadType="gene"
           handleUpload={handleUpload}
         />
-
         {/* Heart Beat Data Uploader */}
         <FileUploader
           title="Heart Beat Data"
@@ -443,18 +353,13 @@ const ProjectPage = ({ setIsLoggedIn }) => {
           uploadType="heart"
           handleUpload={handleUpload}
         />
-
-
         <PreprocessComponent projectId={projectId} />
-
         <TitleContainer onClick={() => setIsProcessOpen(!isProcessOpen)}>
           process selection
           <Icon>
             {isProcessOpen ? <FaChevronUp /> : <FaChevronDown />}
           </Icon>
         </TitleContainer>
-
-
         {isProcessOpen && (
           <FormContainer>
 
@@ -502,7 +407,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
               </ReactomeItem>
             </SectionContainer>
 
-            
+
 
 
 
@@ -529,7 +434,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             {/* Feature Generation Section */}
             {/* <SectionTitle>Feature Generation</SectionTitle>
             <GridContainer> */}
-             <SectionContainer title="Feature Generation" isOpen={isFeatureGenOpen} toggleOpen={toggleFeatureGenOpen}>
+            <SectionContainer title="Feature Generation" isOpen={isFeatureGenOpen} toggleOpen={toggleFeatureGenOpen}>
               <GenericAnalysis
                 title="General GSEA"
                 config={analysisConfigs.GeneralGSEA}
@@ -563,7 +468,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             {/* <SectionTitle>Modeling</SectionTitle>
             <GridContainer> */}
 
-<SectionContainer title="Modeling" isOpen={isModelOpen} toggleOpen={toggleModelOpen}>
+            <SectionContainer title="Modeling" isOpen={isModelOpen} toggleOpen={toggleModelOpen}>
 
 
               <Deseq2Item>
@@ -619,40 +524,28 @@ const ProjectPage = ({ setIsLoggedIn }) => {
                 />
               </ReactomeItem>
 
-              </SectionContainer>
+            </SectionContainer>
 
             <div>
-                <ShowButton onClick={() => setModelShowResults(!modelShowResults)}>
-                  {modelShowResults ? 'Hide Results' : 'Show Results'}
-                </ShowButton>
+              <ShowButton onClick={() => setModelShowResults(!modelShowResults)}>
+                {modelShowResults ? 'Hide Results' : 'Show Results'}
+              </ShowButton>
 
 
-                {modelShowResults && baseModel && (
-                  <BaseModel resultData={baseModel} />
-                )}
+              {modelShowResults && baseModel && (
+                <BaseModel resultData={baseModel} />
+              )}
 
-                {modelShowResults && mlpModel && (
-                  <MlpModel resultData={mlpModel} />
-                )}
+              {modelShowResults && mlpModel && (
+                <MlpModel resultData={mlpModel} />
+              )}
 
-              </div>
-
-
-
+            </div>
           </FormContainer>)}
-
-
-
-
         <Footer>
           © Copyright Genenet Technology (UK). All Rights Reserved.
         </Footer>
-
       </MainContent>
-
-
-
-
     </Layout>
   );
 };

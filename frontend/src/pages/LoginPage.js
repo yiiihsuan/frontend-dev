@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { loginUser } from '../api';  
+import { loginUser } from '../api';
 import { FaUser, FaLock } from 'react-icons/fa';
 
 
@@ -130,11 +130,7 @@ const LoginPage = ({ onLogin }) => {
         {mutation.isLoading ? 'Logging in...' : 'log in'}
       </Button>
       {mutation.isError && <div>Error: {mutation.error.message}</div>}
-      {/* <SignUpText>
-        <a href="/sign-up">sign up here</a>
-      </SignUpText> */}
-
-<SignUpText>
+      <SignUpText>
         Don't have an account?{' '}
         <span onClick={() => navigate('/sign-up')} style={{ cursor: 'pointer' }}>
           Sign up here

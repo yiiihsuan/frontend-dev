@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// Define styled-components for styling
 const ResultContainer = styled.div`
   margin-top: 20px;
   background-color: #f9f9f9;

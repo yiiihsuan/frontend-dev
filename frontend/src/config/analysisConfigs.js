@@ -148,28 +148,6 @@ export const analysisConfigs = {
         },
     },
 
-
-
-
-    // deseq2Reactome: {
-    //     items: [
-    //       'sample_col',
-    //       'control_col',
-    //       'control_val',
-    //       'vehicle_control_val',
-    //       'gene_col',
-    //       'time_col',
-    //     ],
-    //     defaultValues: {
-    //       sample_col: 'sample',
-    //       control_col: 'drug',
-    //       control_val: 'untreated',
-    //       vehicle_control_val: 'dmso',
-    //       gene_col: 'gene_id',
-    //       time_col: 'hours',
-    //     },
-    //   },
-
     GeneralGSEA: {
         items: [
             'sample_col',

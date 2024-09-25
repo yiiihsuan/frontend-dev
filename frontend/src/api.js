@@ -1,198 +1,181 @@
-// api.js
-
 const API_URL = 'http://35.206.195.197:8000';
 //to add in .env
 
 
-//create user
-// export const createUser = async (username, password) => {
-//   const response = await fetch(`${API_URL}/auth/register`, {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify({ username, password }),
-//   });
-
-//   if (!response.ok) {
-//     throw new Error('Network response was not ok');
-//   }
-
-//   const data = await response.json();
-//   return data;
-// };
-
-
 export const loginUser = async (username, password) => {
-    const response = await fetch(`${API_URL}/auth/token`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded', // 更改Content-Type為表單數據
-      },
-      body: new URLSearchParams({ username, password }), // 使用URLSearchParams來處理form-data
-    });
-  
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-  
-    const data = await response.json();
-    return data;
-  };
+  const response = await fetch(`${API_URL}/auth/token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded', // 更改Content-Type為表單數據
+    },
+    body: new URLSearchParams({ username, password }),
+  });
 
-  export const registerUser = async (username, password) => {
-    const response = await fetch(`${API_URL}/auth/register`, {
+  if (response.status === 401) {
+    throw new Error('Invalid username or password.');
+  }
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const registerUser = async (username, password) => {
+  const response = await fetch(`${API_URL}/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, password }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Network response was not ok');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+
+
+export const fetchProjects = async () => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${API_URL}/projects/`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const createProject = async (projectName) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${API_URL}/projects/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({ project_name: projectName }),
+  });
+
+  if (!response.ok) {
+    const errorResponse = await response.text();
+    throw new Error('Network response was not ok. Details: ' + errorResponse);
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+
+
+
+export const uploadFile = async ({ file, projectId, type }) => {
+  const token = localStorage.getItem('token');
+  const formData = new FormData();
+  formData.append('file', file);
+  //formData.append('project_id', projectId);
+  formData.append('ftype', type);
+
+  console.log('Uploading', { file: file.name, projectId, type });
+
+  const response = await fetch(`${API_URL}/upload/store_and_backup?project_id=${projectId}`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+
+
+
+export const getUserInfo = async () => {
+  const token = localStorage.getItem('token');
+
+  const response = await fetch(`${API_URL}/auth/users/me/`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const getProjects = async () => {
+  const token = localStorage.getItem('token');
+  const response = await fetch('/projects/', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+
+// DESeq2 API 
+export const submitDeseq2 = async (projectId, params) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await fetch(`${API_URL}/deseq/${projectId}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, password }), 
+      body: JSON.stringify(params),
     });
-  
+
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || 'Network response was not ok');
+      throw new Error(errorData.message || 'API request failed');
     }
-  
+
     const data = await response.json();
     return data;
-  };
-  
+  } catch (error) {
+    console.error('Error:', error.message);
+    throw new Error(error.message);
+  }
+};
 
-
-  export const fetchProjects = async () => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${API_URL}/projects/`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-  
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-  
-    const data = await response.json();
-    return data;
-  };
-
-  export const createProject = async (projectName) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${API_URL}/projects/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify({ project_name: projectName }),
-    });
-  
-    if (!response.ok) {
-      const errorResponse = await response.text();
-      throw new Error('Network response was not ok. Details: ' + errorResponse);
-    }
-  
-    const data = await response.json();
-    return data;
-  };
-
-
-
-
-  export const uploadFile = async ({ file, projectId, type }) => {
-    const token = localStorage.getItem('token');
-    const formData = new FormData();
-    formData.append('file', file);
-    //formData.append('project_id', projectId);
-    formData.append('ftype', type);
-
-    console.log('Uploading', { file: file.name, projectId, type });
-  
-    const response = await fetch(`${API_URL}/upload/store_and_backup?project_id=${projectId}`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-      body: formData,
-    });
-  
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-  
-    const data = await response.json();
-    return data;
-  };
-  
-
-
-
-  export const getUserInfo = async () => {
-    const token = localStorage.getItem('token');
-    
-    const response = await fetch(`${API_URL}/auth/users/me/`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-    
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    
-    const data = await response.json();
-    return data;
-  };
-
-  export const getProjects = async () => {
-    const token = localStorage.getItem('token'); 
-    const response = await fetch('/projects/', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  };
-
-
-  // DESeq2 API 
-  export const submitDeseq2 = async (projectId, params) => {
-    const token = localStorage.getItem('token');
-    
-    try {
-      const response = await fetch(`${API_URL}/deseq/${projectId}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',  
-        },
-        body: JSON.stringify(params),  
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'API request failed');
-      }
-  
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error:', error.message);
-      throw new Error(error.message);
-    }
-  };
-
-  // export const submitDeseq2 = async (projectId, params) => {
-  //   return new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       console.log("Submitting DESeq2 analysis with params:", params);
-  //       resolve({ status: "success", data: params });
-  //       // 如果你想模拟失败，可以用 reject(new Error("Failed to submit"));
-  //     }, 2000); 
-  //   });
-  // };
+// export const submitDeseq2 = async (projectId, params) => {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       console.log("Submitting DESeq2 analysis with params:", params);
+//       resolve({ status: "success", data: params });
+//       // 如果你想模拟失败，可以用 reject(new Error("Failed to submit"));
+//     }, 2000); 
+//   });
+// };
 
 //submitDeseqGSEA
 // export const submitDeseqGSEA= async (projectId, params) => {
@@ -218,7 +201,7 @@ export const submitDeseqGSEA = async (projectId, params) => {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',  
+        'Content-Type': 'application/json',
       },
       //body: JSON.stringify(params),
       body: requestBody,
@@ -226,14 +209,14 @@ export const submitDeseqGSEA = async (projectId, params) => {
 
     if (!response.ok) {
       console.error('API request not successful, returning mock response');
-      return mockResponse; 
+      return mockResponse;
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
     console.error('Error:', error.message);
-    return mockResponse; 
+    return mockResponse;
   }
 };
 
@@ -249,7 +232,7 @@ const mockResponse = {
 // DESeq2Stats API
 export const submitDeseqStats = async (projectId) => {
   const token = localStorage.getItem('token');
-  
+
   try {
     // Send POST request to start the stats calculation
     const postResponse = await fetch(`${API_URL}/deseq/${projectId}/stats/`, {
@@ -264,13 +247,13 @@ export const submitDeseqStats = async (projectId) => {
 
     if (!postResponse.ok) {
       console.error('API request not successful during POST, returning mock response');
-      return mockResponse; 
+      return mockResponse;
     }
 
     const jsonResponse = await postResponse.json();
     const fileUrl = jsonResponse.result._url;
     console.log('file url is', fileUrl)
-    
+
     // Fetch the CSV data using the URL provided in the response
     const getResponse = await fetch(fileUrl, {
       method: 'GET',
@@ -286,13 +269,13 @@ export const submitDeseqStats = async (projectId) => {
     }
 
     const csvData = await getResponse.text();
-    
+
     // Return the raw CSV data or parsed data as needed
     return csvData;
-    
+
   } catch (error) {
     console.error('Error:', error.message);
-    return mockgResponse; 
+    return mockgResponse;
   }
 };
 
@@ -303,7 +286,7 @@ const mockstatsResponse = {
     "_url": "http://35.206.195.197:8000/deseq/669dbe9907b7c62caa476c92/stats/file/"
   }
 }
-  
+
 
 // Mock response for demonstration purposes
 const mockgResponse = [
@@ -311,7 +294,7 @@ const mockgResponse = [
   { "gene": "Gene2", "value": 20 }
 ];
 
-  
+
 
 // export const runDeseq = (projectId, params) => {
 //   return axios.post(`/deseq/${projectId}/`, params);
@@ -386,7 +369,7 @@ const mockpreResponse = {
 // };
 
 const fetchData = async (url, method = 'POST', data = null) => {
-  const token = localStorage.getItem('token'); 
+  const token = localStorage.getItem('token');
   const requestBody = JSON.stringify(data);
   console.log('Sending request to', url, 'with body:', requestBody);
 
@@ -423,7 +406,7 @@ export const fetchPreprocessBarPlot = async (projectId, params) => {
   const url = `${API_URL}/preprocess/${projectId}/plots/bar`;
   return await fetchData(url, 'POST', params);
 
-  
+
 };
 
 
@@ -459,20 +442,19 @@ export const submitReactome = async (projectId, params) => {
 
     if (!response.ok) {
       console.error('API request not successful, returning mock response');
-      return mockReactomeResponse; 
+      return mockReactomeResponse;
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
     console.error('Error:', error.message);
-    return mockReactomeResponse; 
+    return mockReactomeResponse;
   }
 };
 
-// Mock response for demonstration purposes
 const mockReactomeResponse = {
-  task_id: "1d93152c-8a13-4c41-85db-303d9709c5f2", 
+  task_id: "1d93152c-8a13-4c41-85db-303d9709c5f2",
 };
 
 
@@ -491,7 +473,7 @@ export const submitGeneralGSEA = async (projectId, params) => {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',  
+        'Content-Type': 'application/json',
       },
       //body: JSON.stringify(params),
       body: requestBody,
@@ -499,14 +481,14 @@ export const submitGeneralGSEA = async (projectId, params) => {
 
     if (!response.ok) {
       console.error('API request not successful, returning mock response');
-      return mockGeneralGSEAResponse; 
+      return mockGeneralGSEAResponse;
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
     console.error('Error:', error.message);
-    return mockGeneralGSEAResponse; 
+    return mockGeneralGSEAResponse;
   }
 };
 
@@ -532,7 +514,7 @@ export const submitWGCNA = async (projectId, params) => {
 
   if (!token) {
     console.error('No token found, unable to submit WGCNA request.');
-    return mockWGCNAResponse; 
+    return mockWGCNAResponse;
   }
 
   const requestBody = JSON.stringify(params);
@@ -550,18 +532,18 @@ export const submitWGCNA = async (projectId, params) => {
 
     if (!response.ok) {
       console.error('API request not successful, returning mock response');
-      return mockWGCNAResponse; 
+      return mockWGCNAResponse;
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
     console.error('Error:', error); // Will log the complete error object
-    return mockWGCNAResponse; 
+    return mockWGCNAResponse;
   }
 };
 
-const mockWGCNAResponse =  {
+const mockWGCNAResponse = {
   "WGCNA_gene_set": [
     "UCHL1",
     "HSPA1A",
@@ -661,7 +643,7 @@ const mockWGCNAResponse =  {
 
 
 export const submitBaselineSelection = async (projectId, params) => {
-  const token = localStorage.getItem('token'); 
+  const token = localStorage.getItem('token');
 
   const requestBody = JSON.stringify(params);
   console.log('Sending request with body:', requestBody);
@@ -670,7 +652,7 @@ export const submitBaselineSelection = async (projectId, params) => {
     const response = await fetch(`${API_URL}/feature_selection/${projectId}/baseline`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,  
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: requestBody,
@@ -678,14 +660,14 @@ export const submitBaselineSelection = async (projectId, params) => {
 
     if (!response.ok) {
       console.error('API request not successful');
-      return mockBaselinSelection; 
+      return mockBaselinSelection;
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
     console.error('Error:', error.message);
-    return mockBaselinSelection; 
+    return mockBaselinSelection;
   }
 };
 
@@ -697,7 +679,7 @@ const mockBaselinSelection = {
 
 
 export const submitGeneCollection = async (projectId, params) => {
-  const token = localStorage.getItem('token'); 
+  const token = localStorage.getItem('token');
 
   const requestBody = JSON.stringify(params);
   console.log('Sending request with body:', requestBody);
@@ -706,7 +688,7 @@ export const submitGeneCollection = async (projectId, params) => {
     const response = await fetch(`${API_URL}/feature_selection/${projectId}/collect`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,  
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: requestBody,
@@ -714,14 +696,14 @@ export const submitGeneCollection = async (projectId, params) => {
 
     if (!response.ok) {
       console.error('API request not successful');
-      return mockGeneCollection; 
+      return mockGeneCollection;
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
     console.error('Error:', error.message);
-    return mockGeneCollection; 
+    return mockGeneCollection;
   }
 };
 
@@ -732,7 +714,7 @@ const mockGeneCollection = {
 
 
 export const submitGeneSelection = async (projectId, params) => {
-  const token = localStorage.getItem('token'); 
+  const token = localStorage.getItem('token');
 
   const requestBody = JSON.stringify(params);
   console.log('Sending request with body:', requestBody);
@@ -741,7 +723,7 @@ export const submitGeneSelection = async (projectId, params) => {
     const response = await fetch(`${API_URL}/feature_selection/${projectId}/select`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,  
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: requestBody,
@@ -749,14 +731,14 @@ export const submitGeneSelection = async (projectId, params) => {
 
     if (!response.ok) {
       console.error('API request not successful');
-      return mockGeneSelection; 
+      return mockGeneSelection;
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
     console.error('Error:', error.message);
-    return mockGeneSelection; 
+    return mockGeneSelection;
   }
 };
 
@@ -767,7 +749,7 @@ const mockGeneSelection = {
 
 // BuildBaseModel API
 export const buildBaseModel = async (projectId, params) => {
-  const token = localStorage.getItem('token'); 
+  const token = localStorage.getItem('token');
 
   const requestBody = JSON.stringify(params);
   console.log('Sending request with body:', requestBody);
@@ -782,7 +764,7 @@ export const buildBaseModel = async (projectId, params) => {
       body: requestBody,
     });
 
-   
+
     if (!response.ok) {
       console.error('API request not successful');
       return mockBuildBaseModel;
@@ -805,7 +787,7 @@ const mockBuildBaseModel = {
 
 // evaluateBaseModel API
 export const evaluateBaseModel = async (projectId, params) => {
-  const token = localStorage.getItem('token'); 
+  const token = localStorage.getItem('token');
 
   const requestBody = JSON.stringify(params);
   console.log('Sending request with body:', requestBody);
@@ -843,24 +825,24 @@ const mockEvaluateBaseModel = {
 
 // trainMlpModel API
 export const trainMlpModel = async (projectId, params) => {
-  const token = localStorage.getItem('token'); 
+  const token = localStorage.getItem('token');
 
-  const requestBody = JSON.stringify(params); 
+  const requestBody = JSON.stringify(params);
   console.log('Sending request with body:', requestBody);
 
   try {
     const response = await fetch(`${API_URL}/model/${projectId}/mlp/train`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,  
-        'Content-Type': 'application/json',  
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
-      body: requestBody,  
+      body: requestBody,
     });
 
     if (!response.ok) {
       console.error('API request not successful');
-      return mockTrainMlpModel; 
+      return mockTrainMlpModel;
     }
 
 
@@ -868,29 +850,29 @@ export const trainMlpModel = async (projectId, params) => {
     return data;
   } catch (error) {
     console.error('Error:', error.message);
-    return mockTrainMlpModel; 
+    return mockTrainMlpModel;
   }
 };
 
 const mockTrainMlpModel = {
-  status: "success", 
+  status: "success",
 };
 
 // evaluateMlpModel API
 export const evaluateMlpModel = async (projectId, params) => {
-  const token = localStorage.getItem('token'); 
+  const token = localStorage.getItem('token');
 
-  const requestBody = JSON.stringify(params); 
+  const requestBody = JSON.stringify(params);
   console.log('Sending request with body:', requestBody);
 
   try {
     const response = await fetch(`${API_URL}/model/${projectId}/mlp/evaluate`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,  
-        'Content-Type': 'application/json',  
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
-      body: requestBody,  
+      body: requestBody,
     });
 
 
@@ -902,7 +884,7 @@ export const evaluateMlpModel = async (projectId, params) => {
     return data;
   } catch (error) {
     console.error('Error:', error.message);
-    return mockEvaluateMlpModelResponse; 
+    return mockEvaluateMlpModelResponse;
   }
 };
 
@@ -910,7 +892,7 @@ export const evaluateMlpModel = async (projectId, params) => {
 
 // Chained API function for Base Model and Evaluate Model
 export const trainAndEvaluateBaseModel = async (projectId, params) => {
-  const token = localStorage.getItem('token'); 
+  const token = localStorage.getItem('token');
 
   const requestBody = JSON.stringify(params);
   console.log('Sending request with body:', requestBody);
@@ -957,7 +939,7 @@ export const trainAndEvaluateBaseModel = async (projectId, params) => {
     };
   } catch (error) {
     console.error('Error:', error.message);
-    return mockEvaluateBaseModel; 
+    return mockEvaluateBaseModel;
   }
 };
 
@@ -1007,7 +989,6 @@ export const trainAndEvaluateMlpModel = async (projectId, params) => {
     const evaluateData = await evaluateResponse.json();
     console.log('MLP model evaluated successfully:', evaluateData);
 
-    // Return both train and evaluate data, or just evaluate data if you prefer
     return {
       trainData,
       evaluateData,
@@ -1029,17 +1010,17 @@ const mockEvaluateMlpModelResponse = {
 export const runReactomeAndStatus = async (projectId, interval = 5000) => {
   const token = localStorage.getItem('token');
 
-  const mockreactomeData = 
-    {
-      "task_id": "9ff94536-2e4a-4553-8222-2c1a5a24b121",
-      "task_status": "IN_PROGRESS",
-      "task_info": {
-        "done": 4,
-        "total": 12,
-        "detail": "Exporting dmso_vs_nitrendipine reports"
-      }
+  const mockreactomeData =
+  {
+    "task_id": "9ff94536-2e4a-4553-8222-2c1a5a24b121",
+    "task_status": "IN_PROGRESS",
+    "task_info": {
+      "done": 4,
+      "total": 12,
+      "detail": "Exporting dmso_vs_nitrendipine reports"
     }
-  ;
+  }
+    ;
 
   try {
     const response = await fetch(`${API_URL}/deseq/${projectId}/reactome/`, {
@@ -1055,7 +1036,7 @@ export const runReactomeAndStatus = async (projectId, interval = 5000) => {
       throw new Error(`Failed to start task. Status: ${response.status}`);
     }
 
-    const { task_id } = await response.json();  
+    const { task_id } = await response.json();
     console.log(`Task started with ID: ${task_id}`);
 
     const checkTaskStatus = async () => {
@@ -1075,7 +1056,7 @@ export const runReactomeAndStatus = async (projectId, interval = 5000) => {
 
       if (statusData.task_status === 'SUCCESS') {
         console.log('Task completed successfully:', statusData);
-        return statusData;  
+        return statusData;
       } else if (statusData.task_status === 'FAILED') {
         console.log('Task failed:', statusData);
         throw new Error('Task failed');
@@ -1087,13 +1068,13 @@ export const runReactomeAndStatus = async (projectId, interval = 5000) => {
       }
     };
 
-    // 開始檢查任務狀態
+    //檢查任務狀態
     return await checkTaskStatus();
 
   } catch (error) {
     console.error('API Error:', error.message);
     console.log('Returning mock data due to error.');
-    return mockreactomeData;  // 返回 mockData 以替代真實 API 數據
+    return mockreactomeData;
   }
 };
 
@@ -1102,4 +1083,3 @@ export const runReactomeAndStatus = async (projectId, interval = 5000) => {
 
 
 
-  

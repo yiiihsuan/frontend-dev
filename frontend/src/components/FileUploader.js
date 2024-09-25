@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { FaCloudUploadAlt, FaCheckCircle } from 'react-icons/fa';
 
-// Styled Components
 const UploadSection = styled.div`
   margin-bottom: 40px;
   text-align: center;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { registerUser } from '../api'; 
+import { registerUser } from '../api';
 import Swal from 'sweetalert2';
 
 import { FaUser, FaLock } from 'react-icons/fa';
@@ -86,70 +86,70 @@ const SignUpPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-  
-    const mutation = useMutation(
-      ({ username, password }) => registerUser(username, password),
-      {
-        onSuccess: () => {
-          Swal.fire({
-            title: 'Account created!',
-            text: 'Your account has been successfully created.',
-            icon: 'success',
-            confirmButtonText: 'OK',
-          }).then(() => {
-            navigate('/'); 
-          });
-        },
-        onError: (error) => {
-          Swal.fire({
-            title: 'Error!',
-            text: error.message || 'Something went wrong. Please try again.',
-            icon: 'error',
-            confirmButtonText: 'OK',
-          });
-        },
-      }
-    );
-  
-    const handleSignUp = () => {
-      mutation.mutate({ username, password });
-    };
-  
-    return (
-      <Container>
-        <Logo src="genenetlogo_small.png" alt="Logo" />
-        <Title>Create Your Account</Title>
-        <InputContainer>
-          <InputIcon><FaUser /></InputIcon>
-          <Input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </InputContainer>
-        <InputContainer>
-          <InputIcon><FaLock /></InputIcon>
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </InputContainer>
-        <Button onClick={handleSignUp} disabled={mutation.isLoading}>
-          {mutation.isLoading ? 'Creating account...' : 'Create account'}
-        </Button>
 
-        <LoginText>
-        Already have an account?{' '}
-        <span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-          Log in here
-        </span>
-      </LoginText>
-      </Container>
+    const mutation = useMutation(
+        ({ username, password }) => registerUser(username, password),
+        {
+            onSuccess: () => {
+                Swal.fire({
+                    title: 'Account created!',
+                    text: 'Your account has been successfully created.',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                }).then(() => {
+                    navigate('/');
+                });
+            },
+            onError: (error) => {
+                Swal.fire({
+                    title: 'Error!',
+                    text: error.message || 'Something went wrong. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                });
+            },
+        }
     );
-  };
-  
+
+    const handleSignUp = () => {
+        mutation.mutate({ username, password });
+    };
+
+    return (
+        <Container>
+            <Logo src="genenetlogo_small.png" alt="Logo" />
+            <Title>Create Your Account</Title>
+            <InputContainer>
+                <InputIcon><FaUser /></InputIcon>
+                <Input
+                    type="text"
+                    placeholder="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+            </InputContainer>
+            <InputContainer>
+                <InputIcon><FaLock /></InputIcon>
+                <Input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+            </InputContainer>
+            <Button onClick={handleSignUp} disabled={mutation.isLoading}>
+                {mutation.isLoading ? 'Creating account...' : 'Create account'}
+            </Button>
+
+            <LoginText>
+                Already have an account?{' '}
+                <span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+                    Log in here
+                </span>
+            </LoginText>
+        </Container>
+    );
+};
+
 
 export default SignUpPage;
