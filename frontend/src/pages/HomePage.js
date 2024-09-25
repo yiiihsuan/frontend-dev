@@ -1,209 +1,25 @@
-// import React from 'react';
-
-// const HomePage = () => {
-//   return (
-//     <div>
-//       <h1>Welcome to the Home Page</h1>
-//     </div>
-//   );
-// };
-
-// export default HomePage;
-
-
-
-
-
-
-// import React, { useState } from 'react';
-// import { useQuery, useMutation, useQueryClient } from 'react-query';
-// import { fetchProjects, createProject } from '../api';
-// import styled from 'styled-components';
-
-// const Container = styled.div`
-//   padding: 20px;
-// `;
-
-// const Title = styled.h1`
-//   font-size: 2em;
-//   margin-bottom: 20px;
-//   color: #333;
-// `;
-
-// const NewVersionButton = styled.button`
-//   background-color: #007bff;
-//   color: white;
-//   border: none;
-//   padding: 10px 20px;
-//   font-size: 1em;
-//   border-radius: 5px;
-//   cursor: pointer;
-//   margin-bottom: 20px;
-
-//   &:hover {
-//     background-color: #0056b3;
-//   }
-// `;
-
-// const ProjectList = styled.ul`
-//   list-style-type: none;
-//   padding: 0;
-// `;
-
-// const ProjectItem = styled.li`
-//   background-color: #f9f9f9;
-//   border: 1px solid #ccc;
-//   border-radius: 5px;
-//   padding: 10px;
-//   margin-bottom: 10px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-// `;
-
-// const ProjectName = styled.strong`
-//   font-size: 1.2em;
-//   color: #333;
-//   text-decoration: none;
-
-//   &:hover {
-//     text-decoration: underline;
-//   }
-// `;
-
-// const EditButton = styled.button`
-//   background-color: #007bff;
-//   color: white;
-//   border: none;
-//   padding: 5px 10px;
-//   font-size: 1em;
-//   border-radius: 5px;
-//   cursor: pointer;
-
-//   &:hover {
-//     background-color: #0056b3;
-//   }
-// `;
-
-// const Modal = styled.div`
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background: rgba(0, 0, 0, 0.5);
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// `;
-
-// const ModalContent = styled.div`
-//   background: white;
-//   padding: 20px;
-//   border-radius: 5px;
-//   width: 400px;
-//   max-width: 100%;
-// `;
-
-// const ModalTitle = styled.h2`
-//   margin-top: 0;
-// `;
-
-// const ModalInput = styled.input`
-//   width: 100%;
-//   padding: 10px;
-//   margin-bottom: 20px;
-//   border: 1px solid #ccc;
-//   border-radius: 5px;
-// `;
-
-// const ModalButton = styled.button`
-//   background-color: #007bff;
-//   color: white;
-//   border: none;
-//   padding: 10px 20px;
-//   font-size: 1em;
-//   border-radius: 5px;
-//   cursor: pointer;
-
-//   &:hover {
-//     background-color: #0056b3;
-//   }
-
-//   &:not(:last-child) {
-//     margin-right: 10px;
-//   }
-// `;
-
-// const HomePage = () => {
-//   const queryClient = useQueryClient();
-//   const { data, error, isLoading, isError } = useQuery('projects', fetchProjects);
-
-//   const [isModalOpen, setIsModalOpen] = useState(false);
-//   const [newProjectName, setNewProjectName] = useState('');
-
-//   const mutation = useMutation(createProject, {
-//     onSuccess: () => {
-//       queryClient.invalidateQueries('projects');
-//       setIsModalOpen(false);
-//       setNewProjectName('');
-//     },
-//   });
-
-//   const handleCreateProject = () => {
-//     mutation.mutate(newProjectName);
-//   };
-
-//   if (isLoading) {
-//     return <div>Loading...</div>;
-//   }
-
-//   if (isError) {
-//     return <div>Error: {error.message}</div>;
-//   }
-
-//   return (
-//     <Container>
-//       <Title>Projects</Title>
-//       <NewVersionButton onClick={() => setIsModalOpen(true)}>+ New Version</NewVersionButton>
-//       <ProjectList>
-//         {data.map((project) => (
-//           <ProjectItem key={project.id}>
-//             <ProjectName>{project.project_name}</ProjectName> ({project.id})
-//             <EditButton>Edit</EditButton>
-//           </ProjectItem>
-//         ))}
-//       </ProjectList>
-//       {isModalOpen && (
-//         <Modal>
-//           <ModalContent>
-//             <ModalTitle>Create New Project</ModalTitle>
-//             <ModalInput
-//               type="text"
-//               placeholder="Project Name"
-//               value={newProjectName}
-//               onChange={(e) => setNewProjectName(e.target.value)}
-//             />
-//             <ModalButton onClick={handleCreateProject}>Create</ModalButton>
-//             <ModalButton onClick={() => setIsModalOpen(false)}>Cancel</ModalButton>
-//           </ModalContent>
-//         </Modal>
-//       )}
-//     </Container>
-//   );
-// };
-
-// export default HomePage;
-
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+//import { Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { fetchProjects, createProject } from '../api';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { FaPlus, FaUser} from 'react-icons/fa';
+import { getUserInfo, fetchProjects } from '../api'; 
+import { createProject } from '../api';
+import { useNavigate } from 'react-router-dom';
+import Sidebar from '../components/SideBar'; 
 
-const Container = styled.div`
+
+const Layout = styled.div`
+  display: flex;
+  height: 100vh;
+  position: relative;
+`;
+
+const MainContent = styled.div`
+  flex: 1;
   padding: 20px;
+  overflow-y: auto;
+  background-color: #f0f0f0;
 `;
 
 const Title = styled.h1`
@@ -212,59 +28,56 @@ const Title = styled.h1`
   color: #333;
 `;
 
-const NewVersionButton = styled.button`
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1em;
+const ProjectGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+`;
+
+const AddProjectCard = styled.div`
+  background-color: #e0e0e0;
+  border: 2px dashed #aaa;
   border-radius: 5px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  margin-bottom: 20px;
+  font-size: 2em;
+  color: #333;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #d0d0d0;
   }
 `;
 
-const ProjectList = styled.ul`
+const ProjectCard = styled.div`
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+`;
+
+const ProjectName = styled.h2`
+  font-size: 1.5em;
+  color: #333;
+  margin-bottom: 10px;
+`;
+
+const TaskList = styled.ul`
   list-style-type: none;
   padding: 0;
 `;
 
-const ProjectItem = styled.li`
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
+const TaskItem = styled.li`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-`;
-
-const ProjectName = styled(Link)`
-  font-size: 1.2em;
-  color: #333;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const EditButton = styled.button`
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 5px 10px;
   font-size: 1em;
-  border-radius: 5px;
-  cursor: pointer;
+  margin-bottom: 8px;
+`;
 
-  &:hover {
-    background-color: #0056b3;
-  }
+const TaskCheckbox = styled.input.attrs({ type: 'checkbox' })`
+  margin-right: 10px;
 `;
 
 const Modal = styled.div`
@@ -285,10 +98,16 @@ const ModalContent = styled.div`
   border-radius: 5px;
   width: 400px;
   max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  height: 300px; 
 `;
 
 const ModalTitle = styled.h2`
   margin-top: 0;
+  text-align: center;
 `;
 
 const ModalInput = styled.input`
@@ -300,7 +119,7 @@ const ModalInput = styled.input`
 `;
 
 const ModalButton = styled.button`
-  background-color: #007bff;
+  background-color: black;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -309,7 +128,7 @@ const ModalButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #33333;
   }
 
   &:not(:last-child) {
@@ -317,12 +136,44 @@ const ModalButton = styled.button`
   }
 `;
 
-const HomePage = () => {
+const ButtonGroup = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
+const UserProfile = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  color: #333;
+`;
+
+const UserAvatar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em; //scale the icon 
+  margin-right: 10px;
+  color: #333; 
+`;
+
+
+
+const HomePage = ({ setIsLoggedIn }) => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { data, error, isLoading, isError } = useQuery('projects', fetchProjects);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { data: projects, error, isLoading, isError } = useQuery('projects', fetchProjects);
+  const { data: userInfo } = useQuery('userInfo', getUserInfo);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
+
 
   const mutation = useMutation(createProject, {
     onSuccess: () => {
@@ -332,9 +183,16 @@ const HomePage = () => {
     },
   });
 
+
   const handleCreateProject = () => {
     mutation.mutate(newProjectName);
   };
+
+  const handleProjectClick = (projectId) => {
+    localStorage.setItem('projectId', projectId); 
+    navigate(`/project/${projectId}`); 
+  };
+
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -345,33 +203,47 @@ const HomePage = () => {
   }
 
   return (
-    <Container>
-      <Title>Projects</Title>
-      <NewVersionButton onClick={() => setIsModalOpen(true)}>+ New Version</NewVersionButton>
-      <ProjectList>
-        {data.map((project) => (
-          <ProjectItem key={project.id}>
-            <ProjectName to={`/project/${project.id}`}>{project.project_name}</ProjectName> ({project.id})
-            <EditButton>Edit</EditButton>
-          </ProjectItem>
-        ))}
-      </ProjectList>
-      {isModalOpen && (
-        <Modal>
-          <ModalContent>
-            <ModalTitle>Create New Project</ModalTitle>
-            <ModalInput
-              type="text"
-              placeholder="Project Name"
-              value={newProjectName}
-              onChange={(e) => setNewProjectName(e.target.value)}
-            />
-            <ModalButton onClick={handleCreateProject}>Create</ModalButton>
-            <ModalButton onClick={() => setIsModalOpen(false)}>Cancel</ModalButton>
-          </ModalContent>
-        </Modal>
-      )}
-    </Container>
+    <Layout>
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} setIsLoggedIn={setIsLoggedIn} />
+      <MainContent>
+        <Title>Projects</Title>
+        <ProjectGrid>
+          <AddProjectCard onClick={() => setIsModalOpen(true)}>
+            <FaPlus />
+          </AddProjectCard>
+          {projects.map((project) => (
+            // <ProjectCard key={project.id} onClick={() => navigate(`/project/${project.id}`)}>
+            <ProjectCard key={project.id} onClick={() => handleProjectClick(project.id)}>
+              <ProjectName>{project.project_name}</ProjectName>
+              <p>Project ID: {project.id}</p>
+            </ProjectCard>
+          ))}
+        </ProjectGrid>
+        {isModalOpen && (
+          <Modal>
+            <ModalContent>
+              <ModalTitle>Create New Project</ModalTitle>
+              <ModalInput
+                type="text"
+                placeholder="Project Name"
+                value={newProjectName}
+                onChange={(e) => setNewProjectName(e.target.value)}
+              />
+              <ButtonGroup>
+                <ModalButton onClick={handleCreateProject}>Create</ModalButton>
+                <ModalButton onClick={() => setIsModalOpen(false)}>Cancel</ModalButton>
+              </ButtonGroup>
+            </ModalContent>
+          </Modal>
+        )}
+      </MainContent>
+      <UserProfile>
+        <UserAvatar>
+          <FaUser />
+        </UserAvatar>
+        <span>{userInfo?.username}</span>
+      </UserProfile>
+    </Layout>
   );
 };
 

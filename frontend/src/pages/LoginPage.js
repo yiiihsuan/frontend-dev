@@ -1,107 +1,10 @@
-
-// import React, { useState } from 'react';
-// import styled from 'styled-components';
-// import { useNavigate } from 'react-router-dom';
-// import { useMutation } from 'react-query';
-// import { loginUser } from '../api';  
-
-// const Container = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   height: 100vh;
-//   background-color: #f5f5f5;
-// `;
-
-// const Title = styled.h1`
-//   font-size: 2em;
-//   color: #614425;
-// `;
-
-// const Input = styled.input`
-//   margin: 10px 0;
-//   padding: 10px;
-//   width: 300px;
-//   border: 1px solid #ccc;
-//   border-radius: 4px;
-//   font-size: 16px;
-// `;
-
-// const Button = styled.button`
-//   margin: 2%;
-//   padding: 1% 3%;
-//   font-family: 'Luckiest Guy', "Chocolate Classical Sans", sans-serif, cursive;
-//   font-size: 16px;
-//   background-color: #6E332A;
-//   color: white;
-//   border: none;
-//   border-radius: 4px;
-//   cursor: pointer;
-
-//   &:hover {
-//     background-color: #6E332A;
-//   }
-// `;
-
-// const LoginPage = ({ onLogin }) => {
-//   const [username, setUsername] = useState('');
-//   const [password, setPassword] = useState('');
-//   const navigate = useNavigate();
-
-//   const mutation = useMutation(
-//     ({ username, password }) => loginUser(username, password),
-//     {
-//       onSuccess: (data) => {
-//         console.log('Login successful', data);
-
-//         localStorage.setItem('token', data.access_token);
-
-//         onLogin();  
-//         navigate('/home');  
-//       },
-//       onError: (error) => {
-//         console.error('Login failed', error);
-//       },
-//     }
-//   );
-
-//   const handleLogin = () => {
-//     mutation.mutate({ username, password });
-//   };
-
-//   return (
-//     <Container>
-//       <Title>Login</Title>
-//       <Input
-//         type="text"
-//         placeholder="Username"
-//         value={username}
-//         onChange={(e) => setUsername(e.target.value)}
-//       />
-//       <Input
-//         type="password"
-//         placeholder="Password"
-//         value={password}
-//         onChange={(e) => setPassword(e.target.value)}
-//       />
-//       <Button onClick={handleLogin} disabled={mutation.isLoading}>
-//         {mutation.isLoading ? 'Logging in...' : 'Login'}
-//       </Button>
-//       {mutation.isError && <div>Error: {mutation.error.message}</div>}
-//     </Container>
-//   );
-// };
-
-// export default LoginPage;
-
-
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { loginUser } from '../api';  
+import { loginUser } from '../api';
 import { FaUser, FaLock } from 'react-icons/fa';
+
 
 const Container = styled.div`
   display: flex;
@@ -228,7 +131,10 @@ const LoginPage = ({ onLogin }) => {
       </Button>
       {mutation.isError && <div>Error: {mutation.error.message}</div>}
       <SignUpText>
-        <a href="/sign-up">sign up here</a>
+        Don't have an account?{' '}
+        <span onClick={() => navigate('/sign-up')} style={{ cursor: 'pointer' }}>
+          Sign up here
+        </span>
       </SignUpText>
     </Container>
   );
