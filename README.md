@@ -19,5 +19,9 @@ For genenet dev
 ## Config
 - analysisConfig - The default value of parameter setting
 
+## API
+- api.js 
+
+
 
 
