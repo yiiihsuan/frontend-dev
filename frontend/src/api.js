@@ -107,6 +107,24 @@ export const uploadFile = async ({ file, projectId, type }) => {
   return data;
 };
 
+export const analyzeBeating = async ({file, projectId}) => {
+  const token = localStorage.getItem('token');
+  const formData = new FormData();
+  formData.append('file', file); 
+  const response = await fetch(`${API_URL}/analyze_beating/?project_id=${projectId}`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+    body: formData,
+  });
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  const data = await response.json();
+  return data;
+};
+
 
 
 

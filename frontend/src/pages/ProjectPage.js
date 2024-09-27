@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { uploadFile } from '../api';
+import { uploadFile,analyzeBeating } from '../api';
 import styled from 'styled-components';
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 import { CiCircleChevDown, CiCircleChevUp } from "react-icons/ci";
