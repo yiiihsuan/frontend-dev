@@ -108,7 +108,7 @@ export const uploadFile = async ({ file, projectId, type }) => {
 };
 
 
-export const analyzeBeating = async (file, projectId) => {
+export const analyzeBeating = async ({file, projectId}) => {
   const token = localStorage.getItem('token');
   const formData = new FormData();
   formData.append('file', file); 
