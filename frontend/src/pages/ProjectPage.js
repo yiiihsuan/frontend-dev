@@ -253,6 +253,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   const { projectId } = useParams();
   const [geneFile, setGeneFile] = useState(null);
   const [heartFile, setHeartFile] = useState(null);
+  const [heartVideoFile, setHeartVideoFile] = useState(null); 
   const [isProcessOpen, setIsProcessOpen] = useState(false);
 
   // const [deseq2Selected, setDeseq2Selected] = useState(false);
