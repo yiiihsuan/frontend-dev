@@ -9,25 +9,41 @@ import SignUpPage from './pages/SignupPage';
 
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // const handleLogin = () => {
+  //   setIsLoggedIn(true);
+  // };
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const savedLoggedIn = localStorage.getItem('isLoggedIn');
+    return savedLoggedIn === 'true'; 
+  });
 
   const handleLogin = () => {
     setIsLoggedIn(true);
+    localStorage.setItem('isLoggedIn', 'true'); 
   };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem('isLoggedIn'); 
+    localStorage.removeItem('token'); 
+  };
+
 
   return (
     <Router>
       <div>
         <Routes>
-            <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <LoginPage onLogin={handleLogin} />} />
+            {/* <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <LoginPage onLogin={handleLogin} />} />
              <Route path="/sign-up" element={<SignUpPage />} />  
             <Route path="/home" element={isLoggedIn ? <HomePage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
             <Route path="/project/:projectId" element={isLoggedIn ? <ProjectPage setIsLoggedIn={setIsLoggedIn}/> : <Navigate to="/" />} />
-            
-            
-            {/* <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/project/:projectId" element={<ProjectPage />} /> */}
+             */}
+            <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <LoginPage onLogin={handleLogin} />} />
+          <Route path="/sign-up" element={<SignUpPage />} />  
+          <Route path="/home" element={isLoggedIn ? <HomePage setIsLoggedIn={handleLogout} /> : <Navigate to="/" />} />
+          <Route path="/project/:projectId" element={isLoggedIn ? <ProjectPage setIsLoggedIn={handleLogout} /> : <Navigate to="/" />} />
         </Routes>
       </div>
     </Router>

@@ -58,19 +58,25 @@ const Icon = styled.div`
 `;
 
 
-const Sidebar = ({ isOpen, setIsOpen, setIsLoggedIn }) => {
+const Sidebar = ({ isOpen, setIsOpen, handleLogout}) => {
 
 
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    console.log('Token before logout:', localStorage.getItem('token'));
-    localStorage.removeItem('token');
-    console.log('Token after logout:', localStorage.getItem('token'));
-    setIsLoggedIn(false);
-    navigate('/');
-    console.log('Navigating to login page...');
+  // const handleLogout = () => {
+  //   console.log('Token before logout:', localStorage.getItem('token'));
+  //   localStorage.removeItem('token');
+  //   console.log('Token after logout:', localStorage.getItem('token'));
+  //   setIsLoggedIn(false);
+  //   navigate('/');
+  //   console.log('Navigating to login page...');
 
+  // };
+
+  const onLogoutClick = () => {
+    handleLogout(); 
+    navigate('/'); 
+    console.log('Navigating to login page...');
   };
 
 
@@ -114,7 +120,7 @@ const Sidebar = ({ isOpen, setIsOpen, setIsLoggedIn }) => {
         <span>Document</span>
       </SidebarItem>
 
-      <SidebarItem as="div" onClick={handleLogout} isOpen={isOpen}>
+      <SidebarItem as="div" onClick={onLogoutClick} isOpen={isOpen}>
         <Icon isOpen={isOpen}>
           <FaSignOutAlt />
         </Icon>
