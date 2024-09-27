@@ -6,6 +6,8 @@ import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import ProjectPage from './pages/ProjectPage';
 import SignUpPage from './pages/SignupPage'; 
+import Sidebar from './components/SideBar'; 
+
 
 
 function App() {
@@ -34,16 +36,19 @@ function App() {
   return (
     <Router>
       <div>
+      {isLoggedIn && (
+          <Sidebar isOpen={true} setIsOpen={() => {}} handleLogout={handleLogout} />
+        )}
         <Routes>
             {/* <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <LoginPage onLogin={handleLogin} />} />
-             <Route path="/sign-up" element={<SignUpPage />} />  
+             <Route path="/sign-up" element={<SignUpPage />} />   */}
             <Route path="/home" element={isLoggedIn ? <HomePage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
             <Route path="/project/:projectId" element={isLoggedIn ? <ProjectPage setIsLoggedIn={setIsLoggedIn}/> : <Navigate to="/" />} />
-             */}
+           
             <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <LoginPage onLogin={handleLogin} />} />
           <Route path="/sign-up" element={<SignUpPage />} />  
-          <Route path="/home" element={isLoggedIn ? <HomePage setIsLoggedIn={handleLogout} /> : <Navigate to="/" />} />
-          <Route path="/project/:projectId" element={isLoggedIn ? <ProjectPage setIsLoggedIn={handleLogout} /> : <Navigate to="/" />} />
+          {/* <Route path="/home" element={isLoggedIn ? <HomePage setIsLoggedIn={handleLogout} /> : <Navigate to="/" />} />
+          <Route path="/project/:projectId" element={isLoggedIn ? <ProjectPage setIsLoggedIn={handleLogout} /> : <Navigate to="/" />} /> */}
         </Routes>
       </div>
     </Router>

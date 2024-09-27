@@ -74,9 +74,13 @@ const Sidebar = ({ isOpen, setIsOpen, handleLogout}) => {
   // };
 
   const onLogoutClick = () => {
-    handleLogout(); 
-    navigate('/'); 
-    console.log('Navigating to login page...');
+    if (handleLogout) {
+      handleLogout(); 
+      navigate('/'); 
+      console.log('Navigating to login page...');
+    } else {
+      console.error('handleLogout is not defined or not a function');
+    }
   };
 
 
