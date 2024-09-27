@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { uploadFile } from '../api';
+import { uploadFile, analyzeBeating } from '../api';
 import styled from 'styled-components';
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 import { CiCircleChevDown, CiCircleChevUp } from "react-icons/ci";
@@ -253,6 +253,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   const { projectId } = useParams();
   const [geneFile, setGeneFile] = useState(null);
   const [heartFile, setHeartFile] = useState(null);
+  const [heartVideoFile, setHeartVideoFile] = useState(null); 
   const [isProcessOpen, setIsProcessOpen] = useState(false);
 
   // const [deseq2Selected, setDeseq2Selected] = useState(false);
@@ -283,15 +284,44 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   const toggleModelOpen = () => setIsModelOpen(!isModelOpen);
 
 
-  const mutation = useMutation(uploadFile, {
-    onSuccess: (data, variables) => {
-      alert(`${variables.type} uploaded successfully`);
-    },
-    onError: (error, variables) => {
-      console.error('Error:', error);
-      alert(`Failed to upload ${variables.type}`);
-    },
-  });
+  // const mutation = useMutation(uploadFile, {
+  //   onSuccess: (data, variables) => {
+  //     alert(`${variables.type} uploaded successfully`);
+  //   },
+  //   onError: (error, variables) => {
+  //     console.error('Error:', error);
+  //     alert(`Failed to upload ${variables.type}`);
+  //   },
+  // });
+
+  const [beatingCount, setBeatingCount] = useState(null);
+  const [beatingPlotUrl, setBeatingPlotUrl] = useState(null);
+
+
+    const uploadMutation = useMutation(uploadFile, {
+      onSuccess: (data, variables) => {
+        alert(`${variables.type} uploaded successfully`);
+      },
+      onError: (error, variables) => {
+        console.error('Error:', error);
+        alert(`Failed to upload ${variables.type}`);
+      },
+    });
+  
+
+    const API_URL = process.env.API_URL;
+
+    const analyzeMutation = useMutation(analyzeBeating, {
+      onSuccess: (data) => {
+        alert(`File uploaded successfully`);
+        setBeatingCount(data["Beating count"]); 
+        setBeatingPlotUrl(`${API_URL}/${data["Beating plot url"]}`); 
+      },
+      onError: (error) => {
+        console.error('Error:', error);
+        alert(`Failed to upload file`);
+      },
+    });
 
 
   // const handleFileChange = (setter) => (event) => {
@@ -302,10 +332,28 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
 
-  const handleUpload = (file, type) => {
-    const projectId = localStorage.getItem('projectId');
-    console.log('Handle upload parameters:', { file, type, projectId });
+  // const handleUpload = (file, type) => {
+  //   const projectId = localStorage.getItem('projectId');
+  //   console.log('Handle upload parameters:', { file, type, projectId });
 
+  //   if (!projectId) {
+  //     console.error("Project ID is not set");
+  //     alert("Project ID is not set. Please check your configuration.");
+  //     return;
+  //   }
+  //   if (!file) {
+  //     console.error("No file selected");
+  //     alert("No file selected. Please select a file before uploading.");
+  //     return;
+  //   }
+  //   mutation.mutate({
+  //     file: file,
+  //     projectId: projectId,
+  //     type: type
+  //   });
+  // };
+
+  const handleUpload = (file, type) => {
     if (!projectId) {
       console.error("Project ID is not set");
       alert("Project ID is not set. Please check your configuration.");
@@ -316,11 +364,12 @@ const ProjectPage = ({ setIsLoggedIn }) => {
       alert("No file selected. Please select a file before uploading.");
       return;
     }
-    mutation.mutate({
-      file: file,
-      projectId: projectId,
-      type: type
-    });
+
+    if (type === "video") {
+      analyzeMutation.mutate({ file: file, projectId: projectId });
+    } else {
+      uploadMutation.mutate({ file: file, projectId: projectId, type: type });
+    }
   };
 
   const parseDeseqStats = (data) => {
@@ -345,6 +394,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
           uploadType="gene_counts"
           handleUpload={handleUpload}
         />
+
         {/* Heart Beat Data Uploader */}
         <FileUploader
           title="Heart Beat Data"
@@ -353,6 +403,25 @@ const ProjectPage = ({ setIsLoggedIn }) => {
           uploadType="meta"
           handleUpload={handleUpload}
         />
+
+
+        <FileUploader
+          title="Heart Beat Video"
+          file={heartVideoFile}
+          setFile={setHeartVideoFile}
+          uploadType="video" 
+          handleUpload={handleUpload}
+        />
+
+           {beatingCount !== null && beatingPlotUrl !== null && (
+          <div className="analysis-result">
+            <h2>Beating Analysis Results</h2>
+            <p><strong>Beating Count:</strong> {beatingCount}</p>
+            <img src={beatingPlotUrl} alt="Beating Plot" style={{ width: '50%', height: 'auto' }} />
+          </div>
+        )}
+
+
         <PreprocessComponent projectId={projectId} />
         <TitleContainer onClick={() => setIsProcessOpen(!isProcessOpen)}>
           process selection
