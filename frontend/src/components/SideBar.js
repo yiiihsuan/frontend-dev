@@ -58,30 +58,31 @@ const Icon = styled.div`
 `;
 
 
-const Sidebar = ({ isOpen, setIsOpen, handleLogout}) => {
+const Sidebar = ({ isOpen, setIsOpen,setIsLoggedIn}) => {
 
 
   const navigate = useNavigate();
 
-  // const handleLogout = () => {
-  //   console.log('Token before logout:', localStorage.getItem('token'));
-  //   localStorage.removeItem('token');
-  //   console.log('Token after logout:', localStorage.getItem('token'));
-  //   setIsLoggedIn(false);
-  //   navigate('/');
-  //   console.log('Navigating to login page...');
+  const handleLogout = () => {
+    console.log('Token before logout:', localStorage.getItem('token'));
+    localStorage.removeItem('token');
+    localStorage.removeItem('isLoggedIn'); 
+    console.log('Token after logout:', localStorage.getItem('token'));
+    setIsLoggedIn(false);
+    navigate('/');
+    console.log('Navigating to login page...');
 
-  // };
-
-  const onLogoutClick = () => {
-    if (handleLogout) {
-      handleLogout(); 
-      navigate('/'); 
-      console.log('Navigating to login page...');
-    } else {
-      console.error('handleLogout is not defined or not a function');
-    }
   };
+
+  // const onLogoutClick = () => {
+  //   if (handleLogout) {
+  //     handleLogout(); 
+  //     navigate('/'); 
+  //     console.log('Navigating to login page...');
+  //   } else {
+  //     console.error('handleLogout is not defined or not a function');
+  //   }
+  // };
 
 
   return (
@@ -124,7 +125,7 @@ const Sidebar = ({ isOpen, setIsOpen, handleLogout}) => {
         <span>Document</span>
       </SidebarItem>
 
-      <SidebarItem as="div" onClick={onLogoutClick} isOpen={isOpen}>
+      <SidebarItem as="div" onClick={handleLogout} isOpen={isOpen}>
         <Icon isOpen={isOpen}>
           <FaSignOutAlt />
         </Icon>
