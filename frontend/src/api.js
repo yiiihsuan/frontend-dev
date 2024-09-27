@@ -112,8 +112,7 @@ export const analyzeBeating = async ({file, projectId}) => {
   const token = localStorage.getItem('token');
   const formData = new FormData();
   formData.append('file', file); 
-  const url = `${API_URL}/analyze_beating/?project_id=${projectId}`;
-  const response = await fetch(url, {
+  const response = await fetch(`${API_URL}/analyze_beating/?project_id=${projectId}`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`,
