@@ -92,6 +92,20 @@ const FileUploader = ({ title, file, setFile, uploadType, handleUpload }) => {
     e.preventDefault();
     e.stopPropagation();
   };
+  
+
+  const getUploadInstructions = () => {
+    switch (uploadType) {
+      case 'video':
+        return 'avi, mp4 only\n*example here';
+      case 'gene_counts':
+        return 'csv file only\n*example here';
+      case 'meta':
+        return 'csv file only\n*example here';
+      default:
+        return 'file only\n*example here';
+    }
+  };
 
   return (
     <UploadSection>
@@ -104,7 +118,7 @@ const FileUploader = ({ title, file, setFile, uploadType, handleUpload }) => {
         <UploadIcon fileSelected={file}>
           {file ? <FaCheckCircle /> : <FaCloudUploadAlt />}
         </UploadIcon>
-        <UploadInstructions>*csv file only<br />*example here</UploadInstructions>
+        <UploadInstructions>{getUploadInstructions()}</UploadInstructions>
         <FileInput
           id={`${uploadType}FileInput`}
           type="file"
