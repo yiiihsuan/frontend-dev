@@ -247,16 +247,22 @@ const FormContainer = styled.div`
   // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
+
 const AnalysisResultContainer = styled.div`
-  width: 100%;
+  width: 100%; 
   text-align: center;
   margin-top: 20px;
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 0 5%;  
 `;
 
 const BeatingPlotImage = styled.img`
   width: 100%; 
   height: auto;
   max-width: 1200px;  
+  margin: 0 auto;  
 `;
 
 
@@ -432,7 +438,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             <img src={beatingPlotUrl} alt="Beating Plot" style={{ width: '50%', height: 'auto' }} />
           </div>
         )} */}
-        
+
 {beatingCount !== null && beatingPlotUrl !== null && (
 <AnalysisResultContainer>
   <h2>Beating Analysis Results</h2>
