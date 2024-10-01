@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Route,  Navigate  } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { loginUser } from '../api';
 import { FaUser, FaLock } from 'react-icons/fa';
+import { useAuth } from '../context/AuthContext';
 
 
 const Container = styled.div`
@@ -80,65 +81,109 @@ const SignUpText = styled.p`
   }
 `;
 
-const LoginPage = ({ onLogin }) => {
+
+const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { handleLogin, isLoading, isError, error, isAuthenticated } = useAuth();  // 從 useAuth 取用函數
   const navigate = useNavigate();
 
-  const mutation = useMutation(
-    ({ username, password }) => loginUser(username, password),
-    {
-      onSuccess: (data) => {
-        console.log('Login successful', data);
-        localStorage.setItem('token', data.access_token);
-        onLogin();
-        navigate('/home');
-      },
-      onError: (error) => {
-        console.error('Login failed', error);
-      },
-    }
-  );
+  // 如果已登入，則重導到首頁
+  if (isAuthenticated) {
+    return <Navigate to="/home" />;
+  }
 
-  const handleLogin = () => {
-    mutation.mutate({ username, password });
+  // 處理登入
+  const onSubmit = (e) => {
+    e.preventDefault();
+    handleLogin({ username, password }, () => navigate('/home'));  // 成功後重導至 /home
   };
 
   return (
     <Container>
-      <Logo src="genenetlogo_small.png" alt="Logo" />
-      <Title>Genenet GeneX Platform</Title>
-      <InputContainer>
-        <InputIcon><FaUser /></InputIcon>
-        <Input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+      <form onSubmit={onSubmit}>
+        <h2>Login</h2>
+        <input 
+          type="text" 
+          placeholder="Username" 
+          value={username} 
+          onChange={(e) => setUsername(e.target.value)} 
         />
-      </InputContainer>
-      <InputContainer>
-        <InputIcon><FaLock /></InputIcon>
-        <Input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+        <input 
+          type="password" 
+          placeholder="Password" 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)} 
         />
-      </InputContainer>
-      <Button onClick={handleLogin} disabled={mutation.isLoading}>
-        {mutation.isLoading ? 'Logging in...' : 'log in'}
-      </Button>
-      {mutation.isError && <div>Error: {mutation.error.message}</div>}
-      <SignUpText>
-        Don't have an account?{' '}
-        <span onClick={() => navigate('/sign-up')} style={{ cursor: 'pointer' }}>
-          Sign up here
-        </span>
-      </SignUpText>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Logging in...' : 'Log in'}
+        </button>
+        {isError && <div>Error: {error}</div>}  {/* 顯示錯誤訊息 */}
+      </form>
     </Container>
   );
 };
 
 export default LoginPage;
+// const LoginPage = ({ onLogin }) => {
+//   const [username, setUsername] = useState('');
+//   const [password, setPassword] = useState('');
+//   const navigate = useNavigate();
+
+//   const mutation = useMutation(
+//     ({ username, password }) => loginUser(username, password),
+//     {
+//       onSuccess: (data) => {
+//         console.log('Login successful', data);
+//         localStorage.setItem('token', data.access_token);
+//         onLogin();
+//         navigate('/home');
+//       },
+//       onError: (error) => {
+//         console.error('Login failed', error);
+//       },
+//     }
+//   );
+
+//   const handleLogin = () => {
+//     mutation.mutate({ username, password });
+//   };
+
+//   return (
+//     <Container>
+//       <Logo src="genenetlogo_small.png" alt="Logo" />
+//       <Title>Genenet GeneX Platform</Title>
+//       <InputContainer>
+//         <InputIcon><FaUser /></InputIcon>
+//         <Input
+//           type="text"
+//           placeholder="Username"
+//           value={username}
+//           onChange={(e) => setUsername(e.target.value)}
+//         />
+//       </InputContainer>
+//       <InputContainer>
+//         <InputIcon><FaLock /></InputIcon>
+//         <Input
+//           type="password"
+//           placeholder="Password"
+//           value={password}
+//           onChange={(e) => setPassword(e.target.value)}
+//         />
+//       </InputContainer>
+//       <Button onClick={handleLogin} disabled={mutation.isLoading}>
+//         {mutation.isLoading ? 'Logging in...' : 'log in'}
+//       </Button>
+//       {mutation.isError && <div>Error: {mutation.error.message}</div>}
+//       <SignUpText>
+//         Don't have an account?{' '}
+//         <span onClick={() => navigate('/sign-up')} style={{ cursor: 'pointer' }}>
+//           Sign up here
+//         </span>
+//       </SignUpText>
+//     </Container>
+//   );
+// };
+
+// export default LoginPage;
 

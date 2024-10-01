@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { FaCloudUploadAlt, FaCheckCircle } from 'react-icons/fa';
 
@@ -72,8 +72,6 @@ const UploadButton = styled.button`
 
 const FileUploader = ({ title, file, setFile, uploadType, handleUpload }) => {
 
-  const [uploading, setUploading] = useState(false);
-
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     console.log(`${title} file selected:`, selectedFile);
@@ -109,20 +107,6 @@ const FileUploader = ({ title, file, setFile, uploadType, handleUpload }) => {
     }
   };
 
-  const handleUploadClick = () => {
-    setUploading(true); 
-    handleUpload(file, uploadType)
-      .then(() => {
-        console.log("Upload successful");
-      })
-      .catch((error) => {
-        console.error("Upload failed", error);
-      })
-      .then(() => {
-        setUploading(false); 
-      });
-  };
-
   return (
     <UploadSection>
       <SubTitle>{title}</SubTitle>
@@ -142,12 +126,8 @@ const FileUploader = ({ title, file, setFile, uploadType, handleUpload }) => {
         />
         {file && <FileName>{file.name}</FileName>}
       </UploadArea>
-      {/* <UploadButton onClick={() => handleUpload(file, uploadType)}>Upload</UploadButton> */}
-      <UploadButton onClick={handleUploadClick} disabled={uploading}>
-        {uploading ? '上傳中...' : '上傳'}
-      </UploadButton>
-   
-   </UploadSection>
+      <UploadButton onClick={() => handleUpload(file, uploadType)}>Upload</UploadButton>
+    </UploadSection>
   );
 };
 

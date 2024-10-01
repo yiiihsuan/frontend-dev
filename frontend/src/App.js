@@ -1,55 +1,86 @@
-import './App.css';
 
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
+import SignUpPage from './pages/SignupPage';
 import ProjectPage from './pages/ProjectPage';
-import SignUpPage from './pages/SignupPage'; 
-import Sidebar from './components/SideBar'; 
-
-
+import { AuthProvider } from './context/AuthContext';  
+import PrivateRoute from './PrivateRoute';  
 
 function App() {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // const handleLogin = () => {
-  //   setIsLoggedIn(true);
-  // };
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    const savedLoggedIn = localStorage.getItem('isLoggedIn');
-    return savedLoggedIn === 'true'; 
-  });
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-    localStorage.setItem('isLoggedIn', 'true'); 
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem('isLoggedIn'); 
-    localStorage.removeItem('token'); 
-  };
-
-
   return (
-    <Router>
-      <div>
+    <AuthProvider>
+      <Router>
         <Routes>
-            <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <LoginPage onLogin={handleLogin} />} />
-             <Route path="/sign-up" element={<SignUpPage />} />  
-            <Route path="/home" element={isLoggedIn ? <HomePage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
-            <Route path="/project/:projectId" element={isLoggedIn ? <ProjectPage setIsLoggedIn={setIsLoggedIn}/> : <Navigate to="/" />} />
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="/home" element={<PrivateRoute element={HomePage} />} />
+          <Route path="/project/:projectId" element={<PrivateRoute element={ProjectPage} />} />
         </Routes>
-      </div>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 }
 
-
-
 export default App;
+
+
+
+
+
+// import './App.css';
+
+// import React, { useState } from 'react';
+// import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+// import LoginPage from './pages/LoginPage';
+// import HomePage from './pages/HomePage';
+// import ProjectPage from './pages/ProjectPage';
+// import SignUpPage from './pages/SignupPage'; 
+// import Sidebar from './components/SideBar'; 
+
+
+
+// function App() {
+//   // const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+//   // const handleLogin = () => {
+//   //   setIsLoggedIn(true);
+//   // };
+//   const [isLoggedIn, setIsLoggedIn] = useState(() => {
+//     const savedLoggedIn = localStorage.getItem('isLoggedIn');
+//     return savedLoggedIn === 'true'; 
+//   });
+
+//   const handleLogin = () => {
+//     setIsLoggedIn(true);
+//     localStorage.setItem('isLoggedIn', 'true'); 
+//   };
+
+//   const handleLogout = () => {
+//     setIsLoggedIn(false);
+//     localStorage.removeItem('isLoggedIn'); 
+//     localStorage.removeItem('token'); 
+//   };
+
+
+//   return (
+//     <Router>
+//       <div>
+//         <Routes>
+//             <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <LoginPage onLogin={handleLogin} />} />
+//              <Route path="/sign-up" element={<SignUpPage />} />  
+//             <Route path="/home" element={isLoggedIn ? <HomePage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
+//             <Route path="/project/:projectId" element={isLoggedIn ? <ProjectPage setIsLoggedIn={setIsLoggedIn}/> : <Navigate to="/" />} />
+//         </Routes>
+//       </div>
+//     </Router>
+//   );
+// }
+
+
+
+// export default App;
 
 // import './App.css';
 // import React, { useState } from 'react';
