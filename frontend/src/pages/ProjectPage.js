@@ -247,6 +247,18 @@ const FormContainer = styled.div`
   // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
+const AnalysisResultContainer = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+`;
+
+const BeatingPlotImage = styled.img`
+  width: 100%; 
+  height: auto;
+  max-width: 1200px;  
+`;
+
 
 const ProjectPage = ({ setIsLoggedIn }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -413,13 +425,21 @@ const ProjectPage = ({ setIsLoggedIn }) => {
           handleUpload={handleUpload}
         />
 
-           {beatingCount !== null && beatingPlotUrl !== null && (
+           {/* {beatingCount !== null && beatingPlotUrl !== null && (
           <div className="analysis-result">
             <h2>Beating Analysis Results</h2>
             <p><strong>Beating Count:</strong> {beatingCount}</p>
             <img src={beatingPlotUrl} alt="Beating Plot" style={{ width: '50%', height: 'auto' }} />
           </div>
-        )}
+        )} */}
+        
+{beatingCount !== null && beatingPlotUrl !== null && (
+<AnalysisResultContainer>
+  <h2>Beating Analysis Results</h2>
+  <p><strong>Beating Count:</strong> {beatingCount}</p>
+  <BeatingPlotImage src={beatingPlotUrl} alt="Beating Plot" />
+</AnalysisResultContainer>
+)}
 
 
         <PreprocessComponent projectId={projectId} />
