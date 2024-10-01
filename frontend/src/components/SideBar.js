@@ -67,6 +67,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   const onLogout = () => {
     handleLogout();  // 執行登出
     navigate('/');   // 重定向到登入頁面
+    window.location.reload(); 
   };
 
   return (
