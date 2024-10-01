@@ -61,12 +61,12 @@ const Icon = styled.div`
 
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
-  const { handleLogout } = useAuth();  
+  const { handleLogout } = useAuth();  // 從 AuthContext 中取得 handleLogout
   const navigate = useNavigate();
 
   const onLogout = () => {
-    handleLogout();  
-    navigate('/');   
+    handleLogout();  // 執行登出
+    navigate('/');   // 重定向到登入頁面
   };
 
   return (
@@ -75,10 +75,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       onMouseLeave={() => setIsOpen(false)}
       isOpen={isOpen}
     >
-      <LogoContainer isOpen={isOpen}>
-        <img src="/genenetlogo_small.png" alt="Genenet Logo" />
-      </LogoContainer>
-
       <SidebarItem to="/" isOpen={isOpen}>
         <Icon isOpen={isOpen}>
           <FaHome />
@@ -111,10 +107,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 };
 
 export default Sidebar;
-
-
-
-
 
 
 

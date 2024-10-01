@@ -85,18 +85,19 @@ const SignUpText = styled.p`
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { handleLogin, isLoading, isError, error, isAuthenticated } = useAuth();  // 從 useAuth 取用函數
+  const { handleLogin, loginMutation } = useAuth();  // 從 useAuth 取用 loginMutation
   const navigate = useNavigate();
 
-  // 如果已登入，則重導到首頁
-  if (isAuthenticated) {
+  const { isLoading, isError, error, isSuccess } = loginMutation;  // 從 loginMutation 中取出狀態
+
+  // 如果已經成功登入，重定向到 /home
+  if (isSuccess) {
     return <Navigate to="/home" />;
   }
 
-  // 處理登入
   const onSubmit = (e) => {
     e.preventDefault();
-    handleLogin({ username, password }, () => navigate('/home'));  // 成功後重導至 /home
+    handleLogin(username, password);  // 傳遞 username 和 password 進行登入
   };
 
   return (
@@ -118,7 +119,7 @@ const LoginPage = () => {
         <button type="submit" disabled={isLoading}>
           {isLoading ? 'Logging in...' : 'Log in'}
         </button>
-        {isError && <div>Error: {error}</div>}  {/* 顯示錯誤訊息 */}
+        {isError && <div>Error: {error?.message || "Login failed"}</div>}  {/* 顯示錯誤訊息 */}
       </form>
     </Container>
   );
