@@ -110,10 +110,17 @@ const FileUploader = ({ title, file, setFile, uploadType, handleUpload }) => {
   };
 
   const handleUploadClick = () => {
-    setUploading(true); // 開始上傳時將狀態設為 true
-    handleUpload(file, uploadType).finally(() => {
-      setUploading(false); // 上傳結束後重設狀態
-    });
+    setUploading(true); 
+    handleUpload(file, uploadType)
+      .then(() => {
+        console.log("Upload successful");
+      })
+      .catch((error) => {
+        console.error("Upload failed", error);
+      })
+      .then(() => {
+        setUploading(false); 
+      });
   };
 
   return (
