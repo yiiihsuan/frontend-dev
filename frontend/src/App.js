@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
@@ -15,8 +14,22 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
-          <Route path="/home" element={<PrivateRoute element={HomePage} />} />
-          <Route path="/project/:projectId" element={<PrivateRoute element={ProjectPage} />} />
+          <Route
+            path="/home"
+            element={
+              <PrivateRoute>
+                <HomePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/project/:projectId"
+            element={
+              <PrivateRoute>
+                <ProjectPage />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </Router>
     </AuthProvider>
@@ -24,7 +37,6 @@ function App() {
 }
 
 export default App;
-
 
 
 
