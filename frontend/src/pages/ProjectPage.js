@@ -275,23 +275,81 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   const [heartVideoFile, setHeartVideoFile] = useState(null); 
   const [isProcessOpen, setIsProcessOpen] = useState(false);
 
-  // const [deseq2Selected, setDeseq2Selected] = useState(false);
-  const [deseq2Result, setDeseq2Result] = useState(null);
-  const [deseq2GSEAResult, setDeseq2GSEAResult] = useState(null);
-  const [reactomeResult, setReactomeResult] = useState(null);
-  // const [showResults, setShowResults] = useState(false);
-  const [deseq2Statistics, setDeseq2Statistics] = useState(null);
-  const [generalGSEAResult, setGeneralGSEAResult] = useState(null);
-  const [wgcnaResult, setWgcnaResult] = useState(null);
-  const [baselineSelectionResult, setBaselineSelectionResult] = useState(null);
-  const [geneCollectionResult, setGeneCollectionResult] = useState(null);
-  const [geneSelection, setGeneSelection] = useState(null);
-  const [baseModel, setBaseModel] = useState(null);
-  const [mlpModel, setMlpModel] = useState(null);
 
-  const [deseqShowResults, setDeseqShowResults] = useState(false); // Deseq2 show/hide state
-  const [featureGenShowResults, setFeatureGenShowResults] = useState(false); // Feature Generation show/hide state
-  const [modelShowResults, setModelShowResults] = useState(false); // Modeling show/hide state
+  // const [deseq2Result, setDeseq2Result] = useState(null);
+  // const [deseq2GSEAResult, setDeseq2GSEAResult] = useState(null);
+  // const [reactomeResult, setReactomeResult] = useState(null);
+  // const [deseq2Statistics, setDeseq2Statistics] = useState(null);
+  // const [generalGSEAResult, setGeneralGSEAResult] = useState(null);
+  // const [wgcnaResult, setWgcnaResult] = useState(null);
+  // const [baselineSelectionResult, setBaselineSelectionResult] = useState(null);
+  // const [geneCollectionResult, setGeneCollectionResult] = useState(null);
+  // const [geneSelection, setGeneSelection] = useState(null);
+  // const [baseModel, setBaseModel] = useState(null);
+  // const [mlpModel, setMlpModel] = useState(null);
+
+  const [deseq2Result, setDeseq2Result] = useState(() => {
+    const storedData = localStorage.getItem('Deseq2Result');
+    return storedData ? JSON.parse(storedData) : null;
+  });
+
+  const [deseq2GSEAResult, setDeseq2GSEAResult] = useState(() => {
+    const storedData = localStorage.getItem('Deseq2 GSEAResult');
+    return storedData ? JSON.parse(storedData) : null;
+  });
+
+  const [reactomeResult, setReactomeResult] = useState(() => {
+    const storedData = localStorage.getItem('Reactome ResultResult');
+    return storedData ? JSON.parse(storedData) : null;
+  });
+
+  const [deseq2Statistics, setDeseq2Statistics] = useState(() => {
+    const storedData = localStorage.getItem('Deseq2 StatisticsResult');
+    return storedData ? JSON.parse(storedData) : null;
+  });
+
+  const [generalGSEAResult, setGeneralGSEAResult] = useState(() => {
+    const storedData = localStorage.getItem('General GSEAResult');
+    return storedData ? JSON.parse(storedData) : null;
+  });
+
+  const [wgcnaResult, setWgcnaResult] = useState(() => {
+    const storedData = localStorage.getItem('WGCNAResult');
+    return storedData ? JSON.parse(storedData) : null;
+  });
+
+  const [baselineSelectionResult, setBaselineSelectionResult] = useState(() => {
+    const storedData = localStorage.getItem('Baseline SelectionResult');
+    return storedData ? JSON.parse(storedData) : null;
+  });
+
+  const [geneCollectionResult, setGeneCollectionResult] = useState(() => {
+    const storedData = localStorage.getItem('Gene CollectionResult');
+    return storedData ? JSON.parse(storedData) : null;
+  });
+
+  const [geneSelection, setGeneSelection] = useState(() => {
+    const storedData = localStorage.getItem('Gene SelectionResult');
+    return storedData ? JSON.parse(storedData) : null;
+  });
+
+  const [baseModel, setBaseModel] = useState(() => {
+    const storedData = localStorage.getItem('Base ModelResult');
+    return storedData ? JSON.parse(storedData) : null;
+  });
+
+  const [mlpModel, setMlpModel] = useState(() => {
+    const storedData = localStorage.getItem('MLP ModelResult');
+    return storedData ? JSON.parse(storedData) : null;
+  });
+
+
+
+
+
+  const [deseqShowResults, setDeseqShowResults] = useState(false); 
+  const [featureGenShowResults, setFeatureGenShowResults] = useState(false); 
+  const [modelShowResults, setModelShowResults] = useState(false); 
 
 
   const [isDeseqOpen, setIsDeseqOpen] = useState(false);
