@@ -177,7 +177,10 @@ const HomePage = () => {
       if (error.message === 'Unauthorized') {
         alert('Session expired, please log in again.');
         logout();  
-        navigate('/');
+        //navigate('/');
+        setTimeout(() => {
+          navigate('/login');
+        }, 1000); 
       }
     },
   });
@@ -188,7 +191,10 @@ const HomePage = () => {
       if (error.message === 'Unauthorized') {
         alert('Session expired, please log in again.');
         logout();  
-        navigate('/');
+        //navigate('/');
+        setTimeout(() => {
+          navigate('/login');
+        }, 1000); 
       }
     },
   });
