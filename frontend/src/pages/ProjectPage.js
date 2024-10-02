@@ -413,11 +413,10 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   };
 
   useEffect(() => {
-    if (!location.pathname.includes(`/project/${projectId}`)) {
+    return () => {
       clearLocalStorageResults();
-    }
-  }, [location, projectId]);
-
+    };
+  }, []);
 
   return (
     <Layout>
