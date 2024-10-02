@@ -175,7 +175,7 @@ const HomePage = () => {
     onError: (error) => {
       if (error.message === 'Unauthorized') {
         logout();  
-        navigate('/login');
+        navigate('/');
       }
     },
   });
@@ -184,7 +184,7 @@ const HomePage = () => {
     onError: (error) => {
       if (error.message === 'Unauthorized') {
         logout();  
-        navigate('/login');
+        navigate('/');
       }
     },
   });
