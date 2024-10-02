@@ -495,36 +495,98 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   //   doc.save('ProjectResults.pdf'); 
   // };
 
+  // const downloadPDF = async () => {
+  //   const doc = new jsPDF('p', 'mm', 'a4'); // 使用 A4 尺寸
+  //   const element = document.getElementById('results-container'); 
+  
+  //   //const canvas = await html2canvas(element, { scale: 2 }); // 使用較高的縮放比例
+  //   const canvas = await html2canvas(element, { scale: 2 , useCORS: true });
+  //   const imgData = canvas.toDataURL('image/png');
+  
+  //   // 計算圖片的寬高
+  //   const imgWidth = doc.internal.pageSize.getWidth() - 20; // 設置圖片寬度，留出邊距
+  //   const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據比例計算高度
+  
+  //   let heightLeft = imgHeight; // 剩餘高度
+  //   let position = 10; // 初始位置
+  
+  //   // 如果高度超過一頁，則添加新頁
+  //   if (heightLeft > doc.internal.pageSize.getHeight()) {
+  //     // 增加頁面，繼續添加圖像
+  //     while (heightLeft >= 0) {
+  //       doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+  //       heightLeft -= doc.internal.pageSize.getHeight();
+  //       position -= imgHeight; // 更新位置
+  //       if (heightLeft > 0) doc.addPage(); // 添加新頁
+  //     }
+  //   } else {
+  //     // 如果在一頁內，直接添加
+  //     doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+  //   }
+  
+  //   doc.save('ProjectResults.pdf'); 
+  // };
+
+
+  // const downloadPDF = async () => {
+  //   const doc = new jsPDF();
+  //   const element = document.getElementById('results-container'); 
+    
+  //   // 確保該元素不為空
+  //   if (element.innerHTML.trim() === '') {
+  //     console.error('Element is empty. No content to capture.');
+  //     return;
+  //   }
+  
+  //   try {
+  //     // 使用 html2canvas 將元素轉換為畫布
+  //     const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+  //     const imgData = canvas.toDataURL('image/png');
+      
+  //     // 創建新的 Image 對象來測試圖片的加載
+  //     const img = new Image();
+  //     img.src = beatingPlotUrl; // 使用你的圖片 URL
+  //     img.onload = () => {
+  //       const imgWidth = 190; // PDF 的寬度設置
+  //       const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據寬度調整高度
+  
+  //       // 添加圖片到 PDF
+  //       doc.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+  //       doc.save('ProjectResults.pdf');
+  //     };
+  
+  //     img.onerror = () => {
+  //       console.error('Failed to load image. Please check the URL.');
+  //     };
+  //   } catch (error) {
+  //     console.error('Error capturing element:', error);
+  //   }
+  // };
+
   const downloadPDF = async () => {
-    const doc = new jsPDF('p', 'mm', 'a4'); // 使用 A4 尺寸
+    const doc = new jsPDF();
     const element = document.getElementById('results-container'); 
-  
-    //const canvas = await html2canvas(element, { scale: 2 }); // 使用較高的縮放比例
-    const canvas = await html2canvas(element, { scale: 2 , useCORS: true });
-    const imgData = canvas.toDataURL('image/png');
-  
-    // 計算圖片的寬高
-    const imgWidth = doc.internal.pageSize.getWidth() - 20; // 設置圖片寬度，留出邊距
-    const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據比例計算高度
-  
-    let heightLeft = imgHeight; // 剩餘高度
-    let position = 10; // 初始位置
-  
-    // 如果高度超過一頁，則添加新頁
-    if (heightLeft > doc.internal.pageSize.getHeight()) {
-      // 增加頁面，繼續添加圖像
-      while (heightLeft >= 0) {
-        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-        heightLeft -= doc.internal.pageSize.getHeight();
-        position -= imgHeight; // 更新位置
-        if (heightLeft > 0) doc.addPage(); // 添加新頁
-      }
-    } else {
-      // 如果在一頁內，直接添加
-      doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+    
+    // 確保該元素不為空
+    if (element.innerHTML.trim() === '') {
+      console.error('Element is empty. No content to capture.');
+      return;
     }
   
-    doc.save('ProjectResults.pdf'); 
+    try {
+      // 使用 html2canvas 將元素轉換為畫布
+      const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+      const imgData = canvas.toDataURL('image/png');
+  
+      const imgWidth = 190; // 設定圖片寬度
+      const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據寬度調整高度
+  
+      // 添加圖片到 PDF
+      doc.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+      doc.save('ProjectResults.pdf');
+    } catch (error) {
+      console.error('Error capturing element:', error);
+    }
   };
 
   return (
@@ -568,7 +630,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
         )} */}
 
 {beatingCount !== null && beatingPlotUrl !== null && (
-<AnalysisResultContainer id="results-container">
+<AnalysisResultContainer>
   <h2>Beating Analysis Results</h2>
   <p><strong>Beating Count:</strong> {beatingCount}</p>
   <BeatingPlotImage src={beatingPlotUrl} alt="Beating Plot" />
@@ -602,8 +664,8 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
 
-              <Deseq2StaticsItem>
-                <GenericAnalysis
+              <Deseq2StaticsItem >
+                <GenericAnalysis 
                   title="Deseq2 Statistics"
                   apiFunction={() => submitDeseqStats(projectId)}
                   onResult={setDeseq2Statistics}
@@ -641,7 +703,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
               </ShowButton>
 
               {deseqShowResults && deseq2GSEAResult && (
-                <DeseqGSEA resultData={deseq2GSEAResult} />
+                <DeseqGSEA id="results-container" resultData={deseq2GSEAResult} />
               )}
 
               {deseqShowResults && deseq2Statistics && (
