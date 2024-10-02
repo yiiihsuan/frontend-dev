@@ -499,7 +499,8 @@ const ProjectPage = ({ setIsLoggedIn }) => {
     const doc = new jsPDF('p', 'mm', 'a4'); // 使用 A4 尺寸
     const element = document.getElementById('results-container'); 
   
-    const canvas = await html2canvas(element, { scale: 2 }); // 使用較高的縮放比例
+    //const canvas = await html2canvas(element, { scale: 2 }); // 使用較高的縮放比例
+    const canvas = await html2canvas(element, { scale: 2 , useCORS: true });
     const imgData = canvas.toDataURL('image/png');
   
     // 計算圖片的寬高
