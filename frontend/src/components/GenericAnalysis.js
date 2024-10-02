@@ -16,6 +16,10 @@ const GenericAnalysis = ({ title, config = {}, apiFunction, onResult, parseFunct
     items.map(item => defaultValues[item] || '')
   );
 
+  const saveResultToLocalStorage = (key, result) => {
+    localStorage.setItem(key, JSON.stringify(result));
+  };
+
   const { mutate: submitAnalysis } = useMutation(apiFunction, {
     onSuccess: (data) => {
       console.log(`${title} analysis completed:`, data);
@@ -24,8 +28,8 @@ const GenericAnalysis = ({ title, config = {}, apiFunction, onResult, parseFunct
       if (parseFunction) {
         parsedData = parseFunction(data);
       }
-      
 
+      saveResultToLocalStorage(`${title}Result`, parsedData);
       
       setSubmitResult("Analysis completed successfully.");
       setSubmitted(true);

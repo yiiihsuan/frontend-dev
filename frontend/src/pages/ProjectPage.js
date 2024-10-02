@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState,useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { uploadFile, analyzeBeating } from '../api';
 import styled from 'styled-components';
@@ -269,6 +269,7 @@ const BeatingPlotImage = styled.img`
 const ProjectPage = ({ setIsLoggedIn }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { projectId } = useParams();
+  const location = useLocation();
   const [geneFile, setGeneFile] = useState(null);
   const [heartFile, setHeartFile] = useState(null);
   const [heartVideoFile, setHeartVideoFile] = useState(null); 
@@ -397,6 +398,25 @@ const ProjectPage = ({ setIsLoggedIn }) => {
       skipEmptyLines: true,
     }).data;
   };
+
+
+  const clearLocalStorageResults = () => {
+    localStorage.removeItem('deseq2Result');
+    localStorage.removeItem('deseqGSEAResult');
+    localStorage.removeItem('deseqStatsResult');
+    localStorage.removeItem('generalGSEAResult');
+    localStorage.removeItem('wgcnaResult');
+    localStorage.removeItem('baseModelResult');
+    localStorage.removeItem('mlpModelResult');
+    localStorage.removeItem('reactomeResult');
+    console.log('LocalStorage cleared.');
+  };
+
+  useEffect(() => {
+    if (!location.pathname.includes(`/project/${projectId}`)) {
+      clearLocalStorageResults();
+    }
+  }, [location, projectId]);
 
 
   return (
