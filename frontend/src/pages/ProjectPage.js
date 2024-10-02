@@ -21,6 +21,7 @@ import PreprocessComponent from '../components/Preprocess';
 import FileUploader from '../components/FileUploader';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import VideoFileUploader from '../components/VideoFileUploader'; 
 
 
 const SectionContainer = ({ title, isOpen, toggleOpen, children }) => (
@@ -267,6 +268,12 @@ const BeatingPlotImage = styled.img`
   margin: 0 auto;  
 `;
 
+const FilePreviewSection = styled.div`
+  margin-top: 20px;
+`;
+
+
+
 
 const ProjectPage = ({ setIsLoggedIn }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -274,7 +281,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   const location = useLocation();
   const [geneFile, setGeneFile] = useState(null);
   const [heartFile, setHeartFile] = useState(null);
-  const [heartVideoFile, setHeartVideoFile] = useState(null); 
+  const [heartVideoFiles, setHeartVideoFiles] = useState([]); 
   const [isProcessOpen, setIsProcessOpen] = useState(false);
 
 
@@ -459,6 +466,15 @@ const ProjectPage = ({ setIsLoggedIn }) => {
     }).data;
   };
 
+  const handleUploadVideo = (file) => {
+    console.log(`Uploading: ${file.name}`);
+    setHeartVideoFiles(prevFiles => [...prevFiles, file]); // 將上傳的檔案添加到狀態中
+  };
+
+  const getFilesByPrefix = (prefix) => {
+    return heartVideoFiles.filter(file => file.name.startsWith(prefix));
+  };
+
 
   // const clearLocalStorageResults = () => {
   //   localStorage.removeItem('Deseq2Result');
@@ -568,10 +584,10 @@ const ProjectPage = ({ setIsLoggedIn }) => {
     const loadPromises = Array.from(images).map(img => {
       return new Promise((resolve) => {
         if (img.complete) {
-          resolve(); // 圖片已加載
+          resolve(); 
         } else {
           img.onload = resolve;
-          img.onerror = resolve; // 確保即使出錯也能繼續
+          img.onerror = resolve; 
         }
       });
     });
@@ -583,7 +599,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
     const doc = new jsPDF();
     const element = document.getElementById('results-container'); 
     
-    // 確保該元素不為空
     if (element.innerHTML.trim() === '') {
       console.error('Element is empty. No content to capture.');
       return;
@@ -593,14 +608,12 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   
     setTimeout(async () => {
     try {
-      // 使用 html2canvas 將元素轉換為畫布
       const canvas = await html2canvas(element, { scale: 2, useCORS: true });
       const imgData = canvas.toDataURL('image/png');
   
-      const imgWidth = 190; // 設定圖片寬度
-      const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據寬度調整高度
+      const imgWidth = 190; 
+      const imgHeight = (canvas.height * imgWidth) / canvas.width; 
   
-      // 添加圖片到 PDF
       doc.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
       doc.save('ProjectResults.pdf');
     } catch (error) {
@@ -633,13 +646,13 @@ const ProjectPage = ({ setIsLoggedIn }) => {
         />
 
 
-        <FileUploader
+        {/* <VideoFileUploader
           title="Heart Beat Video"
           file={heartVideoFile}
           setFile={setHeartVideoFile}
           uploadType="video" 
           handleUpload={handleUpload}
-        />
+        /> */}
 
            {/* {beatingCount !== null && beatingPlotUrl !== null && (
           <div className="analysis-result">
@@ -648,6 +661,28 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             <img src={beatingPlotUrl} alt="Beating Plot" style={{ width: '50%', height: 'auto' }} />
           </div>
         )} */}
+
+<VideoFileUploader
+        title="Heart Beat Video"
+        handleUpload={handleUploadVideo}
+      />
+
+<FilePreviewSection>
+        <h3>Test Files</h3>
+        {getFilesByPrefix('test_').map((file, index) => (
+          <FileName key={index}>{file.name}</FileName>
+        ))}
+        
+        <h3>Control Files</h3>
+        {getFilesByPrefix('control_').map((file, index) => (
+          <FileName key={index}>{file.name}</FileName>
+        ))}
+        
+        <h3>Treatment Files</h3>
+        {getFilesByPrefix('treatment_').map((file, index) => (
+          <FileName key={index}>{file.name}</FileName>
+        ))}
+      </FilePreviewSection>
 
 {beatingCount !== null && beatingPlotUrl !== null && (
 <AnalysisResultContainer>
