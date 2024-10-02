@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, {useEffect} from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import SignUpPage from './pages/SignupPage';
@@ -11,6 +11,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+      <RouteChangeHandler />
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
@@ -35,6 +36,35 @@ function App() {
     </AuthProvider>
   );
 }
+
+const RouteChangeHandler = () => {
+  const location = useLocation();
+
+  const clearLocalStorageResults = () => {
+    localStorage.removeItem('Deseq2Result');
+    localStorage.removeItem('Deseq2 GSEAResult');
+    localStorage.removeItem('Deseq2 StatisticsResult');
+    localStorage.removeItem('Gene CollectionResult');
+    localStorage.removeItem('Gene SelectionResult');
+    localStorage.removeItem('General GSEAResult');
+    localStorage.removeItem('WGCNAResult');
+    localStorage.removeItem('Base ModelResult');
+    localStorage.removeItem('MLP ModelResult');
+    localStorage.removeItem('Base ModelResult');
+    localStorage.removeItem('Reactome ResultResult');
+    localStorage.removeItem('projectId');
+    console.log('LocalStorage cleared.');
+  };
+
+  useEffect(() => {
+    if (!location.pathname.includes('/project/')) {
+      clearLocalStorageResults();
+    }
+  }, [location]);
+
+  return null;
+};
+
 
 export default App;
 
