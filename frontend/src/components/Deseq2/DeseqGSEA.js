@@ -33,7 +33,7 @@ const GridItem = styled.div`
 
 const DeseqGSEA = ({ resultData }) => {
   return (
-    <ResultContainer>
+    <ResultContainer id="results-container">
       <h4>DESeq GSEA Results</h4>
 
       <GridContainer>
