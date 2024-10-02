@@ -61,13 +61,12 @@ const Icon = styled.div`
 
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
-  const { handleLogout } = useAuth();  // 從 AuthContext 中取得 handleLogout
+  const { logout } = useAuth();  
   const navigate = useNavigate();
 
-  const onLogout = () => {
-    handleLogout();  // 執行登出
-    navigate('/');   // 重定向到登入頁面
-    window.location.reload(); 
+  const handleLogout = () => {
+    logout(); 
+    navigate('/'); 
   };
 
   return (
@@ -97,7 +96,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <span>Document</span>
       </SidebarItem>
 
-      <SidebarItem as="div" onClick={onLogout} isOpen={isOpen}>
+      <SidebarItem as="div" onClick={handleLogout} isOpen={isOpen}>
         <Icon isOpen={isOpen}>
           <FaSignOutAlt />
         </Icon>

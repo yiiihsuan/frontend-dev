@@ -1,48 +1,35 @@
-import React, { createContext, useContext, useState } from 'react';
-import { useMutation } from 'react-query';  // 引入 useMutation
-import { loginUser } from '../api';  // 假設你有 loginUser API
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
+// 自定義 Hook 來提供上下文
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // 在頁面刷新時，檢查 localStorage 是否有 token，保持登入狀態
+  useEffect(() => {
     const token = localStorage.getItem('token');
-    return !!token;
-  });
-
-  // 使用 react-query 的 useMutation 來處理登入請求
-  const loginMutation = useMutation(
-    async ({ username, password }) => {
-      const data = await loginUser(username, password);  // 調用 login API
-      return data;
-    },
-    {
-      onSuccess: (data) => {
-        // 成功後處理 token
-        const accessToken = data.access_token;
-        localStorage.setItem('token', accessToken);
-        setIsAuthenticated(true);
-      },
-      onError: (error) => {
-        console.error("Login failed:", error);
-      }
+    if (token) {
+      setIsAuthenticated(true);
     }
-  );
+  }, []);
 
-  // 包裝成 handleLogin 函數
-  const handleLogin = (username, password) => {
-    loginMutation.mutate({ username, password });
+  // 登入操作
+  const login = (token) => {
+    localStorage.setItem('token', token);
+    setIsAuthenticated(true);
   };
 
-  const handleLogout = () => {
+
+  const logout = () => {
     localStorage.removeItem('token');
     setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, handleLogin, handleLogout, loginMutation }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

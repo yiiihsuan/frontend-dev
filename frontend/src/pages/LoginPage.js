@@ -81,51 +81,58 @@ const SignUpText = styled.p`
   }
 `;
 
-
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { handleLogin, loginMutation } = useAuth();  // 從 useAuth 取用 loginMutation
+  const { login } = useAuth();  // 從 useAuth 中獲取 login 函數
   const navigate = useNavigate();
 
-  const { isLoading, isError, error, isSuccess } = loginMutation;  // 從 loginMutation 中取出狀態
+  const mutation = useMutation(
+    ({ username, password }) => loginUser(username, password),
+    {
+      onSuccess: (data) => {
+        login(data.access_token); // 調用 login 函數設置登入狀態
+        navigate('/home');  // 登入後重定向到 /home
+      },
+      onError: (error) => {
+        console.error('Login failed', error);
+      },
+    }
+  );
 
-  // 如果已經成功登入，重定向到 /home
-  if (isSuccess) {
-    return <Navigate to="/home" />;
-  }
-
-  const onSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    handleLogin(username, password);  // 傳遞 username 和 password 進行登入
+    mutation.mutate({ username, password });
   };
 
   return (
     <Container>
-      <form onSubmit={onSubmit}>
-        <h2>Login</h2>
+      <form onSubmit={handleLogin}>
+        <FaUser />
         <input 
           type="text" 
           placeholder="Username" 
           value={username} 
           onChange={(e) => setUsername(e.target.value)} 
         />
+        <FaLock />
         <input 
           type="password" 
           placeholder="Password" 
           value={password} 
           onChange={(e) => setPassword(e.target.value)} 
         />
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Logging in...' : 'Log in'}
+        <button type="submit" disabled={mutation.isLoading}>
+          {mutation.isLoading ? 'Logging in...' : 'Log in'}
         </button>
-        {isError && <div>Error: {error?.message || "Login failed"}</div>}  {/* 顯示錯誤訊息 */}
+        {mutation.isError && <div>Error: {mutation.error.message}</div>}
       </form>
     </Container>
   );
 };
 
 export default LoginPage;
+
 // const LoginPage = ({ onLogin }) => {
 //   const [username, setUsername] = useState('');
 //   const [password, setPassword] = useState('');
