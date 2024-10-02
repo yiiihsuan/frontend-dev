@@ -172,8 +172,10 @@ const HomePage = () => {
   const [newProjectName, setNewProjectName] = useState('');
 
   const { data: projects, error, isLoading, isError } = useQuery('projects', fetchProjects, {
+    retry: 1,
     onError: (error) => {
       if (error.message === 'Unauthorized') {
+        alert('Session expired, please log in again.');
         logout();  
         navigate('/');
       }
@@ -181,9 +183,10 @@ const HomePage = () => {
   });
 
   const { data: userInfo, error: userError } = useQuery('userInfo', getUserInfo, {
-    retry: false,
+    retry: 1,
     onError: (error) => {
       if (error.message === 'Unauthorized') {
+        alert('Session expired, please log in again.');
         logout();  
         navigate('/');
       }
@@ -191,7 +194,6 @@ const HomePage = () => {
   });
 
   const mutation = useMutation(createProject, {
-    retry: false,
     onSuccess: () => {
       queryClient.invalidateQueries('projects');
       setIsModalOpen(false);
