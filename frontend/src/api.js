@@ -51,6 +51,10 @@ export const fetchProjects = async () => {
     },
   });
 
+  if (response.status === 401) {
+    throw new Error('Unauthorized');
+  }
+
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
@@ -140,6 +144,10 @@ export const getUserInfo = async () => {
       'Authorization': `Bearer ${token}`,
     },
   });
+
+  if (response.status === 401) {
+    throw new Error('Unauthorized');
+  }
 
   if (!response.ok) {
     throw new Error('Network response was not ok');
