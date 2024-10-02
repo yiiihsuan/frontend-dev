@@ -2,31 +2,23 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
-// 自定義 Hook 來提供上下文
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // 在頁面刷新時，檢查 localStorage 是否有 token，保持登入狀態
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
+    const [isAuthenticated, setIsAuthenticated] = useState(() => {
+      const token = localStorage.getItem('token');
+      return !!token;  // token 存在，設為 true
+    });
+  
+    const login = (token) => {
+      localStorage.setItem('token', token);
       setIsAuthenticated(true);
-    }
-  }, []);
-
-  // 登入操作
-  const login = (token) => {
-    localStorage.setItem('token', token);
-    setIsAuthenticated(true);
-  };
-
-
-  const logout = () => {
-    localStorage.removeItem('token');
-    setIsAuthenticated(false);
-  };
+    };
+  
+    const logout = () => {
+      localStorage.removeItem('token');
+      setIsAuthenticated(false);
+    };
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
