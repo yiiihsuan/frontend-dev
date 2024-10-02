@@ -19,6 +19,8 @@ import MlpModel from '../components/Model/MLPModel.js';
 import DeseqReactome from '../components/Deseq2/Reactome.js';
 import PreprocessComponent from '../components/Preprocess';
 import FileUploader from '../components/FileUploader';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 
 const SectionContainer = ({ title, isOpen, toggleOpen, children }) => (
@@ -482,6 +484,17 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   //   }
   // }, [location]); 
 
+  const downloadPDF = async () => {
+    const doc = new jsPDF();
+    const element = document.getElementById('results-container'); 
+    
+    const canvas = await html2canvas(element);
+    const imgData = canvas.toDataURL('image/png');
+
+    doc.addImage(imgData, 'PNG', 10, 10); 
+    doc.save('ProjectResults.pdf'); 
+  };
+
   return (
     <Layout>
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} setIsLoggedIn={setIsLoggedIn} />
@@ -523,13 +536,14 @@ const ProjectPage = ({ setIsLoggedIn }) => {
         )} */}
 
 {beatingCount !== null && beatingPlotUrl !== null && (
-<AnalysisResultContainer>
+<AnalysisResultContainer id="results-container">
   <h2>Beating Analysis Results</h2>
   <p><strong>Beating Count:</strong> {beatingCount}</p>
   <BeatingPlotImage src={beatingPlotUrl} alt="Beating Plot" />
 </AnalysisResultContainer>
 )}
 
+<button onClick={downloadPDF}>Download PDF</button>
 
         <PreprocessComponent projectId={projectId} />
         <TitleContainer onClick={() => setIsProcessOpen(!isProcessOpen)}>
