@@ -11,7 +11,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-      <RouteChangeHandler />
+      {/* <RouteChangeHandler /> */}
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
@@ -37,33 +37,34 @@ function App() {
   );
 }
 
-const RouteChangeHandler = () => {
-  const location = useLocation();
+// const RouteChangeHandler = () => {
+//   const location = useLocation();
 
-  const clearLocalStorageResults = () => {
-    localStorage.removeItem('Deseq2Result');
-    localStorage.removeItem('Deseq2 GSEAResult');
-    localStorage.removeItem('Deseq2 StatisticsResult');
-    localStorage.removeItem('Gene CollectionResult');
-    localStorage.removeItem('Gene SelectionResult');
-    localStorage.removeItem('General GSEAResult');
-    localStorage.removeItem('WGCNAResult');
-    localStorage.removeItem('Base ModelResult');
-    localStorage.removeItem('MLP ModelResult');
-    localStorage.removeItem('Base ModelResult');
-    localStorage.removeItem('Reactome ResultResult');
-    localStorage.removeItem('projectId');
-    console.log('LocalStorage cleared.');
-  };
+//   const clearLocalStorageResults = () => {
+//     localStorage.removeItem('Deseq2Result');
+//     localStorage.removeItem('Deseq2 GSEAResult');
+//     localStorage.removeItem('Deseq2 StatisticsResult');
+//     localStorage.removeItem('Gene CollectionResult');
+//     localStorage.removeItem('Gene SelectionResult');
+//     localStorage.removeItem('General GSEAResult');
+//     localStorage.removeItem('WGCNAResult');
+//     localStorage.removeItem('Base ModelResult');
+//     localStorage.removeItem('MLP ModelResult');
+//     localStorage.removeItem('Base ModelResult');
+//     localStorage.removeItem('Reactome ResultResult');
+//     localStorage.removeItem('Baseline SelectionResult');
+//     localStorage.removeItem('projectId');
+//     console.log('LocalStorage cleared.');
+//   };
 
-  useEffect(() => {
-    if (!location.pathname.includes('/project/')) {
-      clearLocalStorageResults();
-    }
-  }, [location]);
+//   useEffect(() => {
+//     if (!location.pathname.includes('/project/')) {
+//       clearLocalStorageResults();
+//     }
+//   }, [location]);
 
-  return null;
-};
+//   return null;
+// };
 
 
 export default App;
