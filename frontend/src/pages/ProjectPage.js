@@ -401,22 +401,33 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
   const clearLocalStorageResults = () => {
-    localStorage.removeItem('deseq2Result');
-    localStorage.removeItem('deseqGSEAResult');
-    localStorage.removeItem('deseqStatsResult');
-    localStorage.removeItem('generalGSEAResult');
-    localStorage.removeItem('wgcnaResult');
-    localStorage.removeItem('baseModelResult');
-    localStorage.removeItem('mlpModelResult');
-    localStorage.removeItem('reactomeResult');
+    localStorage.removeItem('Deseq2Result');
+    localStorage.removeItem('Deseq2 GSEAResult');
+    localStorage.removeItem('Deseq2 StatisticsResult');
+    localStorage.removeItem('Gene CollectionResult');
+    localStorage.removeItem('Gene SelectionResult');
+    localStorage.removeItem('General GSEAResult');
+    localStorage.removeItem('WGCNAResult');
+    localStorage.removeItem('Base ModelResult');
+    localStorage.removeItem('MLP ModelResult');
+    localStorage.removeItem('Base ModelResult');
+    localStorage.removeItem('Reactome ResultResult');
+    localStorage.removeItem('projectId');
     console.log('LocalStorage cleared.');
   };
 
+  // useEffect(() => {
+  //   return () => {
+  //     clearLocalStorageResults();
+  //   };
+  // }, []);
+
   useEffect(() => {
-    return () => {
+    if (!location.pathname.includes('/project/') || !projectId) {
       clearLocalStorageResults();
-    };
-  }, []);
+    }
+  }, [location.pathname, projectId]); 
+
 
   return (
     <Layout>
