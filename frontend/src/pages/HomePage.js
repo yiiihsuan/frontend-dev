@@ -170,13 +170,17 @@ const HomePage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
+  const [hasShownAlert, setHasShownAlert] = useState(false);
 
   const handleUnauthorized = () => {
+    if (!hasShownAlert) { 
+      setHasShownAlert(true);
     alert('Session expired, please log in again.');
     logout();
     setTimeout(() => {
       navigate('/');
     }, 1000);
+  }
   };
   
 
