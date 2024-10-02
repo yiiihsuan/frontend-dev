@@ -75,7 +75,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       onMouseLeave={() => setIsOpen(false)}
       isOpen={isOpen}
     >
-      <SidebarItem to="/" isOpen={isOpen}>
+      <SidebarItem to="/home" isOpen={isOpen}>
         <Icon isOpen={isOpen}>
           <FaHome />
         </Icon>
