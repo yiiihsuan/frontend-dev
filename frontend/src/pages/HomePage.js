@@ -171,16 +171,26 @@ const HomePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
 
+  const handleUnauthorized = () => {
+    alert('Session expired, please log in again.');
+    logout();
+    setTimeout(() => {
+      navigate('/');
+    }, 1000);
+  };
+  
+
   const { data: projects, error, isLoading, isError } = useQuery('projects', fetchProjects, {
     retry: false,
     onError: (error) => {
       if (error.message === 'Unauthorized') {
-        alert('Session expired, please log in again.');
-        logout();  
-        //navigate('/');
-        setTimeout(() => {
-          navigate('/');
-        }, 1000); 
+        handleUnauthorized();
+        // alert('Session expired, please log in again.');
+        // logout();  
+        // //navigate('/');
+        // setTimeout(() => {
+        //   navigate('/');
+        // }, 1000); 
       }
     },
   });
@@ -189,12 +199,13 @@ const HomePage = () => {
     retry: false,
     onError: (error) => {
       if (error.message === 'Unauthorized') {
-        alert('Session expired, please log in again.');
-        logout();  
-        //navigate('/');
-        setTimeout(() => {
-          navigate('/');
-        }, 1000); 
+        handleUnauthorized();
+        // alert('Session expired, please log in again.');
+        // logout();  
+        // //navigate('/');
+        // setTimeout(() => {
+        //   navigate('/');
+        // }, 1000); 
       }
     },
   });
