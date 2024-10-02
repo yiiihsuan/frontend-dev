@@ -563,6 +563,22 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   //   }
   // };
 
+  const waitForImages = () => {
+    const images = document.querySelectorAll('img');
+    const loadPromises = Array.from(images).map(img => {
+      return new Promise((resolve) => {
+        if (img.complete) {
+          resolve(); // 圖片已加載
+        } else {
+          img.onload = resolve;
+          img.onerror = resolve; // 確保即使出錯也能繼續
+        }
+      });
+    });
+  
+    return Promise.all(loadPromises);
+  };
+
   const downloadPDF = async () => {
     const doc = new jsPDF();
     const element = document.getElementById('results-container'); 
@@ -572,6 +588,8 @@ const ProjectPage = ({ setIsLoggedIn }) => {
       console.error('Element is empty. No content to capture.');
       return;
     }
+
+    await waitForImages();
   
     setTimeout(async () => {
     try {
