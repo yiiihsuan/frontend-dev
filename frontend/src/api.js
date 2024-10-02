@@ -112,6 +112,7 @@ export const analyzeBeating = async ({file, projectId}) => {
   const token = localStorage.getItem('token');
   const formData = new FormData();
   formData.append('file', file); 
+  console.log('Uploading heatveat video', { file: file.name, projectId});
   const response = await fetch(`${API_URL}/analyze_beating/?project_id=${projectId}`, {
     method: 'POST',
     headers: {
