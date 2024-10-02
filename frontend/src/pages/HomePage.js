@@ -172,28 +172,28 @@ const HomePage = () => {
   const [newProjectName, setNewProjectName] = useState('');
 
   const { data: projects, error, isLoading, isError } = useQuery('projects', fetchProjects, {
-    retry: 1,
+    retry: false,
     onError: (error) => {
       if (error.message === 'Unauthorized') {
         alert('Session expired, please log in again.');
         logout();  
         //navigate('/');
         setTimeout(() => {
-          navigate('/login');
+          navigate('/');
         }, 1000); 
       }
     },
   });
 
   const { data: userInfo, error: userError } = useQuery('userInfo', getUserInfo, {
-    retry: 1,
+    retry: false,
     onError: (error) => {
       if (error.message === 'Unauthorized') {
         alert('Session expired, please log in again.');
         logout();  
         //navigate('/');
         setTimeout(() => {
-          navigate('/login');
+          navigate('/');
         }, 1000); 
       }
     },
