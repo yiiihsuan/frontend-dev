@@ -181,6 +181,7 @@ const HomePage = () => {
   });
 
   const { data: userInfo, error: userError } = useQuery('userInfo', getUserInfo, {
+    retry: false,
     onError: (error) => {
       if (error.message === 'Unauthorized') {
         logout();  
@@ -190,6 +191,7 @@ const HomePage = () => {
   });
 
   const mutation = useMutation(createProject, {
+    retry: false,
     onSuccess: () => {
       queryClient.invalidateQueries('projects');
       setIsModalOpen(false);
