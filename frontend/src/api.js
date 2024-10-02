@@ -1038,17 +1038,39 @@ const mockEvaluateMlpModelResponse = {
 export const runReactomeAndStatus = async (projectId, interval = 5000) => {
   const token = localStorage.getItem('token');
 
-  const mockreactomeData =
-  {
-    "task_id": "9ff94536-2e4a-4553-8222-2c1a5a24b121",
-    "task_status": "IN_PROGRESS",
+  // const mockreactomeData =
+  // {
+  //   "task_id": "9ff94536-2e4a-4553-8222-2c1a5a24b121",
+  //   "task_status": "IN_PROGRESS",
+  //   "task_info": {
+  //     "done": 4,
+  //     "total": 12,
+  //     "detail": "Exporting dmso_vs_nitrendipine reports"
+  //   }
+  // };
+
+  const mockreactomeData = {
+    "task_id": "mock_task_id",
+    "task_status": "SUCCESS",
     "task_info": {
-      "done": 4,
-      "total": 12,
-      "detail": "Exporting dmso_vs_nitrendipine reports"
+      "reactome_links.csv": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/info/reactome_links.csv?...",
+      "reactome_genes.csv": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/info/reactome_genes.csv?...",
+      "report_dmso_vs_entre.pdf": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/report/report_dmso_vs_entre.pdf?...",
+      "report_untreated_vs_dmso.pdf": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/report/report_untreated_vs_dmso.pdf?...",
+      "report.pdf": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/report/report.pdf?...",
+      "report_dmso_vs_doxorubicin.pdf": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/report/report_dmso_vs_doxorubicin.pdf?...",
+      "report_dmso_vs_bortezomib.pdf": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/report/report_dmso_vs_bortezomib.pdf?...",
+      "report_dmso_vs_bi2536.pdf": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/report/report_dmso_vs_bi2536.pdf?...",
+      "report_dmso_vs_nitrendipine.pdf": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/report/report_dmso_vs_nitrendipine.pdf?...",
+      "fireworks_report.png": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/fireworks/fireworks_report.png?...",
+      "fireworks_report_dmso_vs_nitrendipine.png": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/fireworks/fireworks_report_dmso_vs_nitrendipine.png?...",
+      "fireworks_report_dmso_vs_bi2536.png": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/fireworks/fireworks_report_dmso_vs_bi2536.png?...",
+      "fireworks_report_dmso_vs_entre.png": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/fireworks/fireworks_report_dmso_vs_entre.png?...",
+      "fireworks_report_dmso_vs_bortezomib.png": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/fireworks/fireworks_report_dmso_vs_bortezomib.png?...",
+      "fireworks_report_dmso_vs_doxorubicin.png": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/fireworks/fireworks_report_dmso_vs_doxorubicin.png?...",
+      "fireworks_report_untreated_vs_dmso.png": "https://storage.googleapis.com/genenet-genex-features/669dbe9907b7c62caa476c92/deseq/reactome/fireworks/fireworks_report_untreated_vs_dmso.png?..."
     }
-  }
-    ;
+  };
 
   try {
     const response = await fetch(`${API_URL}/deseq/${projectId}/reactome/`, {
@@ -1092,13 +1114,10 @@ export const runReactomeAndStatus = async (projectId, interval = 5000) => {
         console.log(`Task status: ${statusData.task_status}, Progress: ${statusData.task_info?.done || 0} / ${statusData.task_info?.total || 'unknown'}`);
 
         await new Promise(resolve => setTimeout(resolve, interval));
-        return checkTaskStatus();  // 遞迴再次檢查
+        return checkTaskStatus();  
       }
     };
-
-    //檢查任務狀態
     return await checkTaskStatus();
-
   } catch (error) {
     console.error('API Error:', error.message);
     console.log('Returning mock data due to error.');
