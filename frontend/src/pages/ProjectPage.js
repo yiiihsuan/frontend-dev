@@ -573,6 +573,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
       return;
     }
   
+    setTimeout(async () => {
     try {
       // 使用 html2canvas 將元素轉換為畫布
       const canvas = await html2canvas(element, { scale: 2, useCORS: true });
@@ -587,6 +588,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
     } catch (error) {
       console.error('Error capturing element:', error);
     }
+    }, 2000); 
   };
 
   return (
