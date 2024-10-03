@@ -756,24 +756,19 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             </SectionContainer>
 
 
-            <div >
+ 
             <div id="block1">
               {deseq2GSEAResult && (
                 <DeseqGSEA id="results-container" resultData={deseq2GSEAResult} />
               )}
-               </div>
-
-               <div id="block2">
+     
               {deseq2Statistics && (
                 <DeseqStats resultData={deseq2Statistics} />
               )}
-              </div>
-
-              <div id="block3">
+     
               {reactomeResult && (
                 <DeseqReactome resultData={reactomeResult} />
               )}
-               </div>
             </div>
 
 
@@ -796,7 +791,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
               />
             </SectionContainer>
 
-            <div id="block4">
+            <div id="block2">
               {generalGSEAResult && (
                 <GSEANoDeseq resultData={generalGSEAResult} />
               )}
@@ -868,7 +863,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             </SectionContainer>
 
 
-             <div id="block5">
+             <div id="block3">
 
               {baseModel && (
                 <BaseModel resultData={baseModel} />
