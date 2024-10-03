@@ -122,6 +122,7 @@ const FileUploader = ({ title, file, setFile, uploadType, handleUpload }) => {
         <FileInput
           id={`${uploadType}FileInput`}
           type="file"
+          accept=".csv"
           onChange={handleFileChange}
         />
         {file && <FileName>{file.name}</FileName>}

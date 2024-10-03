@@ -269,20 +269,7 @@ const BeatingPlotImage = styled.img`
 `;
 
 
-const FilePreviewSection = styled.div`
-  display: flex; 
-  justify-content: space-between; 
-  margin-top: 20px;
-`;
 
-const FilePreviewBlock = styled.div`
-  flex: 1;
-  margin: 0 10px; 
-  padding: 10px;
-  border: 1px solid #ccc; 
-  border-radius: 8px;
-  //background-color: #f9f9f9;
-`;
 
 
 const ProjectPage = ({ setIsLoggedIn }) => {
@@ -428,36 +415,15 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
 
-  // const handleUpload = (file, type) => {
-  //   const projectId = localStorage.getItem('projectId');
-  //   console.log('Handle upload parameters:', { file, type, projectId });
-
-  //   if (!projectId) {
-  //     console.error("Project ID is not set");
-  //     alert("Project ID is not set. Please check your configuration.");
-  //     return;
-  //   }
-  //   if (!file) {
-  //     console.error("No file selected");
-  //     alert("No file selected. Please select a file before uploading.");
-  //     return;
-  //   }
-  //   mutation.mutate({
-  //     file: file,
-  //     projectId: projectId,
-  //     type: type
-  //   });
-  // };
-
   const handleUpload = (file, type) => {
     if (!projectId) {
       console.error("Project ID is not set");
-      alert("Project ID is not set. Please check your configuration.");
+      alert("Project ID is not set.");
       return;
     }
     if (!file) {
       console.error("No file selected");
-      alert("No file selected. Please select a file before uploading.");
+      alert("No file selected.");
       return;
     }
 
@@ -485,30 +451,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
     return heartVideoFiles.filter(file => file.name.startsWith(prefix));
   };
 
-
-  // const clearLocalStorageResults = () => {
-  //   localStorage.removeItem('Deseq2Result');
-  //   localStorage.removeItem('Deseq2 GSEAResult');
-  //   localStorage.removeItem('Deseq2 StatisticsResult');
-  //   localStorage.removeItem('Gene CollectionResult');
-  //   localStorage.removeItem('Gene SelectionResult');
-  //   localStorage.removeItem('General GSEAResult');
-  //   localStorage.removeItem('WGCNAResult');
-  //   localStorage.removeItem('Base ModelResult');
-  //   localStorage.removeItem('MLP ModelResult');
-  //   localStorage.removeItem('Base ModelResult');
-  //   localStorage.removeItem('Reactome ResultResult');
-  //   localStorage.removeItem('Baseline SelectionResult');
-  //   localStorage.removeItem('projectId');
-  //   console.log('LocalStorage cleared.');
-  // };
-
-
-  // useEffect(() => {
-  //   if (!location.pathname.includes('/project/')) {
-  //     clearLocalStorageResults();
-  //   }
-  // }, [location]); 
 
   // const downloadPDF = async () => {
   //   const doc = new jsPDF();
@@ -607,7 +549,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
   const downloadPDF = async () => {
     const doc = new jsPDF();
-    const element = document.getElementById('results-container'); 
+    const element = document.getElementById('pdf-content'); 
     
     if (element.innerHTML.trim() === '') {
       console.error('Element is empty. No content to capture.');
@@ -631,6 +573,13 @@ const ProjectPage = ({ setIsLoggedIn }) => {
     }
     }, 2000); 
   };
+
+  // const handleUploadFiles = (prefix) => {
+  //   const filesToUpload = files.filter(file => file.name.startsWith(prefix));
+  //   filesToUpload.forEach(file => handleUpload(file, file.type)); 
+  //   setFiles(prevFiles => prevFiles.filter(file => !filesToUpload.includes(file))); 
+  // };
+
 
   return (
     <Layout>
@@ -673,17 +622,19 @@ const ProjectPage = ({ setIsLoggedIn }) => {
         )} */}
 
 <VideoFileUploader
-        title="Heart Beat Video"
-        handleUpload={handleUploadVideo}
-      />
+  title="Heart Beat Video"
+  handleUpload={handleUpload}
+  projectId={projectId}
+/>
 
 
-      <FilePreviewSection>
+      {/* <FilePreviewSection>
         <FilePreviewBlock>
           <h3>Test Files</h3>
           {getFilesByPrefix('test_').map((file, index) => (
           <FileName key={index}>{file.name}</FileName>
           ))}
+          <UploadButton onClick={() => handleUploadFiles('test_')}>Upload Test Files</UploadButton>
         </FilePreviewBlock>
 
         <FilePreviewBlock>
@@ -691,6 +642,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
           {getFilesByPrefix('control_').map((file, index) => (
           <FileName key={index}>{file.name}</FileName>
         ))}
+        <UploadButton onClick={() => handleUploadFiles('control_')}>Upload Control Files</UploadButton>
         </FilePreviewBlock>
 
         <FilePreviewBlock>
@@ -698,8 +650,10 @@ const ProjectPage = ({ setIsLoggedIn }) => {
           {getFilesByPrefix('treatment_').map((file, index) => (
           <FileName key={index}>{file.name}</FileName>
         ))}
+        <UploadButton onClick={() => handleUploadFiles('treatment_')}>Upload Treatment Files</UploadButton>
         </FilePreviewBlock>
-      </FilePreviewSection>
+      </FilePreviewSection> */}
+
 
 {beatingCount !== null && beatingPlotUrl !== null && (
 <AnalysisResultContainer>
@@ -723,6 +677,9 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
             {/* Deseq2 Section */}
             {/* <SectionTitle>Deseq2</SectionTitle> */}
+
+
+            <div id="pdf-content">
 
             <SectionContainer title="deseq2" isOpen={isDeseqOpen} toggleOpen={toggleDeseqOpen}>
               <Deseq2Item>
@@ -766,26 +723,16 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             </SectionContainer>
 
 
-
-
-
             <div>
-              <ShowButton onClick={() => setDeseqShowResults(!deseqShowResults)}>
-                {deseqShowResults ? 'Hide Results' : 'Show Results'}
-              </ShowButton>
-
-              {deseqShowResults && deseq2GSEAResult && (
+              {deseq2GSEAResult && (
                 <DeseqGSEA id="results-container" resultData={deseq2GSEAResult} />
               )}
-
-              {deseqShowResults && deseq2Statistics && (
+              {deseq2Statistics && (
                 <DeseqStats resultData={deseq2Statistics} />
               )}
-
-              {deseqShowResults && reactomeResult && (
+              {reactomeResult && (
                 <DeseqReactome resultData={reactomeResult} />
               )}
-
             </div>
 
 
@@ -809,15 +756,10 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             </SectionContainer>
 
             <div>
-              <ShowButton onClick={() => setFeatureGenShowResults(!featureGenShowResults)}>
-                {featureGenShowResults ? 'Hide Results' : 'Show Results'}
-              </ShowButton>
-
-              {featureGenShowResults && generalGSEAResult && (
+              {generalGSEAResult && (
                 <GSEANoDeseq resultData={generalGSEAResult} />
               )}
-
-              {featureGenShowResults && wgcnaResult && (
+              {wgcnaResult && (
                 <WGCNAResults resultData={wgcnaResult} />
               )}
             </div>
@@ -884,21 +826,19 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
             </SectionContainer>
 
+
             <div>
-              <ShowButton onClick={() => setModelShowResults(!modelShowResults)}>
-                {modelShowResults ? 'Hide Results' : 'Show Results'}
-              </ShowButton>
-
-
-              {modelShowResults && baseModel && (
+              {baseModel && (
                 <BaseModel resultData={baseModel} />
               )}
-
-              {modelShowResults && mlpModel && (
+              {mlpModel && (
                 <MlpModel resultData={mlpModel} />
               )}
-
             </div>
+
+            </div>  
+            {/* pdf content */}
+
           </FormContainer>)}
         <Footer>
           © Copyright Genenet Technology (UK). All Rights Reserved.
