@@ -528,7 +528,6 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   
   //   doc.save('ProjectResults.pdf'); 
   // };
-
   const downloadPDF = async () => {
     const doc = new jsPDF('p', 'mm', 'a4'); // A4
     const blocks = document.querySelectorAll('#pdf-content .pdf-section'); // 獲取所有區塊
@@ -537,21 +536,26 @@ const ProjectPage = ({ setIsLoggedIn }) => {
       const canvas = await html2canvas(block, { scale: 2, useCORS: true });
       const imgData = canvas.toDataURL('image/png');
   
-      const imgWidth = doc.internal.pageSize.getWidth() - 20; // 圖片寬度
+      const imgWidth = doc.internal.pageSize.getWidth() - 20; // 圖片寬度&邊距
       const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據比例計算高度
   
       let heightLeft = imgHeight; // 剩餘高度
       let position = 10; // 初始位置
-     
+      let sourceHeight = canvas.height; // 源圖片的總高度
+      let sy = 0; // 源始截取位置Y
+  
       // 如果圖片高度超過一頁
       while (heightLeft > 0) {
-        const heightToShow = Math.min(heightLeft, doc.internal.pageSize.getHeight() - position); // 確保不超過頁面剩餘高度
-        doc.addImage(imgData, 'PNG', 10, position, imgWidth, heightToShow);
-        heightLeft -= heightToShow; // 減少剩餘高度
+        const heightOnPage = Math.min(heightLeft, doc.internal.pageSize.getHeight() - position); // 頁面上顯示的高度
+        const sliceHeight = (heightOnPage * canvas.height) / imgHeight; // 實際需要從canvas截取的高度
+  
+        doc.addImage(imgData, 'PNG', 10, position, imgWidth, heightOnPage, undefined, 'FAST', 0, sy);
+        sy += sliceHeight; // 更新源始截取位置
+        heightLeft -= heightOnPage; // 更新剩餘高度
   
         if (heightLeft > 0) {
-          doc.addPage(); // 添加新頁
-          position = 0; // 更新位置回到頁面頂部
+          doc.addPage();
+          position = 0; // 重置至頁頂
         }
       }
   
@@ -561,8 +565,9 @@ const ProjectPage = ({ setIsLoggedIn }) => {
       }
     }
   
-    doc.save('ProjectResults.pdf'); 
+    doc.save('ProjectResults.pdf');
   };
+  
   
 
 
