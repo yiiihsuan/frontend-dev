@@ -469,29 +469,26 @@ const ProjectPage = ({ setIsLoggedIn }) => {
     const doc = new jsPDF('p', 'mm', 'a4'); // A4
     const element = document.getElementById('pdf-content'); 
   
-    //const canvas = await html2canvas(element, { scale: 2 }); // 使用較高的縮放比例
-    const canvas = await html2canvas(element, { scale: 2 , useCORS: true });
+    const canvas = await html2canvas(element, { scale: 2, useCORS: true });
     const imgData = canvas.toDataURL('image/png');
   
-    // 計算圖片的寬高
     const imgWidth = doc.internal.pageSize.getWidth() - 20; // 圖片寬度&邊距
     const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據比例計算高度
   
     let heightLeft = imgHeight; // 剩餘高度
     let position = 10; // 初始位置
-  
-    // 如果高度超過一頁，則添加新頁
-    if (heightLeft > doc.internal.pageSize.getHeight()) {
-      // 增加頁面，繼續添加圖像
-      while (heightLeft >= 0) {
-        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-        heightLeft -= doc.internal.pageSize.getHeight();
-        position -= imgHeight; // 更新位置
-        if (heightLeft > 0) doc.addPage(); // 添加新頁
-      }
-    } else {
-      // 在一頁內，直接添加
+    
+    // 如果圖片高度超過一頁
+    while (heightLeft > 0) {
       doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+      heightLeft -= doc.internal.pageSize.getHeight(); // 減少剩餘高度
+  
+      if (heightLeft > 0) {
+        doc.addPage(); // 添加新頁
+        position = 0; // 更新位置回到頁面頂部
+      } else {
+        position -= imgHeight; // 更新位置，處理可能的偏移
+      }
     }
   
     doc.save('ProjectResults.pdf'); 
