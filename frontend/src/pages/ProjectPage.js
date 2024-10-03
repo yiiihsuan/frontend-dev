@@ -494,6 +494,41 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   //   doc.save('ProjectResults.pdf'); 
   // };
 
+  //頁面會重複
+  // const downloadPDF = async () => {
+  //   const doc = new jsPDF('p', 'mm', 'a4'); // A4
+  //   const blocks = document.querySelectorAll('#pdf-content .pdf-section'); // 獲取所有區塊
+  
+  //   for (const block of blocks) {
+  //     const canvas = await html2canvas(block, { scale: 2, useCORS: true });
+  //     const imgData = canvas.toDataURL('image/png');
+  
+  //     const imgWidth = doc.internal.pageSize.getWidth() - 20; // 圖片寬度&邊距
+  //     const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據比例計算高度
+  
+  //     let heightLeft = imgHeight; // 剩餘高度
+  //     let position = 10; // 初始位置
+  
+  //     // 如果圖片高度超過一頁
+  //     while (heightLeft > 0) {
+  //       doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+  //       heightLeft -= doc.internal.pageSize.getHeight(); // 減少剩餘高度
+  
+  //       if (heightLeft > 0) {
+  //         doc.addPage(); // 添加新頁
+  //         position = 0; // 更新位置回到頁面頂部
+  //       }
+  //     }
+      
+  //     // 如果不是最後一個區塊，則添加新頁
+  //     if (block !== blocks[blocks.length - 1]) {
+  //       doc.addPage();
+  //     }
+  //   }
+  
+  //   doc.save('ProjectResults.pdf'); 
+  // };
+
   const downloadPDF = async () => {
     const doc = new jsPDF('p', 'mm', 'a4'); // A4
     const blocks = document.querySelectorAll('#pdf-content .pdf-section'); // 獲取所有區塊
@@ -502,23 +537,24 @@ const ProjectPage = ({ setIsLoggedIn }) => {
       const canvas = await html2canvas(block, { scale: 2, useCORS: true });
       const imgData = canvas.toDataURL('image/png');
   
-      const imgWidth = doc.internal.pageSize.getWidth() - 20; // 圖片寬度&邊距
+      const imgWidth = doc.internal.pageSize.getWidth() - 20; // 圖片寬度
       const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據比例計算高度
   
       let heightLeft = imgHeight; // 剩餘高度
       let position = 10; // 初始位置
-  
+     
       // 如果圖片高度超過一頁
       while (heightLeft > 0) {
-        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-        heightLeft -= doc.internal.pageSize.getHeight(); // 減少剩餘高度
+        const heightToShow = Math.min(heightLeft, doc.internal.pageSize.getHeight() - position); // 確保不超過頁面剩餘高度
+        doc.addImage(imgData, 'PNG', 10, position, imgWidth, heightToShow);
+        heightLeft -= heightToShow; // 減少剩餘高度
   
         if (heightLeft > 0) {
           doc.addPage(); // 添加新頁
           position = 0; // 更新位置回到頁面頂部
         }
       }
-      
+  
       // 如果不是最後一個區塊，則添加新頁
       if (block !== blocks[blocks.length - 1]) {
         doc.addPage();
@@ -527,6 +563,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   
     doc.save('ProjectResults.pdf'); 
   };
+  
 
 
   // const downloadPDF = async () => {
