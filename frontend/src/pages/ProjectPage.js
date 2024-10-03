@@ -465,29 +465,63 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
   //換頁
+  // const downloadPDF = async () => {
+  //   const doc = new jsPDF('p', 'mm', 'a4'); // A4
+  //   const element = document.getElementById('pdf-content'); 
+  
+  //   const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+  //   const imgData = canvas.toDataURL('image/png');
+  
+  //   const imgWidth = doc.internal.pageSize.getWidth() - 20; // 圖片寬度&邊距
+  //   const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據比例計算高度
+  
+  //   let heightLeft = imgHeight; // 剩餘高度
+  //   let position = 10; // 初始位置
+    
+  //   // 如果圖片高度超過一頁
+  //   while (heightLeft > 0) {
+  //     doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+  //     heightLeft -= doc.internal.pageSize.getHeight(); // 減少剩餘高度
+  
+  //     if (heightLeft > 0) {
+  //       doc.addPage(); // 添加新頁
+  //       position = 0; // 更新位置回到頁面頂部
+  //     } else {
+  //       position -= imgHeight; // 更新位置，處理可能的偏移
+  //     }
+  //   }
+  
+  //   doc.save('ProjectResults.pdf'); 
+  // };
+
   const downloadPDF = async () => {
     const doc = new jsPDF('p', 'mm', 'a4'); // A4
-    const element = document.getElementById('pdf-content'); 
+    const blocks = document.querySelectorAll('#pdf-content > div'); // 獲取所有區塊
   
-    const canvas = await html2canvas(element, { scale: 2, useCORS: true });
-    const imgData = canvas.toDataURL('image/png');
+    for (const block of blocks) {
+      const canvas = await html2canvas(block, { scale: 2, useCORS: true });
+      const imgData = canvas.toDataURL('image/png');
   
-    const imgWidth = doc.internal.pageSize.getWidth() - 20; // 圖片寬度&邊距
-    const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據比例計算高度
+      const imgWidth = doc.internal.pageSize.getWidth() - 20; // 圖片寬度&邊距
+      const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據比例計算高度
   
-    let heightLeft = imgHeight; // 剩餘高度
-    let position = 10; // 初始位置
-    
-    // 如果圖片高度超過一頁
-    while (heightLeft > 0) {
-      doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-      heightLeft -= doc.internal.pageSize.getHeight(); // 減少剩餘高度
+      let heightLeft = imgHeight; // 剩餘高度
+      let position = 10; // 初始位置
   
-      if (heightLeft > 0) {
-        doc.addPage(); // 添加新頁
-        position = 0; // 更新位置回到頁面頂部
-      } else {
-        position -= imgHeight; // 更新位置，處理可能的偏移
+      // 如果圖片高度超過一頁
+      while (heightLeft > 0) {
+        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+        heightLeft -= doc.internal.pageSize.getHeight(); // 減少剩餘高度
+  
+        if (heightLeft > 0) {
+          doc.addPage(); // 添加新頁
+          position = 0; // 更新位置回到頁面頂部
+        }
+      }
+      
+      // 如果不是最後一個區塊，則添加新頁
+      if (block !== blocks[blocks.length - 1]) {
+        doc.addPage();
       }
     }
   
@@ -722,16 +756,24 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             </SectionContainer>
 
 
-            <div>
+            <div >
+            <div id="block1">
               {deseq2GSEAResult && (
                 <DeseqGSEA id="results-container" resultData={deseq2GSEAResult} />
               )}
+               </div>
+
+               <div id="block2">
               {deseq2Statistics && (
                 <DeseqStats resultData={deseq2Statistics} />
               )}
+              </div>
+
+              <div id="block3">
               {reactomeResult && (
                 <DeseqReactome resultData={reactomeResult} />
               )}
+               </div>
             </div>
 
 
@@ -754,7 +796,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
               />
             </SectionContainer>
 
-            <div>
+            <div id="block4">
               {generalGSEAResult && (
                 <GSEANoDeseq resultData={generalGSEAResult} />
               )}
@@ -826,15 +868,17 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             </SectionContainer>
 
 
-            <div>
+             <div id="block5">
+
               {baseModel && (
                 <BaseModel resultData={baseModel} />
               )}
+
               {mlpModel && (
                 <MlpModel resultData={mlpModel} />
               )}
-            </div>
-
+        
+              </div>
             </div>  
             {/* pdf content */}
 
