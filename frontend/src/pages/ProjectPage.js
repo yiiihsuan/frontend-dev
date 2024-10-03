@@ -496,7 +496,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
   const downloadPDF = async () => {
     const doc = new jsPDF('p', 'mm', 'a4'); // A4
-    const blocks = document.querySelectorAll('#pdf-content > div'); // 獲取所有區塊
+    const blocks = document.querySelectorAll('#pdf-content .pdf-section'); // 獲取所有區塊
   
     for (const block of blocks) {
       const canvas = await html2canvas(block, { scale: 2, useCORS: true });
@@ -714,6 +714,8 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
             <div id="pdf-content">
 
+          <div class="pdf-section">
+
             <SectionContainer title="deseq2" isOpen={isDeseqOpen} toggleOpen={toggleDeseqOpen}>
               <Deseq2Item>
                 <GenericAnalysis
@@ -757,7 +759,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
 
 
  
-            <div id="block1">
+
               {deseq2GSEAResult && (
                 <DeseqGSEA id="results-container" resultData={deseq2GSEAResult} />
               )}
@@ -791,7 +793,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
               />
             </SectionContainer>
 
-            <div id="block2">
+            <div class="pdf-section">
               {generalGSEAResult && (
                 <GSEANoDeseq resultData={generalGSEAResult} />
               )}
@@ -863,7 +865,7 @@ const ProjectPage = ({ setIsLoggedIn }) => {
             </SectionContainer>
 
 
-             <div id="block3">
+             <div class="pdf-section">
 
               {baseModel && (
                 <BaseModel resultData={baseModel} />
