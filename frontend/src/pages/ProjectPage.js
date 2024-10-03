@@ -463,37 +463,39 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   //   doc.save('ProjectResults.pdf'); 
   // };
 
-  // const downloadPDF = async () => {
-  //   const doc = new jsPDF('p', 'mm', 'a4'); // 使用 A4 尺寸
-  //   const element = document.getElementById('results-container'); 
+
+  //換頁
+  const downloadPDF = async () => {
+    const doc = new jsPDF('p', 'mm', 'a4'); // A4
+    const element = document.getElementById('pdf-content'); 
   
-  //   //const canvas = await html2canvas(element, { scale: 2 }); // 使用較高的縮放比例
-  //   const canvas = await html2canvas(element, { scale: 2 , useCORS: true });
-  //   const imgData = canvas.toDataURL('image/png');
+    //const canvas = await html2canvas(element, { scale: 2 }); // 使用較高的縮放比例
+    const canvas = await html2canvas(element, { scale: 2 , useCORS: true });
+    const imgData = canvas.toDataURL('image/png');
   
-  //   // 計算圖片的寬高
-  //   const imgWidth = doc.internal.pageSize.getWidth() - 20; // 設置圖片寬度，留出邊距
-  //   const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據比例計算高度
+    // 計算圖片的寬高
+    const imgWidth = doc.internal.pageSize.getWidth() - 20; // 圖片寬度&邊距
+    const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據比例計算高度
   
-  //   let heightLeft = imgHeight; // 剩餘高度
-  //   let position = 10; // 初始位置
+    let heightLeft = imgHeight; // 剩餘高度
+    let position = 10; // 初始位置
   
-  //   // 如果高度超過一頁，則添加新頁
-  //   if (heightLeft > doc.internal.pageSize.getHeight()) {
-  //     // 增加頁面，繼續添加圖像
-  //     while (heightLeft >= 0) {
-  //       doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-  //       heightLeft -= doc.internal.pageSize.getHeight();
-  //       position -= imgHeight; // 更新位置
-  //       if (heightLeft > 0) doc.addPage(); // 添加新頁
-  //     }
-  //   } else {
-  //     // 如果在一頁內，直接添加
-  //     doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-  //   }
+    // 如果高度超過一頁，則添加新頁
+    if (heightLeft > doc.internal.pageSize.getHeight()) {
+      // 增加頁面，繼續添加圖像
+      while (heightLeft >= 0) {
+        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+        heightLeft -= doc.internal.pageSize.getHeight();
+        position -= imgHeight; // 更新位置
+        if (heightLeft > 0) doc.addPage(); // 添加新頁
+      }
+    } else {
+      // 在一頁內，直接添加
+      doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+    }
   
-  //   doc.save('ProjectResults.pdf'); 
-  // };
+    doc.save('ProjectResults.pdf'); 
+  };
 
 
   // const downloadPDF = async () => {
@@ -531,48 +533,48 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   //   }
   // };
 
-  const waitForImages = () => {
-    const images = document.querySelectorAll('img');
-    const loadPromises = Array.from(images).map(img => {
-      return new Promise((resolve) => {
-        if (img.complete) {
-          resolve(); 
-        } else {
-          img.onload = resolve;
-          img.onerror = resolve; 
-        }
-      });
-    });
+  // const waitForImages = () => {
+  //   const images = document.querySelectorAll('img');
+  //   const loadPromises = Array.from(images).map(img => {
+  //     return new Promise((resolve) => {
+  //       if (img.complete) {
+  //         resolve(); 
+  //       } else {
+  //         img.onload = resolve;
+  //         img.onerror = resolve; 
+  //       }
+  //     });
+  //   });
   
-    return Promise.all(loadPromises);
-  };
+  //   return Promise.all(loadPromises);
+  // };
 
-  const downloadPDF = async () => {
-    const doc = new jsPDF();
-    const element = document.getElementById('pdf-content'); 
+  // const downloadPDF = async () => {
+  //   const doc = new jsPDF();
+  //   const element = document.getElementById('pdf-content'); 
     
-    if (element.innerHTML.trim() === '') {
-      console.error('Element is empty. No content to capture.');
-      return;
-    }
+  //   if (element.innerHTML.trim() === '') {
+  //     console.error('Element is empty. No content to capture.');
+  //     return;
+  //   }
 
-    await waitForImages();
+  //   await waitForImages();
   
-    setTimeout(async () => {
-    try {
-      const canvas = await html2canvas(element, { scale: 2, useCORS: true });
-      const imgData = canvas.toDataURL('image/png');
+  //   setTimeout(async () => {
+  //   try {
+  //     const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+  //     const imgData = canvas.toDataURL('image/png');
   
-      const imgWidth = 190; 
-      const imgHeight = (canvas.height * imgWidth) / canvas.width; 
+  //     const imgWidth = 190; 
+  //     const imgHeight = (canvas.height * imgWidth) / canvas.width; 
   
-      doc.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-      doc.save('ProjectResults.pdf');
-    } catch (error) {
-      console.error('Error capturing element:', error);
-    }
-    }, 2000); 
-  };
+  //     doc.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+  //     doc.save('ProjectResults.pdf');
+  //   } catch (error) {
+  //     console.error('Error capturing element:', error);
+  //   }
+  //   }, 2000); 
+  // };
 
   // const handleUploadFiles = (prefix) => {
   //   const filesToUpload = files.filter(file => file.name.startsWith(prefix));
