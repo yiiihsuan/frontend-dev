@@ -529,47 +529,44 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   //   doc.save('ProjectResults.pdf'); 
   // };
   async function downloadPDF() {
-    const doc = new jsPDF('p', 'mm', 'a4'); 
-    let position = 0; 
-    const pageHeight = doc.internal.pageSize.getHeight(); 
-
-    const blocks = document.querySelectorAll('#pdf-content .pdf-section'); 
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const blocks = document.querySelectorAll('#pdf-content .pdf-section');
+    let position = 0;  
+    let pageHeight = doc.internal.pageSize.getHeight(); 
 
     for (const block of blocks) {
         const canvas = await html2canvas(block, {
-            scale: window.devicePixelRatio * 2, 
+            scale: window.devicePixelRatio * 2,
             useCORS: true
         });
         const imgData = canvas.toDataURL('image/png');
-        
-        const imgWidth = doc.internal.pageSize.getWidth() - 20; 
-        let imgHeight = (canvas.height * imgWidth) / canvas.width; 
+        const imgWidth = doc.internal.pageSize.getWidth() - 20;
+        let imgHeight = (canvas.height * imgWidth) / canvas.width;
+        let sy = 0;  
 
-        let sy = 0; 
         while (imgHeight > 0) {
-            if (position + imgHeight > pageHeight) {
-                const heightOnPage = pageHeight - position; 
-                const sliceHeight = (heightOnPage * canvas.height) / imgHeight; 
+            let heightToDraw = Math.min(pageHeight - position, imgHeight);
+            doc.addImage(imgData, 'PNG', 10, position, imgWidth, heightToDraw, undefined, 'FAST', 0, sy, imgWidth, heightToDraw);
+            imgHeight -= heightToDraw;
+            sy += heightToDraw * (canvas.height / (canvas.height * imgWidth / canvas.width));  
 
-                doc.addImage(imgData, 'PNG', 10, position, imgWidth, heightOnPage, undefined, 'FAST', 0, sy);
-                sy += sliceHeight; 
-                imgHeight -= heightOnPage;
-                doc.addPage(); 
-                position = 0; 
+            if (imgHeight > 0) {
+                doc.addPage();
+                position = 0;  
             } else {
-                doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight, undefined, 'FAST', 0, sy);
-                position += imgHeight; 
-                break; 
+                position += heightToDraw;  
             }
         }
+
         if (block !== blocks[blocks.length - 1]) {
             doc.addPage();
             position = 0; 
         }
     }
 
-    doc.save('ProjectResults.pdf'); 
+    doc.save('ProjectResults.pdf');
 }
+
 
   
 
