@@ -528,45 +528,48 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   
   //   doc.save('ProjectResults.pdf'); 
   // };
-  const downloadPDF = async () => {
-    const doc = new jsPDF('p', 'mm', 'a4'); // A4
-    const blocks = document.querySelectorAll('#pdf-content .pdf-section'); // 獲取所有區塊
+  async function downloadPDF() {
+    const doc = new jsPDF('p', 'mm', 'a4'); // 定義A4大小的PDF
+    const blocks = document.querySelectorAll('#pdf-content .pdf-section'); // 獲取所有的區塊
   
     for (const block of blocks) {
-      const canvas = await html2canvas(block, { scale: 2, useCORS: true });
+      const canvas = await html2canvas(block, {
+        scale: window.devicePixelRatio * 2, // 使用較高的比例因子來增強清晰度
+        useCORS: true
+      });
       const imgData = canvas.toDataURL('image/png');
-  
+    
       const imgWidth = doc.internal.pageSize.getWidth() - 20; // 圖片寬度&邊距
       const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據比例計算高度
-  
+    
       let heightLeft = imgHeight; // 剩餘高度
       let position = 10; // 初始位置
-      let sourceHeight = canvas.height; // 源圖片的總高度
-      let sy = 0; // 源始截取位置Y
-  
-      // 如果圖片高度超過一頁
+      let sy = 0; // Y軸上的初始截取位置
+    
+      // 處理可能跨頁的內容
       while (heightLeft > 0) {
-        const heightOnPage = Math.min(heightLeft, doc.internal.pageSize.getHeight() - position); // 頁面上顯示的高度
-        const sliceHeight = (heightOnPage * canvas.height) / imgHeight; // 實際需要從canvas截取的高度
-  
+        const pageHeight = doc.internal.pageSize.getHeight() - position;
+        const heightOnPage = Math.min(heightLeft, pageHeight); // 本頁可以顯示的高度
+        const sliceHeight = (heightOnPage * canvas.height) / imgHeight; // 從canvas上實際截取的高度
+    
         doc.addImage(imgData, 'PNG', 10, position, imgWidth, heightOnPage, undefined, 'FAST', 0, sy);
-        sy += sliceHeight; // 更新源始截取位置
+        sy += sliceHeight; // 更新截取的起始Y位置
         heightLeft -= heightOnPage; // 更新剩餘高度
-  
+    
         if (heightLeft > 0) {
-          doc.addPage();
-          position = 0; // 重置至頁頂
+          doc.addPage(); // 需要新頁面時添加頁面
+          position = 0; // 重置位置至頁面頂部
         }
       }
-  
-      // 如果不是最後一個區塊，則添加新頁
+    
+      // 確保在區塊之間正確添加新頁面
       if (block !== blocks[blocks.length - 1]) {
         doc.addPage();
       }
     }
-  
-    doc.save('ProjectResults.pdf');
-  };
+    
+    doc.save('ProjectResults.pdf'); // 保存PDF文件
+  }
   
   
 
