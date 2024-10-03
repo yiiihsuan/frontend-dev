@@ -763,10 +763,18 @@ const ProjectPage = ({ setIsLoggedIn }) => {
               {deseq2GSEAResult && (
                 <DeseqGSEA id="results-container" resultData={deseq2GSEAResult} />
               )}
+
+</div>
+
+<div class="pdf-section">
      
               {deseq2Statistics && (
                 <DeseqStats resultData={deseq2Statistics} />
               )}
+
+</div>
+
+<div class="pdf-section">
      
               {reactomeResult && (
                 <DeseqReactome resultData={reactomeResult} />
@@ -797,6 +805,10 @@ const ProjectPage = ({ setIsLoggedIn }) => {
               {generalGSEAResult && (
                 <GSEANoDeseq resultData={generalGSEAResult} />
               )}
+
+</div>
+
+<div class="pdf-section">
               {wgcnaResult && (
                 <WGCNAResults resultData={wgcnaResult} />
               )}
