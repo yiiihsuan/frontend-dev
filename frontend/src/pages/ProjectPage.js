@@ -529,48 +529,48 @@ const ProjectPage = ({ setIsLoggedIn }) => {
   //   doc.save('ProjectResults.pdf'); 
   // };
   async function downloadPDF() {
-    const doc = new jsPDF('p', 'mm', 'a4'); // 定義A4大小的PDF
-    const blocks = document.querySelectorAll('#pdf-content .pdf-section'); // 獲取所有的區塊
-  
+    const doc = new jsPDF('p', 'mm', 'a4'); 
+    let position = 0; 
+    const pageHeight = doc.internal.pageSize.getHeight(); 
+
+    const blocks = document.querySelectorAll('#pdf-content .pdf-section'); 
+
     for (const block of blocks) {
-      const canvas = await html2canvas(block, {
-        scale: window.devicePixelRatio * 2, // 使用較高的比例因子來增強清晰度
-        useCORS: true
-      });
-      const imgData = canvas.toDataURL('image/png');
-    
-      const imgWidth = doc.internal.pageSize.getWidth() - 20; // 圖片寬度&邊距
-      const imgHeight = (canvas.height * imgWidth) / canvas.width; // 根據比例計算高度
-    
-      let heightLeft = imgHeight; // 剩餘高度
-      let position = 10; // 初始位置
-      let sy = 0; // Y軸上的初始截取位置
-    
-      // 處理可能跨頁的內容
-      while (heightLeft > 0) {
-        const pageHeight = doc.internal.pageSize.getHeight() - position;
-        const heightOnPage = Math.min(heightLeft, pageHeight); // 本頁可以顯示的高度
-        const sliceHeight = (heightOnPage * canvas.height) / imgHeight; // 從canvas上實際截取的高度
-    
-        doc.addImage(imgData, 'PNG', 10, position, imgWidth, heightOnPage, undefined, 'FAST', 0, sy);
-        sy += sliceHeight; // 更新截取的起始Y位置
-        heightLeft -= heightOnPage; // 更新剩餘高度
-    
-        if (heightLeft > 0) {
-          doc.addPage(); // 需要新頁面時添加頁面
-          position = 0; // 重置位置至頁面頂部
+        const canvas = await html2canvas(block, {
+            scale: window.devicePixelRatio * 2, 
+            useCORS: true
+        });
+        const imgData = canvas.toDataURL('image/png');
+        
+        const imgWidth = doc.internal.pageSize.getWidth() - 20; 
+        let imgHeight = (canvas.height * imgWidth) / canvas.width; 
+
+        let sy = 0; 
+        while (imgHeight > 0) {
+            if (position + imgHeight > pageHeight) {
+                const heightOnPage = pageHeight - position; 
+                const sliceHeight = (heightOnPage * canvas.height) / imgHeight; 
+
+                doc.addImage(imgData, 'PNG', 10, position, imgWidth, heightOnPage, undefined, 'FAST', 0, sy);
+                sy += sliceHeight; 
+                imgHeight -= heightOnPage;
+                doc.addPage(); 
+                position = 0; 
+            } else {
+                doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight, undefined, 'FAST', 0, sy);
+                position += imgHeight; 
+                break; 
+            }
         }
-      }
-    
-      // 確保在區塊之間正確添加新頁面
-      if (block !== blocks[blocks.length - 1]) {
-        doc.addPage();
-      }
+        if (block !== blocks[blocks.length - 1]) {
+            doc.addPage();
+            position = 0; 
+        }
     }
-    
-    doc.save('ProjectResults.pdf'); // 保存PDF文件
-  }
-  
+
+    doc.save('ProjectResults.pdf'); 
+}
+
   
 
 
