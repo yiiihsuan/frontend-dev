@@ -268,11 +268,21 @@ const BeatingPlotImage = styled.img`
   margin: 0 auto;  
 `;
 
+
 const FilePreviewSection = styled.div`
+  display: flex; 
+  justify-content: space-between; 
   margin-top: 20px;
 `;
 
-
+const FilePreviewBlock = styled.div`
+  flex: 1;
+  margin: 0 10px; 
+  padding: 10px;
+  border: 1px solid #ccc; 
+  border-radius: 8px;
+  //background-color: #f9f9f9;
+`;
 
 
 const ProjectPage = ({ setIsLoggedIn }) => {
@@ -667,21 +677,28 @@ const ProjectPage = ({ setIsLoggedIn }) => {
         handleUpload={handleUploadVideo}
       />
 
-<FilePreviewSection>
-        <h3>Test Files</h3>
-        {getFilesByPrefix('test_').map((file, index) => (
+
+      <FilePreviewSection>
+        <FilePreviewBlock>
+          <h3>Test Files</h3>
+          {getFilesByPrefix('test_').map((file, index) => (
+          <FileName key={index}>{file.name}</FileName>
+          ))}
+        </FilePreviewBlock>
+
+        <FilePreviewBlock>
+          <h3>Control Files</h3>
+          {getFilesByPrefix('control_').map((file, index) => (
           <FileName key={index}>{file.name}</FileName>
         ))}
-        
-        <h3>Control Files</h3>
-        {getFilesByPrefix('control_').map((file, index) => (
+        </FilePreviewBlock>
+
+        <FilePreviewBlock>
+          <h3>Treatment Files</h3>
+          {getFilesByPrefix('treatment_').map((file, index) => (
           <FileName key={index}>{file.name}</FileName>
         ))}
-        
-        <h3>Treatment Files</h3>
-        {getFilesByPrefix('treatment_').map((file, index) => (
-          <FileName key={index}>{file.name}</FileName>
-        ))}
+        </FilePreviewBlock>
       </FilePreviewSection>
 
 {beatingCount !== null && beatingPlotUrl !== null && (
