@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import SignUpPage from './pages/SignupPage';
 import ProjectPage from './pages/ProjectPage';
 import HomePage2 from './pages/HomePage2';
+import Document from './pages/Document';
 import { AuthProvider } from './context/AuthContext';  
 import PrivateRoute from './PrivateRoute';  
 
@@ -23,6 +24,14 @@ function App() {
             element={
               <PrivateRoute>
                 <HomePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/document"
+            element={
+              <PrivateRoute>
+                <Document />
               </PrivateRoute>
             }
           />
