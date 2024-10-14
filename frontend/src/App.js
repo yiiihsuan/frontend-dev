@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import SignUpPage from './pages/SignupPage';
 import ProjectPage from './pages/ProjectPage';
+import HomePage2 from './pages/HomePage2';
 import { AuthProvider } from './context/AuthContext';  
 import PrivateRoute from './PrivateRoute';  
 
@@ -14,6 +15,7 @@ function App() {
       <Router>
       <RouteChangeHandler />
         <Routes>
+        <Route path="/loginew" element={<HomePage2 />} />
           <Route path="/" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route
