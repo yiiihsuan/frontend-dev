@@ -64,18 +64,27 @@ const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.6);
+  //background-color: rgba(0, 0, 0, 0.6);
   padding: 2rem;
   border-radius: 10px;
   width: 300px;
 `;
 
+// const InputWrapper = styled.div`
+//   display: flex;
+//   align-items: center;
+//   background: white;
+//   padding: 10px;
+//   border-radius: 5px;
+//   margin-bottom: 1rem;
+//   width: 100%;
+// `;
+
 const InputWrapper = styled.div`
   display: flex;
   align-items: center;
-  background: white;
-  padding: 10px;
-  border-radius: 5px;
+  border-bottom: 2px solid white; 
+  padding: 10px 0; 
   margin-bottom: 1rem;
   width: 100%;
 `;
@@ -89,10 +98,9 @@ const Input = styled.input`
 
 const LoginButton = styled.button`
   padding: 10px 20px;
-  background-color: white;
-  color: black;
+  color: white;
   font-size: 1rem;
-  border: none;
+  border: 2px solid white;
   cursor: pointer;
   width: 100%;
   margin-top: 1rem;
