@@ -49,7 +49,7 @@ const RightSection = styled.div`
 `;
 
 const Header = styled.h1`
-  font-size: 3rem;
+  font-size: 5rem;
   text-align: left;
   font-family: 'Londrina Sketch', 'Courier New', Courier, monospace;
   margin-bottom: 2rem;
