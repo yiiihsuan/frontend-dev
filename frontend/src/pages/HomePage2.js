@@ -68,6 +68,7 @@ const LoginContainer = styled.div`
   padding: 2rem;
   border-radius: 10px;
   width: 300px;
+  background: none;
 `;
 
 // const InputWrapper = styled.div`
@@ -87,6 +88,7 @@ const InputWrapper = styled.div`
   padding: 10px 0; 
   margin-bottom: 1rem;
   width: 100%;
+  background: none; 
 `;
 
 const Input = styled.input`
@@ -94,6 +96,8 @@ const Input = styled.input`
   outline: none;
   padding: 10px;
   width: 100%;
+  background-color: transparent; 
+  color: white; 
 `;
 
 const LoginButton = styled.button`
@@ -104,6 +108,7 @@ const LoginButton = styled.button`
   cursor: pointer;
   width: 100%;
   margin-top: 1rem;
+  background-color: transparent;
   &:hover {
     background-color: #333;
     color: white;
@@ -160,7 +165,7 @@ const HomePage2 = () => {
         <RightSection>
           <LoginContainer>
             <InputWrapper>
-              <FaUser style={{ marginRight: '10px' }} />
+              <FaUser style={{ color: 'white', marginRight: '10px' }} />
               <Input
                 type="text"
                 placeholder="Username"
@@ -169,7 +174,7 @@ const HomePage2 = () => {
               />
             </InputWrapper>
             <InputWrapper>
-              <FaLock style={{ marginRight: '10px' }} />
+              <FaLock style={{ color: 'white', marginRight: '10px' }} />
               <Input
                 type="password"
                 placeholder="Password"
