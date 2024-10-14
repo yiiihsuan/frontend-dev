@@ -49,7 +49,7 @@ const RightSection = styled.div`
 `;
 
 const Header = styled.h1`
-  font-size: 5rem;
+  font-size: 5.5rem;
   text-align: left;
   font-family: 'Londrina Sketch', 'Courier New', Courier, monospace;
   margin-bottom: 2rem;
@@ -158,7 +158,7 @@ const HomePage2 = () => {
     
         <LeftSection>
           <Header>We turn cells into AI computers</Header>
-          <BottomImage src="/genenet.png" alt="AI illustration" />
+          <BottomImage src="/genenet2.png" alt="AI illustration" />
         </LeftSection>
 
 
