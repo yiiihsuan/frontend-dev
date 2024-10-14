@@ -51,7 +51,7 @@ const RightSection = styled.div`
 const Header = styled.h1`
   font-size: 3rem;
   text-align: left;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Londrina Sketch', 'Courier New', Courier, monospace;
   margin-bottom: 2rem;
 `;
 
@@ -67,7 +67,7 @@ const LoginContainer = styled.div`
   //background-color: rgba(0, 0, 0, 0.6);
   padding: 2rem;
   border-radius: 10px;
-  width: 300px;
+  width: 350px;
   background: none;
 `;
 
