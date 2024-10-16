@@ -125,6 +125,22 @@ const SignUpLink = styled.a`
   }
 `;
 
+const SignUpText = styled.p`
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333333;
+
+  a {
+    color: #333333;
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:hover {
+      color: #000000;
+    }
+  }
+`;
+
 const HomePage2 = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -182,8 +198,17 @@ const HomePage2 = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </InputWrapper>
-            <LoginButton onClick={handleLogin}>Log in</LoginButton>
-            <SignUpLink href="/sign-up">Sign up here</SignUpLink>
+            <LoginButton onClick={handleLogin} disabled={mutation.isLoading}>
+            {mutation.isLoading ? 'Logging in...' : 'log in'}
+            </LoginButton>
+            {mutation.isError && <div>Error: {mutation.error.message}</div>}
+            {/* <SignUpLink href="/sign-up">Sign up here</SignUpLink> */}
+            <SignUpText>
+        Don't have an account?{' '}
+        <span onClick={() => navigate('/sign-up')} style={{ cursor: 'pointer' }}>
+          Sign up here
+        </span>
+      </SignUpText>
           </LoginContainer>
         </RightSection>
       </ContentWrapper>
