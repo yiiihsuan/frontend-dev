@@ -24,7 +24,8 @@ const SidebarContainer = styled.div`
 const SidebarItem = styled(Link)`
   color: white;
   text-decoration: none;
-  margin-bottom: 30px; 
+  margin-top:20px;
+  margin-bottom: 10px; 
   font-family: 'Luckiest Guy', "Chocolate Classical Sans", sans-serif, cursive;
   font-size: 1.5em;
   display: flex;
