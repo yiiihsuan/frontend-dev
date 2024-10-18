@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import { AiOutlineHome } from "react-icons/ai";
 import { AiOutlineUser } from "react-icons/ai";
 import { IoDocumentTextOutline } from "react-icons/io5";
+import { IoLogOutOutline } from "react-icons/io5";
 //<AiOutlineUser />
 //<IoDocumentTextOutline />
 //<AiOutlineHome />
@@ -109,7 +110,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
       <SidebarItem as="div" onClick={handleLogout} isOpen={isOpen}>
         <Icon isOpen={isOpen}>
-          <FaSignOutAlt />
+          {/* <FaSignOutAlt /> */}
+          <IoLogOutOutline />
         </Icon>
         <span>Logout</span>
       </SidebarItem>
