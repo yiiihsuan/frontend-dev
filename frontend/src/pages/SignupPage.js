@@ -8,12 +8,6 @@ import { registerUser } from '../api';
 import Swal from 'sweetalert2';
 
 
-const PageWrapper = styled.div`
-  position: relative;
-  display: flex;
-  height: 100vh;
-  background-color: #060326;
-`;
 
 const OverlayImage = styled.img`
   position: absolute;
@@ -26,12 +20,22 @@ const OverlayImage = styled.img`
   z-index: 1;
 `;
 
-const ContentWrapper = styled.div`
-  position: relative;
+
+const PageWrapper = styled.div`
+ position: relative;
   display: flex;
-  width: 100%;
-  z-index: 2; 
+  flex-direction: column; 
+  min-height:100vh;
+  background-color: #060326;
 `;
+
+const ContentWrapper = styled.div`
+  flex: 1; 
+  display: flex;
+  z-index: 2;
+`;
+
+
 
 const LeftSection = styled.div`
   flex: 1;
@@ -50,14 +54,14 @@ const RightSection = styled.div`
 `;
 
 const Header = styled.h1`
-  font-size: 5.5rem;
+  font-size: 4.8rem;
   text-align: left;
-  font-family: 'Londrina Sketch', 'Courier New', Courier, monospace;
-  margin-bottom: 2rem;
+  font-family: "Chakra Petch", 'Londrina Sketch', 'Courier New', Courier, monospace;
+  margin-bottom: 1rem;
 `;
 
 const BottomImage = styled.img`
-  width: 80%;
+  width: 75%;
   margin: 0 auto;
 `;
 
@@ -72,15 +76,7 @@ const LoginContainer = styled.div`
   background: none;
 `;
 
-// const InputWrapper = styled.div`
-//   display: flex;
-//   align-items: center;
-//   background: white;
-//   padding: 10px;
-//   border-radius: 5px;
-//   margin-bottom: 1rem;
-//   width: 100%;
-// `;
+
 
 const InputWrapper = styled.div`
   display: flex;
@@ -162,64 +158,96 @@ const Button = styled.button`
 const LoginText = styled.p`
   margin-top: 10px;
   font-size: 14px;
-  color: #333333;
+  color: white;
+  
 
   a {
-    color: #333333;
+    color: white;
     text-decoration: underline;
     cursor: pointer;
 
     &:hover {
-      color: #000000;
+      color: #F5F5F5;
     }
   }
 `;
 
+const LogoLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  margin-left: 10px;
+  position:relative;
+  z-index:20;
+  text-decoration: underline;
+
+  img {
+    width: 13px;
+    height: 13px;
+    margin-right: 5px;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const Footer = styled.footer`
+  text-align: center;
+  padding: 8px 0;
+  color: white;
+  font-size: 0.9em;
+  border-top: 1px solid #ddd;
+  width: 100%; 
+  background-color: black;
+`;
+
 const SignUpPage = () => {
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-    const mutation = useMutation(
-        ({ username, password }) => registerUser(username, password),
-        {
-            onSuccess: () => {
-                Swal.fire({
-                    title: 'Account created!',
-                    text: 'Your account has been successfully created.',
-                    icon: 'success',
-                    confirmButtonText: 'OK',
-                }).then(() => {
-                    navigate('/');
-                });
-            },
-            onError: (error) => {
-                Swal.fire({
-                    title: 'Error!',
-                    text: error.message || 'Something went wrong. Please try again.',
-                    icon: 'error',
-                    confirmButtonText: 'OK',
-                });
-            },
-        }
-    );
+  const mutation = useMutation(
+    ({ username, password }) => registerUser(username, password),
+    {
+      onSuccess: () => {
+        Swal.fire({
+          title: 'Account created!',
+          text: 'Your account has been successfully created.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        }).then(() => {
+          navigate('/');
+        });
+      },
+      onError: (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: error.message || 'Something went wrong. Please try again.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      },
+    }
+  );
 
-    const handleSignUp = () => {
-        mutation.mutate({ username, password });
-    };
+  const handleSignUp = () => {
+    mutation.mutate({ username, password });
+  };
 
 
 
 
   return (
     <PageWrapper>
-     
+
       <OverlayImage src="/background.png" alt="Background Overlay" />
 
- 
+
       <ContentWrapper>
-    
+
         <LeftSection>
           <Header>We turn cells into AI computers</Header>
           <BottomImage src="/genenet2.png" alt="AI illustration" />
@@ -247,21 +275,29 @@ const SignUpPage = () => {
               />
             </InputWrapper>
             <LoginButton onClick={handleSignUp} disabled={mutation.isLoading}>
-            {mutation.isLoading ? 'Creating account...' : 'Create account'}
+              {mutation.isLoading ? 'Creating account...' : 'Create account'}
             </LoginButton>
 
-                        <LoginText>
-                Already have an account?{' '}
-                 <span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-                    Log in here
-                </span>
-             </LoginText>
-           
+            <LoginText>
+              Already have an account?{' '}
+              <span onClick={() => navigate('/')} style={{ textDecoration: 'underline', cursor: 'pointer' }}>
+                Log in here
+              </span>
+            </LoginText>
+
 
 
           </LoginContainer>
         </RightSection>
       </ContentWrapper>
+      <Footer>
+        © Copyright Genenet Technology (UK). All Rights Reserved. Learn more on
+        <LogoLink href="http://homepage.genenet.co/" target="_blank" rel="noopener noreferrer">
+          <img src="/genenetlogo_small.png" alt="Genenet Logo" />
+          Genenet Technology
+        </LogoLink>
+      </Footer>
+
     </PageWrapper>
   );
 };

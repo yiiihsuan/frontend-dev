@@ -41,7 +41,18 @@ const Document = () => {
 
       <Section>
         <Subtitle>Gene Sequence Analysis</Subtitle>
-        <Description>Upload the CSV file</Description>
+        <Description>Upload the CSV file in the following format:</Description>
+        <Description><b>Name:</b> The gene name or identifier (e.g., MTATP6P1, NPPA).</Description>
+        <Description><b>Length:</b> The length of the gene.</Description>
+        <Description><b>EffectiveLength:</b> Adjusted gene length based on sequencing context.</Description>
+        <Description><b>TPM:</b> Transcripts per million (TPM) value for gene expression.</Description>
+        <Description><b>NumReads:</b> Number of reads mapped to the gene.</Description>
+        <Description><b>Sample:</b> Sample identifier (e.g., B1).</Description>
+        <Description><b>Name_cleaned:</b> Cleaned gene name or ID, free from formatting issues.</Description>
+        <Description><b>gene_symbol:</b> Official symbol for the gene (e.g., NPPA, HSPB7).</Description>
+        <Description><b>gene_product:</b> The product or function of the gene (e.g., protein name).</Description>
+        <Description><b>type_of_gene:</b> Type of gene (e.g., protein-coding, pseudo).</Description>
+        <Description><b>ensembl_id:</b> Ensembl ID of the gene (e.g., ENSG00000248527).</Description>
         <Image src="/gene_counts_example.png" alt="Gene Sequence Analysis" />
       </Section>
 
