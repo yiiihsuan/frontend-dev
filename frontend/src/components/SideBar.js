@@ -4,6 +4,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaHome, FaUser, FaCog, FaSignOutAlt, FaFileAlt } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';  
+import { AiOutlineHome } from "react-icons/ai";
+import { AiOutlineUser } from "react-icons/ai";
+import { IoDocumentTextOutline } from "react-icons/io5";
+//<AiOutlineUser />
+//<IoDocumentTextOutline />
+//<AiOutlineHome />
 
 const SidebarContainer = styled.div`
   width: ${(props) => (props.isOpen ? '200px' : '80px')}; 
@@ -78,21 +84,25 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     >
       <SidebarItem to="/home" isOpen={isOpen}>
         <Icon isOpen={isOpen}>
-          <FaHome />
+          {/* <FaHome /> */}
+          <AiOutlineHome />
         </Icon>
         <span>Home</span>
       </SidebarItem>
 
       <SidebarItem to="/profile" isOpen={isOpen}>
         <Icon isOpen={isOpen}>
-          <FaUser />
+          {/* <FaUser /> */}
+          <AiOutlineUser />
+          
         </Icon>
         <span>Profile</span>
       </SidebarItem>
 
       <SidebarItem to="/document" isOpen={isOpen}>
         <Icon isOpen={isOpen}>
-          <FaFileAlt />
+          {/* <FaFileAlt /> */}
+          <IoDocumentTextOutline />
         </Icon>
         <span>Document</span>
       </SidebarItem>
