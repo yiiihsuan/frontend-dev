@@ -69,8 +69,8 @@ const Icon = styled.div`
   display: flex;
   align-items: center;  
   justify-content: center;
-  width: ${(props) => (props.isOpen ? '40px' : '48px')}; 
-  height: ${(props) => (props.isOpen ? '40px' : '48px')}; 
+  width: ${(props) => (props.isOpen ? '72px' : '80px')}; 
+  height: ${(props) => (props.isOpen ? '72px' : '80px')}; 
 
 
 `;
