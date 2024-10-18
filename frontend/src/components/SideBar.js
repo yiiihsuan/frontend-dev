@@ -63,8 +63,8 @@ const LogoContainer = styled.div`
 `;
 
 const Icon = styled.div`
-  // font-size: ${(props) => (props.isOpen ? '1.8em' : '2.0em')}; 
-  // transition: font-size 0.3s ease;
+  font-size: ${(props) => (props.isOpen ? '1.8em' : '2.0em')}; 
+  transition: font-size 0.3s ease;
 
   display: flex;
   align-items: center;  
