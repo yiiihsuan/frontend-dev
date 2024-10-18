@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 const PageContainer = styled.div`
   padding: 2rem;
+  background-color: #f0f0f0;
 `;
 
 const Title = styled.h1`
@@ -58,7 +59,16 @@ const Document = () => {
 
       <Section>
         <Subtitle>Heart Beat Analysis</Subtitle>
-        <Description>Upload the CSV file</Description>
+        <Description>Upload the CSV file in the following format:</Description>
+        <Description><b>drug_sample:</b> Unique identifier for the drug sample (e.g., dmso_a1, doxorubicin_e1).</Description>
+        <Description><b>drug:</b> Name of the drug used in the experiment (e.g., DMSO, Bortezomib).</Description>
+        <Description><b>video_id:</b> Unique identifier for the video used for analysis (e.g., 839, 854).</Description>
+        <Description><b>beat_per_min:</b> Heartbeat rate per minute recorded during the experiment (e.g., 58, 40).</Description>
+        <Description><b>Note:</b> Any additional information or notes for the specific record (optional).</Description>
+        <Description><b>sample:</b> Sample identifier used in the experiment (e.g., A1, E1, D1).</Description>
+        <Description><b>hours:</b> Duration in hours the experiment was conducted (e.g., 24).</Description>
+        <Description><b>duplicate_id:</b> Identifier to mark duplicate records (e.g., 1).</Description>
+
         <Image src="/meta_sample.png" alt="Heart Beat Analysis" />
       </Section>
 
