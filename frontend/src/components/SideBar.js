@@ -63,8 +63,16 @@ const LogoContainer = styled.div`
 `;
 
 const Icon = styled.div`
-  font-size: ${(props) => (props.isOpen ? '1.8em' : '2.0em')}; /* 調整圖標大小 */
-  transition: font-size 0.3s ease;
+  // font-size: ${(props) => (props.isOpen ? '1.8em' : '2.0em')}; 
+  // transition: font-size 0.3s ease;
+
+  display: flex;
+  align-items: center;  
+  justify-content: center;
+  width: ${(props) => (props.isOpen ? '40px' : '48px')}; 
+  height: ${(props) => (props.isOpen ? '40px' : '48px')}; 
+
+
 `;
 
 
