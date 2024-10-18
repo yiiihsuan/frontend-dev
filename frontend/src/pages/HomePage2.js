@@ -128,15 +128,15 @@ const SignUpLink = styled.a`
 const SignUpText = styled.p`
   margin-top: 10px;
   font-size: 14px;
-  color: #333333;
+  color: white;
 
   a {
-    color: #333333;
+    color: white;
     text-decoration: underline;
     cursor: pointer;
 
     &:hover {
-      color: #000000;
+      color: #F5F5F5;
     }
   }
 `;
@@ -204,7 +204,7 @@ const HomePage2 = () => {
             {mutation.isError && <div>Error: {mutation.error.message}</div>}
             {/* <SignUpLink href="/sign-up">Sign up here</SignUpLink> */}
             <SignUpText>
-        Don't have an account?{' '}
+           Don't have an account?{' '}
         <span onClick={() => navigate('/sign-up')} style={{ cursor: 'pointer' }}>
           Sign up here
         </span>
